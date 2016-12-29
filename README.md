@@ -1,6 +1,6 @@
-# Qwestr
+# Qwestr-React
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+A front-end client of Qwestr, bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ### Directory Layout
 
