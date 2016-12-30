@@ -1,7 +1,5 @@
 # Getting Started
 
-## Table of Contents
-
 - [Updating to New Releases](#updating-to-new-releases)
 - [Sending Feedback](#sending-feedback)
 - [Folder Structure](#folder-structure)
@@ -61,7 +59,7 @@
 
 ## Updating to New Releases
 
-Create React App is divided into two packages:
+The Create React App utility is divided into two packages:
 
 * `create-react-app` is a global command-line utility that you use to create new projects.
 * `react-scripts` is a development dependency in the generated projects (including this one).
@@ -82,23 +80,21 @@ We are always open to [your feedback](https://github.com/facebookincubator/creat
 
 ## Folder Structure
 
-After creation, your project should look like this:
-
 ```
-my-app/
-  README.md
-  node_modules/
-  package.json
-  public/
-    index.html
-    favicon.ico
-  src/
-    App.css
-    App.js
-    App.test.js
-    index.css
-    index.js
-    logo.svg
+.
+├── /docs/                      # Documentation files for the project
+├── /node_modules/              # 3rd-party libraries and utilities
+├── /src/                       # The source code of the application
+│   ├── /App.css                # App css file
+│   ├── /App.js                 # App js file
+│   ├── /App.test.js            # App test file
+│   ├── /index.css              # index css file
+│   ├── /index.js               # Javascript entry point for the application
+│   └── /logo.svg               # logo svg file
+├── /public/                    # Build automation scripts and utilities
+│   ├── /index.html             # The page template
+│   └── /favicon.ico            # Favicon asset
+└── package.json                # The list of 3rd party libraries and utilities
 ```
 
 For the project to build, **these files must exist with exact filenames**:
@@ -151,8 +147,6 @@ See the section about [deployment](#deployment) for more information.
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
 Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ## Syntax Highlighting in the Editor
 
