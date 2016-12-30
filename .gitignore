@@ -12,5 +12,5 @@ build
 # misc
 .DS_Store
 .env
-.json
 npm-debug.log
+*.json
