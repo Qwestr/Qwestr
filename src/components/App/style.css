@@ -10,12 +10,12 @@
 .App-header {
   background-color: #222;
   height: 150px;
-  padding: 20px;
+  padding: 10px;
   color: white;
 }
 
-.App-intro {
-  font-size: large;
+.App-login {
+  padding: 10px;
 }
 
 @keyframes App-logo-spin {
