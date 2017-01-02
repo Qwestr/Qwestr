@@ -35,17 +35,16 @@ class App extends Component {
   }
 
   render() {
-    const { className, ...props } = this.props;
+    const { className } = this.props;
     return (
-      <div className={classnames('App', className)} {...props}>
+      <div className={classnames('App', className)}>
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button bsStyle="primary" onClick={this.loginWithFacebook}>Login with Facebook</Button>
+        <div className="App-login">
+          <Button bsStyle="primary" onClick={this.loginWithFacebook}>Login with Facebook</Button>
+        </div>
       </div>
     );
   }
