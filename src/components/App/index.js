@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import classnames from 'classnames';
 import firebase from 'firebase';
 import logo from './logo.svg';
@@ -35,15 +35,36 @@ class App extends Component {
   }
 
   render() {
-    const { className } = this.props;
+    const { className, ..._pros } = this.props;
+    const formPanelTitle = (
+      <h3>Create New Qwest</h3>
+    );
+
     return (
       <div className={classnames('App', className)}>
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2>Welcome to Qwestr</h2>
         </div>
         <div className="App-login">
           <Button bsStyle="primary" onClick={this.loginWithFacebook}>Login with Facebook</Button>
+        </div>
+        <div className="App-form">
+          <Panel header={formPanelTitle} bsStyle="info">
+            <Form horizontal>
+              <FormGroup controlId="name">
+                <Col componentClass={ControlLabel} sm={2}>Name</Col>
+                <Col sm={10}>
+                  <FormControl type="text" placeholder="The title of the Qwest" />
+                </Col>
+              </FormGroup>
+              <FormGroup>
+                <Col smOffset={2} sm={10}>
+                  <Button type="submit">Create</Button>
+                </Col>
+              </FormGroup>
+            </Form>
+          </Panel>
         </div>
       </div>
     );
