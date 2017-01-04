@@ -6,6 +6,18 @@ import logo from './logo.svg';
 import './style.css';
 
 class App extends Component {
+  constructor(props) {
+    // set props
+    super(props);
+
+    // set state
+    this.state = { name: ''};
+
+    // bind functions
+    this.handleChange = this.handleChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
+
   loginWithFacebook() {
     // Setup Firebase Facebook Auth Provider
     var provider = new firebase.auth.FacebookAuthProvider();
@@ -34,6 +46,18 @@ class App extends Component {
     });
   }
 
+  handleChange(event) {
+    // update state values
+    this.setState({name: event.target.value});
+  }
+
+  handleFormSubmit(event) {
+    // stop the form submission from reloading the page
+    event.preventDefault();
+
+    console.log('name: ' + this.state.name);
+  }
+
   render() {
     const { className, ..._pros } = this.props;
     const formPanelTitle = (
@@ -51,11 +75,16 @@ class App extends Component {
         </div>
         <div className="App-form">
           <Panel header={formPanelTitle} bsStyle="info">
-            <Form horizontal>
+            <Form horizontal onSubmit={this.handleFormSubmit}>
               <FormGroup controlId="name">
                 <Col componentClass={ControlLabel} sm={2}>Name</Col>
                 <Col sm={10}>
-                  <FormControl type="text" placeholder="The title of the Qwest" />
+                  <FormControl
+                    type="text"
+                    placeholder="The title of the Qwest"
+                    onChange={this.handleChange}
+                    value={this.state.name}
+                  />
                 </Col>
               </FormGroup>
               <FormGroup>
