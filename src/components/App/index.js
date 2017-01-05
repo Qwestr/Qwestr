@@ -11,11 +11,18 @@ class App extends Component {
     super(props);
 
     // set state
-    this.state = { name: ''};
+    this.state = { title: ''};
 
     // bind functions
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
+
+  createQwest() {
+    // write to Firebase
+    firebase.database().ref('test/1').set({
+      title: this.state.title
+    });
   }
 
   loginWithFacebook() {
@@ -48,14 +55,15 @@ class App extends Component {
 
   handleChange(event) {
     // update state values
-    this.setState({name: event.target.value});
+    this.setState({title: event.target.value});
   }
 
   handleFormSubmit(event) {
     // stop the form submission from reloading the page
     event.preventDefault();
 
-    console.log('name: ' + this.state.name);
+    // create the Qwest
+    this.createQwest();
   }
 
   render() {
@@ -76,14 +84,14 @@ class App extends Component {
         <div className="App-form">
           <Panel header={formPanelTitle} bsStyle="info">
             <Form horizontal onSubmit={this.handleFormSubmit}>
-              <FormGroup controlId="name">
-                <Col componentClass={ControlLabel} sm={2}>Name</Col>
+              <FormGroup controlId="title">
+                <Col componentClass={ControlLabel} sm={2}>Title</Col>
                 <Col sm={10}>
                   <FormControl
                     type="text"
-                    placeholder="The title of the Qwest"
+                    placeholder="What This Qwest will be Called"
                     onChange={this.handleChange}
-                    value={this.state.name}
+                    value={this.state.title}
                   />
                 </Col>
               </FormGroup>
