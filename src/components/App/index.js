@@ -19,8 +19,8 @@ class App extends Component {
   }
 
   createQwest() {
-    // Create a test user id
-    const userId = '1';
+    // Get current user id
+    const userId = firebase.auth().currentUser.uid;
 
     // Create Qwest object.
     const qwestData = {
