@@ -19,10 +19,25 @@ class App extends Component {
   }
 
   createQwest() {
-    // write to Firebase
-    firebase.database().ref('test/1').set({
+    // Create a test user id
+    const userId = '1';
+
+    // Create Qwest object.
+    const qwestData = {
       title: this.state.title
-    });
+    };
+
+    // Get a key for a new Qwest.
+    var newQwestKey = firebase.database().ref().child('qwests').push().key;
+
+    // Write the new Qwest's data simultaneously
+    // in the Qwests list and the user's Qwest list.
+    let updates = {};
+    updates['/qwests/' + newQwestKey] = qwestData;
+    updates['/user-qwests/' + userId + '/' + newQwestKey] = qwestData;
+
+    // update the database
+    return firebase.database().ref().update(updates);
   }
 
   loginWithFacebook() {
