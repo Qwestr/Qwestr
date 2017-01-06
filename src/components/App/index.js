@@ -1,11 +1,45 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import classnames from 'classnames';
 import firebase from 'firebase';
 import logo from './logo.svg';
 import './style.css';
 
 class App extends Component {
+  constructor(props) {
+    // set props
+    super(props);
+
+    // set state
+    this.state = { title: ''};
+
+    // bind functions
+    this.handleChange = this.handleChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
+
+  createQwest() {
+    // Get current user id
+    const userId = firebase.auth().currentUser.uid;
+
+    // Create Qwest object.
+    const qwestData = {
+      title: this.state.title
+    };
+
+    // Get a key for a new Qwest.
+    var newQwestKey = firebase.database().ref().child('qwests').push().key;
+
+    // Write the new Qwest's data simultaneously
+    // in the Qwests list and the user's Qwest list.
+    let updates = {};
+    updates['/qwests/' + newQwestKey] = qwestData;
+    updates['/user-qwests/' + userId + '/' + newQwestKey] = qwestData;
+
+    // update the database
+    return firebase.database().ref().update(updates);
+  }
+
   loginWithFacebook() {
     // Setup Firebase Facebook Auth Provider
     var provider = new firebase.auth.FacebookAuthProvider();
@@ -34,16 +68,55 @@ class App extends Component {
     });
   }
 
+  handleChange(event) {
+    // update state values
+    this.setState({title: event.target.value});
+  }
+
+  handleFormSubmit(event) {
+    // stop the form submission from reloading the page
+    event.preventDefault();
+
+    // create the Qwest
+    this.createQwest();
+  }
+
   render() {
-    const { className } = this.props;
+    const { className, ..._pros } = this.props;
+    const formPanelTitle = (
+      <h3>Create New Qwest</h3>
+    );
+
     return (
       <div className={classnames('App', className)}>
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2>Welcome to Qwestr</h2>
         </div>
         <div className="App-login">
           <Button bsStyle="primary" onClick={this.loginWithFacebook}>Login with Facebook</Button>
+        </div>
+        <div className="App-form">
+          <Panel header={formPanelTitle} bsStyle="info">
+            <Form horizontal onSubmit={this.handleFormSubmit}>
+              <FormGroup controlId="title">
+                <Col componentClass={ControlLabel} sm={2}>Title</Col>
+                <Col sm={10}>
+                  <FormControl
+                    type="text"
+                    placeholder="What This Qwest will be Called"
+                    onChange={this.handleChange}
+                    value={this.state.title}
+                  />
+                </Col>
+              </FormGroup>
+              <FormGroup>
+                <Col smOffset={2} sm={10}>
+                  <Button type="submit">Create</Button>
+                </Col>
+              </FormGroup>
+            </Form>
+          </Panel>
         </div>
       </div>
     );
