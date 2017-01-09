@@ -1,122 +1,34 @@
 import React, { Component } from 'react';
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import classnames from 'classnames';
-import firebase from 'firebase';
-import logo from './logo.svg';
 import './style.css';
 
 class App extends Component {
-  constructor(props) {
-    // set props
-    super(props);
-
-    // set state
-    this.state = { title: ''};
-
-    // bind functions
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
-  }
-
-  createQwest() {
-    // Get current user id
-    const userId = firebase.auth().currentUser.uid;
-
-    // Create Qwest object.
-    const qwestData = {
-      title: this.state.title
-    };
-
-    // Get a key for a new Qwest.
-    var newQwestKey = firebase.database().ref().child('qwests').push().key;
-
-    // Write the new Qwest's data simultaneously
-    // in the Qwests list and the user's Qwest list.
-    let updates = {};
-    updates['/qwests/' + newQwestKey] = qwestData;
-    updates['/user-qwests/' + userId + '/' + newQwestKey] = qwestData;
-
-    // update the database
-    return firebase.database().ref().update(updates);
-  }
-
-  loginWithFacebook() {
-    // Setup Firebase Facebook Auth Provider
-    var provider = new firebase.auth.FacebookAuthProvider();
-
-    firebase.auth().signInWithPopup(provider).then(function(result) {
-      console.log('LOGIN SUCCESS!');
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      var token = result.credential.accessToken;
-      console.log('token: ' + token);
-      // The signed-in user info.
-      var user = result.user;
-      console.log('user: ' + user);
-    }).catch(function(error) {
-      console.log('LOGIN ERROR!');
-      // Handle Errors here.
-      var errorCode = error.code;
-      console.log('errorCode: ' + errorCode);
-      var errorMessage = error.message;
-      console.log('errorMessage: ' + errorMessage);
-      // The email of the user's account used.
-      var email = error.email;
-      console.log('email: ' + email);
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      console.log('credential: ' + credential);
-    });
-  }
-
-  handleChange(event) {
-    // update state values
-    this.setState({title: event.target.value});
-  }
-
-  handleFormSubmit(event) {
-    // stop the form submission from reloading the page
-    event.preventDefault();
-
-    // create the Qwest
-    this.createQwest();
-  }
-
   render() {
-    const { className, ..._pros } = this.props;
-    const formPanelTitle = (
-      <h3>Create New Qwest</h3>
-    );
+    // declare relevant properties as local variables
+    const { className, children, ..._props } = this.props;
 
+    // render the veiw
     return (
       <div className={classnames('App', className)}>
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Qwestr</h2>
+        <div className="App-navbar">
+          <Navbar inverse>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <a href="/">Qwestr</a>
+              </Navbar.Brand>
+            </Navbar.Header>
+            <Nav>
+              <NavItem href="/qwest/new">New Qwest</NavItem>
+            </Nav>
+            <Nav pullRight>
+              <NavItem href="/login">Login</NavItem>
+              <NavItem href="/logout">Logout</NavItem>
+            </Nav>
+          </Navbar>
         </div>
-        <div className="App-login">
-          <Button bsStyle="primary" onClick={this.loginWithFacebook}>Login with Facebook</Button>
-        </div>
-        <div className="App-form">
-          <Panel header={formPanelTitle} bsStyle="info">
-            <Form horizontal onSubmit={this.handleFormSubmit}>
-              <FormGroup controlId="title">
-                <Col componentClass={ControlLabel} sm={2}>Title</Col>
-                <Col sm={10}>
-                  <FormControl
-                    type="text"
-                    placeholder="What This Qwest will be Called"
-                    onChange={this.handleChange}
-                    value={this.state.title}
-                  />
-                </Col>
-              </FormGroup>
-              <FormGroup>
-                <Col smOffset={2} sm={10}>
-                  <Button type="submit">Create</Button>
-                </Col>
-              </FormGroup>
-            </Form>
-          </Panel>
+        <div className="App-content">
+          {children}
         </div>
       </div>
     );
