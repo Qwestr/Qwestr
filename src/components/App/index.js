@@ -1,29 +1,35 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import classnames from 'classnames';
 import './style.css';
-import Login from '../Login';
 
 class App extends Component {
   render() {
+    // declare relevant properties as local variables
+    const { className, children, ..._props } = this.props;
+
+    // render the veiw
     return (
-      <div className='App'>
+      <div className={classnames('App', className)}>
         <div className="App-navbar">
           <Navbar inverse>
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="#">Qwestr</a>
+                <a href="/">Qwestr</a>
               </Navbar.Brand>
             </Navbar.Header>
+            <Nav>
+              <NavItem href="/qwest/new">New Qwest</NavItem>
+            </Nav>
             <Nav pullRight>
-              <NavItem eventKey={1} href="#">Login</NavItem>
-              <NavItem eventKey={2} href="#">Logout</NavItem>
+              <NavItem href="/login">Login</NavItem>
+              <NavItem href="/logout">Logout</NavItem>
             </Nav>
           </Navbar>
         </div>
-        {/* <div className="App-navbar">
-          {this.props.children}
-        </div> */}
-        <Login className="Test" />
+        <div className="App-content">
+          {children}
+        </div>
       </div>
     );
   }
