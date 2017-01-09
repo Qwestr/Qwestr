@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap';
+import {
+  Button,
+  Col,
+  ControlLabel,
+  Form,
+  FormControl,
+  FormGroup,
+  Panel
+} from 'react-bootstrap';
 import classnames from 'classnames';
 import firebase from 'firebase';
 import './style.css';
@@ -59,11 +67,8 @@ class Qwest extends Component {
     );
 
     return (
-      <div className={classnames('App', className)}>
-        <div className="App-header">
-          <h2>Qwestr</h2>
-        </div>
-        <div className="App-form">
+      <div className={classnames('Qwest', className)}>
+        <div className="Qwest-form">
           <Panel header={formPanelTitle} bsStyle="info">
             <Form horizontal onSubmit={this.handleFormSubmit}>
               <FormGroup controlId="title">
