@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import classnames from 'classnames';
-import logo from './logo.svg';
 import './style.css';
 
 class App extends Component {
@@ -9,9 +9,18 @@ class App extends Component {
 
     return (
       <div className={classnames('App', className)}>
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Qwestr</h2>
+        <div className="App-navbar">
+          <Navbar inverse>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <a href="#">Qwestr</a>
+              </Navbar.Brand>
+            </Navbar.Header>
+            <Nav pullRight>
+              <NavItem eventKey={1} href="#">Login</NavItem>
+              <NavItem eventKey={2} href="#">Logout</NavItem>
+            </Nav>
+          </Navbar>
         </div>
       </div>
     );
