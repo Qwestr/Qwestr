@@ -26,8 +26,10 @@ class Login extends Component {
   }
 
   render() {
+    // declare relevant properties as local variables
     const { className, ..._props } = this.props;
 
+    // render the veiw
     return (
       <div className={classnames('Login', className)}>
         <div className="Login-form">

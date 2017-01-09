@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
-import classnames from 'classnames';
 import './style.css';
+import Login from '../Login';
 
 class App extends Component {
   render() {
-    const { className, ..._props } = this.props;
-
     return (
-      <div className={classnames('App', className)}>
+      <div className='App'>
         <div className="App-navbar">
           <Navbar inverse>
             <Navbar.Header>
@@ -22,6 +20,10 @@ class App extends Component {
             </Nav>
           </Navbar>
         </div>
+        {/* <div className="App-navbar">
+          {this.props.children}
+        </div> */}
+        <Login className="Test" />
       </div>
     );
   }

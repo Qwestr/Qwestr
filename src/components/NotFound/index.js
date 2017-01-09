@@ -5,9 +5,12 @@ import './style.css';
 
 export default class NotFound extends Component {
   render() {
-    const { className, ...props } = this.props;
+    // declare relevant properties as local variables
+    const { className, ..._props } = this.props;
+
+    // render the veiw
     return (
-      <div className={classnames('NotFound', className)} {...props}>
+      <div className={classnames('NotFound', className)}>
         <h1>
           404 <small>Not Found :(</small>
         </h1>

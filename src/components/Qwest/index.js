@@ -18,7 +18,9 @@ class Qwest extends Component {
     super(props);
 
     // set state
-    this.state = { title: ''};
+    this.state = {
+      title: ''
+    };
 
     // bind functions
     this.handleChange = this.handleChange.bind(this);
@@ -61,15 +63,21 @@ class Qwest extends Component {
   }
 
   render() {
+    // declare relevant properties as local variables
     const { className, ..._props } = this.props;
-    const formPanelTitle = (
-      <h3>Create New Qwest</h3>
+
+    // declare other local variables
+    const formHeader = (
+      <div className="Qwest-form-header">
+        Create New Qwest
+      </div>
     );
 
+    // render the veiw
     return (
       <div className={classnames('Qwest', className)}>
         <div className="Qwest-form">
-          <Panel header={formPanelTitle} bsStyle="info">
+          <Panel header={formHeader} bsStyle="info">
             <Form horizontal onSubmit={this.handleFormSubmit}>
               <FormGroup controlId="title">
                 <Col componentClass={ControlLabel} sm={2}>Title</Col>
