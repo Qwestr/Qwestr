@@ -67,8 +67,8 @@ class Qwest extends Component {
     const { className, ..._props } = this.props;
 
     // declare other local variables
-    const formHeader = (
-      <div className="Qwest-form-header">
+    const panelHeader = (
+      <div className="Qwest-panel-header">
         Create New Qwest
       </div>
     );
@@ -77,7 +77,7 @@ class Qwest extends Component {
     return (
       <div className={classnames('Qwest', className)}>
         <div className="Qwest-form">
-          <Panel header={formHeader} bsStyle="info">
+          <Panel header={panelHeader} bsStyle="info">
             <Form horizontal onSubmit={this.handleFormSubmit}>
               <FormGroup controlId="title">
                 <Col componentClass={ControlLabel} sm={2}>Title</Col>
