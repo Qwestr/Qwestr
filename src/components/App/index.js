@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import firebase from 'firebase';
 import classnames from 'classnames';
+import { logout } from '../../lib/auth';
 import './style.css';
 
 class App extends Component {
@@ -24,7 +25,7 @@ class App extends Component {
             <NavItem href="/qwest/new">New Qwest</NavItem>
           </Nav>
           <Nav pullRight>
-            <NavItem href="/logout">Logout</NavItem>
+            <NavItem onClick={logout}>Logout</NavItem>
           </Nav>
       </div>
       );
@@ -39,7 +40,7 @@ class App extends Component {
     }
   }
 
-  watchUserState() {
+  watchAuthState() {
     // setup listener
     firebase.auth().onAuthStateChanged((user) => {
       // set the user
@@ -49,7 +50,7 @@ class App extends Component {
 
   componentDidMount() {
     // setup listener for user changes
-    this.watchUserState();
+    this.watchAuthState();
   }
 
   render() {
