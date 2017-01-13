@@ -22,6 +22,7 @@ class App extends Component {
       return (
         <div className="App-navbar-items">
           <Nav>
+            <NavItem href="/qwest/list">Qwests</NavItem>
             <NavItem href="/qwest/new">New Qwest</NavItem>
           </Nav>
           <Nav pullRight>
