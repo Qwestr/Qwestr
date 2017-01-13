@@ -11,7 +11,10 @@ const Routes = (props) => (
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
       <Route path="login" component={Login} />
-      <Route path="qwest/new" component={QwestCreate} />
+      <Route path="qwest">
+        <IndexRoute component={NotFound} />
+        <Route path="new" component={QwestCreate} />
+      </Route>
       <Route path="*" component={NotFound} />
     </Route>
   </Router>
