@@ -1,49 +1,77 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
-import classnames from 'classnames';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import firebase from 'firebase';
-import logo from './logo.svg';
+import classnames from 'classnames';
+import { logout } from '../../lib/auth';
 import './style.css';
 
 class App extends Component {
-  loginWithFacebook() {
-    // Setup Firebase Facebook Auth Provider
-    var provider = new firebase.auth.FacebookAuthProvider();
+  constructor(props) {
+    // set props
+    super(props);
 
-    firebase.auth().signInWithPopup(provider).then(function(result) {
-      console.log('LOGIN SUCCESS!');
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      var token = result.credential.accessToken;
-      console.log('token: ' + token);
-      // The signed-in user info.
-      var user = result.user;
-      console.log('user: ' + user);
-    }).catch(function(error) {
-      console.log('LOGIN ERROR!');
-      // Handle Errors here.
-      var errorCode = error.code;
-      console.log('errorCode: ' + errorCode);
-      var errorMessage = error.message;
-      console.log('errorMessage: ' + errorMessage);
-      // The email of the user's account used.
-      var email = error.email;
-      console.log('email: ' + email);
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      console.log('credential: ' + credential);
+    // set state
+    this.state = {
+      user: null
+    };
+  }
+
+  getNavbarItems(user) {
+    // return items depending on if the user is logged in or not
+    if (user) {
+      return (
+        <div className="App-navbar-items">
+          <Nav>
+            <NavItem href="/qwest/new">New Qwest</NavItem>
+          </Nav>
+          <Nav pullRight>
+            <NavItem onClick={logout}>Logout</NavItem>
+          </Nav>
+      </div>
+      );
+    } else {
+      return (
+        <div className="App-navbar-items">
+          <Nav pullRight>
+            <NavItem href="/login">Login</NavItem>
+          </Nav>
+        </div>
+      );
+    }
+  }
+
+  watchAuthState() {
+    // setup listener
+    firebase.auth().onAuthStateChanged((user) => {
+      // set the user
+      this.setState({user: user});
     });
   }
 
+  componentDidMount() {
+    // setup listener for user changes
+    this.watchAuthState();
+  }
+
   render() {
-    const { className } = this.props;
+    // declare relevant properties as local variables
+    const { className, children, ..._props } = this.props;
+
+    // render the veiw
     return (
       <div className={classnames('App', className)}>
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+        <div className="App-navbar">
+          <Navbar inverse>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <a href="/">Qwestr</a>
+              </Navbar.Brand>
+            </Navbar.Header>
+            {this.getNavbarItems(this.state.user)}
+          </Navbar>
         </div>
-        <div className="App-login">
-          <Button bsStyle="primary" onClick={this.loginWithFacebook}>Login with Facebook</Button>
+        <div className="App-content">
+          {children}
         </div>
       </div>
     );
