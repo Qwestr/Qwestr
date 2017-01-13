@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Button, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import classnames from 'classnames';
-import { AUTH_PROVIDER, login } from '../../lib/auth';
+import { startFirebaseUI } from '../../lib/auth';
 import './style.css';
 
 class Login extends Component {
+  componentDidMount() {
+    // start FirebaseUI
+    startFirebaseUI('#firebaseui-auth-container');
+  }
+
   render() {
     // declare relevant properties as local variables
     const { className, ..._props } = this.props;
@@ -15,32 +20,13 @@ class Login extends Component {
         Login
       </div>
     );
-
+  
     // render the veiw
     return (
       <div className={classnames('Login', className)}>
         <div className="Login-panel">
           <Panel header={panelHeader} bsStyle="info">
-            <div className="Login-button">
-              <Button
-                block
-                bsStyle="primary"
-                bsSize="large"
-                onClick={() => login(AUTH_PROVIDER.FACEBOOK)}
-              >
-                Login with Facebook
-              </Button>
-            </div>
-            <div className="Login-button">
-              <Button
-                block
-                bsStyle="success"
-                bsSize="large"
-                onClick={() => login(AUTH_PROVIDER.GOOGLE)}
-              >
-                Login with Google
-              </Button>
-            </div>
+            <div id="firebaseui-auth-container"></div>
           </Panel>
         </div>
       </div>

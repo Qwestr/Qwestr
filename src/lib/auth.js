@@ -1,40 +1,29 @@
 import firebase from 'firebase';
-import Enum from 'es6-enum';
+import firebaseui from 'firebaseui';
 import { browserHistory } from 'react-router';
 
-export const AUTH_PROVIDER = Enum(
-  "FACEBOOK",
-  "GOOGLE"
-);
+export function startFirebaseUI(containerID) {
+  // FirebaseUI config.
+  let uiConfig = {
+    signInSuccessUrl: '/',
+    signInOptions: [
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ]
+  };
 
-function getFirebaseAuthProvider(authProvider) {
-  switch (authProvider) {
-    case AUTH_PROVIDER.FACEBOOK:
-      return new firebase.auth.FacebookAuthProvider();
-    case AUTH_PROVIDER.GOOGLE:
-        return new firebase.auth.GoogleAuthProvider();
-    default:
-        return null;
-  }
-}
-
-export function login(authProvider) {
-  // Setup Firebase Auth Provider
-  const provider = getFirebaseAuthProvider(authProvider);
-
-  firebase.auth().signInWithPopup(provider).then(function(result) {
-    // Redirect to home
-    browserHistory.push('/');
-  }).catch(function(error) {
-    // Present alert for error
-    alert('Error: ' + error.code);
-  });
+  // Initialize the FirebaseUI Widget using Firebase.
+  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+  // The start method will wait until the DOM is loaded.
+  ui.start(containerID, uiConfig);
 }
 
 export function logout() {
   firebase.auth().signOut().then(function() {
-    // Sign-out successful.
+    // Redirect to home
+    browserHistory.push('/');
   }, function(error) {
-    // An error happened.
+    // Present alert
+    alert('Error: ' + error);
   });
 }
