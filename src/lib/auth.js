@@ -1,15 +1,34 @@
 import firebase from 'firebase';
+import Enum from 'es6-enum';
 
-export function login() {
-  // Setup Firebase Facebook Auth Provider
-  const provider = new firebase.auth.FacebookAuthProvider();
+export const AUTH_PROVIDER = Enum(
+  "FACEBOOK",
+  "GOOGLE"
+);
+
+function getFirebaseAuthProvider(authProvider) {
+  switch (authProvider) {
+    case AUTH_PROVIDER.FACEBOOK:
+      return new firebase.auth.FacebookAuthProvider();
+    case AUTH_PROVIDER.GOOGLE:
+        return new firebase.auth.GoogleAuthProvider();
+    default:
+        return null;
+  }
+}
+
+export function login(authProvider) {
+  // Setup Firebase Auth Provider
+  const provider = getFirebaseAuthProvider(authProvider);
 
   firebase.auth().signInWithPopup(provider).then(function(result) {
+    console.log('login success!');
     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
     // var token = result.credential.accessToken;
     // The signed-in user info.
     // var user = result.user;
   }).catch(function(error) {
+    console.log('login fail!');
     // Handle Errors here.
     // var errorCode = error.code;
     // var errorMessage = error.message;

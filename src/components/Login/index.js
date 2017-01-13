@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import classnames from 'classnames';
-import { login } from '../../lib/auth';
+import { AUTH_PROVIDER, login } from '../../lib/auth';
 import './style.css';
 
 class Login extends Component {
@@ -22,10 +22,24 @@ class Login extends Component {
         <div className="Login-panel">
           <Panel header={panelHeader} bsStyle="info">
             <div className="Login-button">
-              <Button bsStyle="primary" bsSize="large" onClick={login} block>Login with Facebook</Button>
+              <Button
+                block
+                bsStyle="primary"
+                bsSize="large"
+                onClick={() => login(AUTH_PROVIDER.FACEBOOK)}
+              >
+                Login with Facebook
+              </Button>
             </div>
             <div className="Login-button">
-              <Button bsStyle="success" bsSize="large" onClick={login} block>Login with Google</Button>
+              <Button
+                block
+                bsStyle="success"
+                bsSize="large"
+                onClick={() => login(AUTH_PROVIDER.GOOGLE)}
+              >
+                Login with Google
+              </Button>
             </div>
           </Panel>
         </div>
