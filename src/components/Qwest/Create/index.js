@@ -12,7 +12,7 @@ import classnames from 'classnames';
 import firebase from 'firebase';
 import './style.css';
 
-class Qwest extends Component {
+class QwestCreate extends Component {
   constructor(props) {
     // set props
     super(props);
@@ -103,4 +103,4 @@ class Qwest extends Component {
   }
 }
 
-export default Qwest;
+export default QwestCreate;
