@@ -15,17 +15,13 @@ class Login extends Component {
     const { className, ..._props } = this.props;
 
     // declare other local variables
-    const panelHeader = (
-      <div className="Login-panel-header">
-        Login
-      </div>
-    );
-  
+    const panelHeader = (<h3>Login</h3>);
+
     // render the veiw
     return (
       <div className={classnames('Login', className)}>
-        <div className="Login-panel">
-          <Panel header={panelHeader} bsStyle="info">
+        <div className="Login-content">
+          <Panel header={panelHeader}>
             <div id="firebaseui-auth-container"></div>
           </Panel>
         </div>
