@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
-import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  ListGroup,
+  ListGroupItem,
+  Panel
+} from 'react-bootstrap';
 import { getUserQwests } from '../../../lib/qwest';
 import './style.css';
 
@@ -17,7 +23,23 @@ class QwestList extends Component {
     };
 
     // bind functions
+    this.getQwestList = this.getQwestList.bind(this);
     this.dataSuccessCallback = this.dataSuccessCallback.bind(this);
+  }
+
+  getQwestList() {
+    return Object.keys(this.state.qwests).map((key) =>
+      <ListGroupItem key={key}>
+        <div className="Qwest-item-content">
+          {this.state.qwests[key].title}
+            <ButtonGroup className="Qwest-item-button-group">
+              <Button bsStyle="primary">Complete</Button>
+              <Button bsStyle="success">Assign</Button>
+              <Button bsStyle="danger">Delete</Button>
+            </ButtonGroup>
+        </div>
+      </ListGroupItem>
+    );
   }
 
   dataSuccessCallback(data) {
@@ -56,9 +78,7 @@ class QwestList extends Component {
         <div className="Qwest-content">
           <Panel header={panelHeader}>
             <ListGroup>
-              {Object.keys(this.state.qwests).map(function(key) {
-                return <ListGroupItem key={key}>{this.state.qwests[key].title}</ListGroupItem>;
-              }, this)}
+              {this.getQwestList()}
             </ListGroup>
           </Panel>
         </div>
