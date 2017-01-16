@@ -22,6 +22,7 @@ class App extends Component {
       return (
         <div className="App-navbar-items">
           <Nav>
+            <NavItem href="/qwest/list">Qwests</NavItem>
             <NavItem href="/qwest/new">New Qwest</NavItem>
           </Nav>
           <Nav pullRight>
@@ -41,15 +42,15 @@ class App extends Component {
   }
 
   watchAuthState() {
-    // setup listener
+    // setup auth change listener
     firebase.auth().onAuthStateChanged((user) => {
-      // set the user
+      // set the state
       this.setState({user: user});
     });
   }
 
   componentDidMount() {
-    // setup listener for user changes
+    // setup listeners
     this.watchAuthState();
   }
 
