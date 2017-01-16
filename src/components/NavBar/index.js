@@ -12,13 +12,14 @@ class NavBar extends Component {
 
     // set state
     this.state = {
+      isAuthLoaded: false,
       user: null
     };
   }
 
-  getNavbarItems(user) {
-    // return items depending on if the user is logged in or not
-    if (user) {
+  getNavbarItems() {
+    // Return nav items depending on if the User is authenticated
+    if (this.state.user) {
       return (
         <div className="App-navbar-items">
           <Nav>
@@ -31,21 +32,32 @@ class NavBar extends Component {
       </div>
       );
     } else {
-      return (
-        <div className="App-navbar-items">
-          <Nav pullRight>
-            <NavItem href="/login">Login</NavItem>
-          </Nav>
-        </div>
-      );
+      if (this.state.isAuthLoaded) {
+        return (
+          <div className="App-navbar-items">
+            <Nav pullRight>
+              <NavItem href="/login">Login</NavItem>
+            </Nav>
+          </div>
+        );
+      } else {
+        // don't return any nav items until authentication is loaded
+        return (
+          <div className="App-navbar-items" />
+        );
+      }
     }
   }
 
   watchAuthState() {
     // setup auth change listener
     firebase.auth().onAuthStateChanged((user) => {
+      console.log('user: ' + user);
       // set the state
-      this.setState({user: user});
+      this.setState({
+        isAuthLoaded: true,
+        user: user
+      });
     });
   }
 
@@ -67,7 +79,7 @@ class NavBar extends Component {
               <a href="/">Qwestr</a>
             </Navbar.Brand>
           </Navbar.Header>
-          {this.getNavbarItems(this.state.user)}
+          {this.getNavbarItems()}
         </Navbar>
       </div>
     );
