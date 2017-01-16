@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import classnames from 'classnames';
+import { browserHistory } from 'react-router';
 import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
 import { listUserQwests } from '../../../lib/qwest';
 import './style.css';
@@ -12,7 +13,7 @@ class QwestList extends Component {
 
     // set state
     this.state = {
-      qwestList: {}
+      qwests: {}
     };
 
     // bind functions
@@ -21,14 +22,19 @@ class QwestList extends Component {
 
   dataSuccessCallback(data) {
     // set the state
-    this.setState({qwestList: data.val()});
+    this.setState({qwests: data.val()});
   }
 
   watchAuthState() {
     // setup auth change listener
     firebase.auth().onAuthStateChanged((user) => {
-      // get list of qwests
-      listUserQwests(this.dataSuccessCallback);
+      if (!user) {
+        // If User has not been authenticated, redirect to home
+        browserHistory.push('/');
+      } else {
+        // Else, get User's list of Qwests
+        listUserQwests(this.dataSuccessCallback);
+      }
     });
   }
 
@@ -50,8 +56,8 @@ class QwestList extends Component {
         <div className="Qwest-content">
           <Panel header={panelHeader}>
             <ListGroup>
-              {Object.keys(this.state.qwestList).map(function(key) {
-                return <ListGroupItem key={key}>{this.state.qwestList[key].title}</ListGroupItem>;
+              {Object.keys(this.state.qwests).map(function(key) {
+                return <ListGroupItem key={key}>{this.state.qwests[key].title}</ListGroupItem>;
               }, this)}
             </ListGroup>
           </Panel>
