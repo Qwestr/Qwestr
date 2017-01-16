@@ -17,7 +17,7 @@ export function createQwest(qwestData) {
   return firebase.database().ref().update(updates);
 }
 
-export function listUserQwests(successCallback) {
+export function getUserQwests(successCallback) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 

@@ -3,7 +3,7 @@ import firebase from 'firebase';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
-import { listUserQwests } from '../../../lib/qwest';
+import { getUserQwests } from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
@@ -33,7 +33,7 @@ class QwestList extends Component {
         browserHistory.push('/');
       } else {
         // Else, get User's list of Qwests
-        listUserQwests(this.dataSuccessCallback);
+        getUserQwests(this.dataSuccessCallback);
       }
     });
   }
