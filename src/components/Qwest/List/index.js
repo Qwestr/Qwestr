@@ -1,30 +1,40 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
-import classnames from 'classnames';
 import firebase from 'firebase';
+import classnames from 'classnames';
+import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
+import { listUserQwests } from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
-  listQwests() {
-    // Get current user id
-    const userId = firebase.auth().currentUser.uid;
+  constructor(props) {
+    // set props
+    super(props);
 
-    // Create Qwest object.
-    const qwestData = {
-      title: this.state.title
+    // set state
+    this.state = {
+      qwestList: {}
     };
 
-    // Get a key for a new Qwest.
-    var newQwestKey = firebase.database().ref().child('qwests').push().key;
+    // bind functions
+    this.dataSuccessCallback = this.dataSuccessCallback.bind(this);
+  }
 
-    // Write the new Qwest's data simultaneously
-    // in the Qwests list and the user's Qwest list.
-    let updates = {};
-    updates['/qwests/' + newQwestKey] = qwestData;
-    updates['/user-qwests/' + userId + '/' + newQwestKey] = qwestData;
+  dataSuccessCallback(data) {
+    // set the state
+    this.setState({qwestList: data.val()});
+  }
 
-    // update the database
-    return firebase.database().ref().update(updates);
+  watchAuthState() {
+    // setup auth change listener
+    firebase.auth().onAuthStateChanged((user) => {
+      // get list of qwests
+      listUserQwests(this.dataSuccessCallback);
+    });
+  }
+
+  componentDidMount() {
+    // setup listeners
+    this.watchAuthState();
   }
 
   render() {
@@ -40,9 +50,9 @@ class QwestList extends Component {
         <div className="Qwest-content">
           <Panel header={panelHeader}>
             <ListGroup>
-              <ListGroupItem>Qwest 1</ListGroupItem>
-              <ListGroupItem>Qwest 2</ListGroupItem>
-              <ListGroupItem>Qwest 3</ListGroupItem>
+              {Object.keys(this.state.qwestList).map(function(key) {
+                return <ListGroupItem key={key}>{this.state.qwestList[key].title}</ListGroupItem>;
+              }, this)}
             </ListGroup>
           </Panel>
         </div>

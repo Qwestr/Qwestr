@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import {
   Button,
   Col,
@@ -8,8 +9,7 @@ import {
   FormGroup,
   Panel
 } from 'react-bootstrap';
-import classnames from 'classnames';
-import firebase from 'firebase';
+import { createQwest } from '../../../lib/qwest';
 import './style.css';
 
 class QwestCreate extends Component {
@@ -27,28 +27,6 @@ class QwestCreate extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  createQwest() {
-    // Get current user id
-    const userId = firebase.auth().currentUser.uid;
-
-    // Create Qwest object.
-    const qwestData = {
-      title: this.state.title
-    };
-
-    // Get a key for a new Qwest.
-    var newQwestKey = firebase.database().ref().child('qwests').push().key;
-
-    // Write the new Qwest's data simultaneously
-    // in the Qwests list and the user's Qwest list.
-    let updates = {};
-    updates['/qwests/' + newQwestKey] = qwestData;
-    updates['/user-qwests/' + userId + '/' + newQwestKey] = qwestData;
-
-    // update the database
-    return firebase.database().ref().update(updates);
-  }
-
   handleChange(event) {
     // update state values
     this.setState({title: event.target.value});
@@ -58,8 +36,13 @@ class QwestCreate extends Component {
     // stop the form submission from reloading the page
     event.preventDefault();
 
+    // Create Qwest object.
+    const qwestData = {
+      title: this.state.title
+    };
+
     // create the Qwest
-    this.createQwest();
+    createQwest(qwestData);
   }
 
   render() {
