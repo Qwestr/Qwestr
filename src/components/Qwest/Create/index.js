@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import {
   Button,
   Col,
@@ -9,6 +8,9 @@ import {
   FormGroup,
   Panel
 } from 'react-bootstrap';
+import classnames from 'classnames';
+import firebase from 'firebase';
+import { browserHistory } from 'react-router';
 import { createQwest } from '../../../lib/qwest';
 import './style.css';
 
@@ -43,6 +45,21 @@ class QwestCreate extends Component {
 
     // create the Qwest
     createQwest(qwestData);
+  }
+
+  watchAuthState() {
+    // setup auth change listener
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        // If User has not been authenticated, redirect to home
+        browserHistory.push('/');
+      }
+    });
+  }
+
+  componentDidMount() {
+    // setup listeners
+    this.watchAuthState();
   }
 
   render() {
