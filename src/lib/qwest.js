@@ -14,7 +14,12 @@ export function createQwest(qwestData) {
   updates['/user-qwests/' + userId + '/' + newQwestKey] = qwestData;
 
   // update the database
-  return firebase.database().ref().update(updates);
+  // return firebase.database().ref().update(updates);
+  let userData = {
+    test: 'works'
+  };
+
+  return firebase.database().ref('test/' + userId).set(userData);
 }
 
 export function getUserQwests(successCallback) {

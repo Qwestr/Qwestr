@@ -44,7 +44,7 @@ class QwestList extends Component {
   }
 
   getFriendsList() {
-    let accessToken = 'EAACEdEose0cBAFnQwhsqp8Qa8ZAZAXuZBl9rsybtySMDjCtwhqF3VtYAULrrMpsIKEbMi3TvSGXy2WfJ6lWMCZAA2S5cy1ZC5PvsnT334rnIEs9ycIQZBunWZBWjZB1EvzXHWjhgZC4Rq6vdZA8d4bTvr495Ah66nj4l75CAQtgfhVSwZDZD';
+    let accessToken = 'EAADg80skqHoBAHiEZAviZAvlUYeaC2u01K5LuToFpLZA3f6WFyejfXLpnRPo1bM9HaY1gPhW7NxWJ1PqPHuZC127QcfLtNHHekkevUkOtASlRyTZCIAmV0rM6kDZB1aZAe32utNRRWToQzNpCIuFZAZBOwCiWtfJOe8JZCf1mxHLJgZAAZDZD';
     graph.setAccessToken(accessToken);
 
     graph.get('me/friends?limit=50', function(err, res) {
