@@ -10,6 +10,7 @@ import {
   ListGroupItem,
   Panel
 } from 'react-bootstrap';
+import { getUser } from '../../../lib/user';
 import { getUserQwests } from '../../../lib/qwest';
 import './style.css';
 
@@ -24,8 +25,23 @@ class QwestList extends Component {
     };
 
     // bind functions
+    this.getFriendsList = this.getFriendsList.bind(this);
     this.getQwestList = this.getQwestList.bind(this);
     this.dataSuccessCallback = this.dataSuccessCallback.bind(this);
+  }
+
+  getFriendsList() {
+    // Get User data
+    getUser(function(data) {
+      // set Facebook Graph access token
+      let accessToken = data.val().credentials.Facebook.accessToken;
+      graph.setAccessToken(accessToken);
+
+      // get list of friends
+      graph.get('me/friends', function(err, res) {
+        console.log(res);
+      });
+    });
   }
 
   getQwestList() {
@@ -35,21 +51,12 @@ class QwestList extends Component {
           {this.state.qwests[key].title}
             <ButtonGroup className="Qwest-item-button-group">
               <Button bsStyle="primary">Complete</Button>
-              <Button bsStyle="success">Assign</Button>
+              <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button>
               <Button bsStyle="danger">Delete</Button>
             </ButtonGroup>
         </div>
       </ListGroupItem>
     );
-  }
-
-  getFriendsList() {
-    let accessToken = 'EAADg80skqHoBAHiEZAviZAvlUYeaC2u01K5LuToFpLZA3f6WFyejfXLpnRPo1bM9HaY1gPhW7NxWJ1PqPHuZC127QcfLtNHHekkevUkOtASlRyTZCIAmV0rM6kDZB1aZAe32utNRRWToQzNpCIuFZAZBOwCiWtfJOe8JZCf1mxHLJgZAAZDZD';
-    graph.setAccessToken(accessToken);
-
-    graph.get('me/friends?limit=50', function(err, res) {
-      console.log(res); // { id: '4', name: 'Mark Zuckerberg'... }
-    });
   }
 
   dataSuccessCallback(data) {
@@ -65,14 +72,15 @@ class QwestList extends Component {
         browserHistory.push('/');
       } else {
         // Else, get User's list of Qwests
-        getUserQwests(this.dataSuccessCallback);
+        getUserQwests(function(data) {
+          // set the state
+          this.setState({qwests: data.val()});
+        });
       }
     });
   }
 
   componentDidMount() {
-    console.log('test getFriendsList()..');
-    this.getFriendsList();
     // setup listeners
     this.watchAuthState();
   }

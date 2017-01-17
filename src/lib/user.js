@@ -26,3 +26,11 @@ export function createUser(currentUser, credential, successCallback) {
     successCallback();
   });
 }
+
+export function getUser(successCallback) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // retrieve date from the database
+  firebase.database().ref('/users/' + userId).once('value').then(successCallback);
+}
