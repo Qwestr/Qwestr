@@ -4,26 +4,23 @@ export function createUser(currentUser, credential, successCallback) {
   // Get current user id
   const userId = currentUser.uid;
 
-  // Create User object
-  let userData = {
-    credentials: {}
-  };
-
-  // Update User objects with relevant credential data
+  // Update User object with relevant credential data
+  let updates = {};
   for (const provider of currentUser.providerData) {
-    if (provider.providerId==='facebook.com') {
-      userData.credentials.Facebook = {
+    if (credential.provider===provider.providerId && provider.providerId==='facebook.com') {
+      updates['/users/' + userId + '/credentials/Facebook'] = {
+        id: provider.uid,
+        accessToken: credential.accessToken
+      }
+    } else if (credential.provider===provider.providerId && provider.providerId==='google.com') {
+      updates['/users/' + userId + '/credentials/Google']  = {
         id: provider.uid,
         accessToken: credential.accessToken
       }
     }
   }
 
-  // Write the new User's data
-  let updates = {};
-  updates['/users/' + userId] = userData;
-
-  // update the database
+  // Update the database
   return firebase.database().ref().update(updates, function(value) {
     // call success callback
     successCallback();
