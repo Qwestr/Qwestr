@@ -5,9 +5,20 @@ import { browserHistory } from 'react-router';
 export function startFirebaseUI(containerID) {
   // FirebaseUI config.
   let uiConfig = {
+    callbacks: {
+      signInSuccess: function(currentUser, credential, redirectUrl) {
+        console.log('fb credential: ' + JSON.stringify(credential));
+        return true;
+      }
+    },
     signInSuccessUrl: '/',
     signInOptions: [
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      {
+        provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        scopes: [
+          'user_friends'
+        ]
+      },
       firebase.auth.GoogleAuthProvider.PROVIDER_ID
     ]
   };

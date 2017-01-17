@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import classnames from 'classnames';
+import graph from 'fbgraph';
 import { browserHistory } from 'react-router';
 import {
   Button,
@@ -42,6 +43,15 @@ class QwestList extends Component {
     );
   }
 
+  getFriendsList() {
+    let accessToken = 'EAACEdEose0cBAFnQwhsqp8Qa8ZAZAXuZBl9rsybtySMDjCtwhqF3VtYAULrrMpsIKEbMi3TvSGXy2WfJ6lWMCZAA2S5cy1ZC5PvsnT334rnIEs9ycIQZBunWZBWjZB1EvzXHWjhgZC4Rq6vdZA8d4bTvr495Ah66nj4l75CAQtgfhVSwZDZD';
+    graph.setAccessToken(accessToken);
+
+    graph.get('me/friends?limit=50', function(err, res) {
+      console.log(res); // { id: '4', name: 'Mark Zuckerberg'... }
+    });
+  }
+
   dataSuccessCallback(data) {
     // set the state
     this.setState({qwests: data.val()});
@@ -61,6 +71,8 @@ class QwestList extends Component {
   }
 
   componentDidMount() {
+    console.log('test getFriendsList()..');
+    this.getFriendsList();
     // setup listeners
     this.watchAuthState();
   }
