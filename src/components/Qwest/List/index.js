@@ -11,7 +11,7 @@ import {
   Panel
 } from 'react-bootstrap';
 import { getUser } from '../../../lib/user';
-import { getUserQwests } from '../../../lib/qwest';
+import { completeQwest, getUserQwests } from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
@@ -28,6 +28,16 @@ class QwestList extends Component {
     this.getFriendsList = this.getFriendsList.bind(this);
     this.getQwestList = this.getQwestList.bind(this);
     this.getUserQwestsSuccessCallback = this.getUserQwestsSuccessCallback.bind(this);
+  }
+
+  completeAndRemoveQwest(qwestData, key) {
+    // complete the Qwest
+    completeQwest(qwestData, key);
+
+    // remove Qwest from state data and update state
+    let newState = this.state
+    delete newState.qwests[key];
+    this.setState(newState);
   }
 
   getFriendsList() {
@@ -50,7 +60,11 @@ class QwestList extends Component {
         <div className="Qwest-item-content">
           {this.state.qwests[key].title}
             <ButtonGroup className="Qwest-item-button-group">
-              <Button bsStyle="primary">Complete</Button>
+              <Button
+                bsStyle="primary"
+                onClick={() => this.completeAndRemoveQwest(this.state.qwests[key], key)}>
+                Complete
+              </Button>
               {/* <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button> */}
               <Button bsStyle="danger">Delete</Button>
             </ButtonGroup>
