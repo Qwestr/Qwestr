@@ -27,7 +27,7 @@ class QwestList extends Component {
     // bind functions
     this.getFriendsList = this.getFriendsList.bind(this);
     this.getQwestList = this.getQwestList.bind(this);
-    this.dataSuccessCallback = this.dataSuccessCallback.bind(this);
+    this.getUserQwestsSuccessCallback = this.getUserQwestsSuccessCallback.bind(this);
   }
 
   getFriendsList() {
@@ -51,7 +51,7 @@ class QwestList extends Component {
           {this.state.qwests[key].title}
             <ButtonGroup className="Qwest-item-button-group">
               <Button bsStyle="primary">Complete</Button>
-              <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button>
+              {/* <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button> */}
               <Button bsStyle="danger">Delete</Button>
             </ButtonGroup>
         </div>
@@ -59,7 +59,7 @@ class QwestList extends Component {
     );
   }
 
-  dataSuccessCallback(data) {
+  getUserQwestsSuccessCallback(data) {
     // set the state
     this.setState({qwests: data.val()});
   }
@@ -72,10 +72,7 @@ class QwestList extends Component {
         browserHistory.push('/');
       } else {
         // Else, get User's list of Qwests
-        getUserQwests(function(data) {
-          // set the state
-          this.setState({qwests: data.val()});
-        });
+        getUserQwests(this.getUserQwestsSuccessCallback);
       }
     });
   }
