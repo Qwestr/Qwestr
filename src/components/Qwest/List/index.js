@@ -13,7 +13,7 @@ import {
   Tabs
 } from 'react-bootstrap';
 import { getUser } from '../../../lib/user';
-import { completeQwest, getUserQwests } from '../../../lib/qwest';
+import { completeQwest, getUserQwests, restartQwest } from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
@@ -43,11 +43,21 @@ class QwestList extends Component {
   completeAndRemoveQwest(qwestData, key) {
     // remove Qwest from state data and update state
     let newState = this.state
-    delete newState.qwests[key];
+    delete newState.qwests.active[key];
     this.setState(newState);
 
     // complete the Qwest
     completeQwest(qwestData, key);
+  }
+
+  restartAndRemoveQwest(qwestData, key) {
+    // remove Qwest from state data and update state
+    let newState = this.state
+    delete newState.qwests.completed[key];
+    this.setState(newState);
+
+    // restart the Qwest
+    restartQwest(qwestData, key);
   }
 
   getFriendsList() {
