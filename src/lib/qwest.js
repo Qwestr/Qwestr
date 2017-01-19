@@ -30,14 +30,25 @@ export function completeQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
+  // create Qwest and UserQwest objects from data
+  const qwest = {
+    createdBy: userId,
+    title: qwestData.title,
+    completed: true
+  }
+
+  const userQwest = {
+    title: qwestData.title
+  }
+
   // update Qwest data
   qwestData.completed = true;
 
-  // Write the new Qwest's data simultaneously
-  // in the Qwests list and the user's Qwest list.
+  // Write the new Qwest and UserQwest's data simultaneously
   let updates = {};
-  updates['/qwests/' + key] = qwestData;
-  updates['/user-qwests/' + userId + '/' + key] = qwestData;
+  updates['/qwests/' + key] = qwest;
+  updates['/user-qwests/' + userId + '/active/' + key] = null;
+  updates['/user-qwests/' + userId + '/completed/' + key] = userQwest;
 
   // update the database
   return firebase.database().ref().update(updates);
@@ -48,7 +59,7 @@ export function getUserQwests(successCallback) {
   const userId = firebase.auth().currentUser.uid;
 
   // retrieve date from the database
-  firebase.database().ref('/user-qwests/' + userId).once('value').then(successCallback);
+  firebase.database().ref('/user-qwests/' + userId + '/active/').once('value').then(successCallback);
 }
 
 export function getCompletedUserQwests() {
@@ -56,7 +67,7 @@ export function getCompletedUserQwests() {
   const userId = firebase.auth().currentUser.uid;
 
   // retrieve date from the database
-  firebase.database().ref('/qwests/').orderByChild('completed').equalTo(true).once('value').then(function(data) {
+  firebase.database().ref('/user-qwests/' + userId + '/completed/').once('value').then(function(data) {
     console.log('result: ' + JSON.stringify(data.val()));
   });
 }
