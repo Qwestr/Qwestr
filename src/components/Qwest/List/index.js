@@ -11,7 +11,11 @@ import {
   Panel
 } from 'react-bootstrap';
 import { getUser } from '../../../lib/user';
-import { completeQwest, getUserQwests, getCompletedUserQwests } from '../../../lib/qwest';
+import {
+  completeQwest,
+  getActiveUserQwests,
+  getCompletedUserQwests
+} from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
@@ -31,13 +35,13 @@ class QwestList extends Component {
   }
 
   completeAndRemoveQwest(qwestData, key) {
-    // complete the Qwest
-    completeQwest(qwestData, key);
-
     // remove Qwest from state data and update state
     let newState = this.state
     delete newState.qwests[key];
     this.setState(newState);
+
+    // complete the Qwest
+    completeQwest(qwestData, key);
   }
 
   getFriendsList() {
@@ -86,7 +90,7 @@ class QwestList extends Component {
         browserHistory.push('/');
       } else {
         // Else, get User's list of Qwests
-        getUserQwests(this.getUserQwestsSuccessCallback);
+        getActiveUserQwests(this.getUserQwestsSuccessCallback);
         // TODO: remove test of getCompletedUserQwests()
         getCompletedUserQwests();
       }

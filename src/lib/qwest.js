@@ -54,7 +54,7 @@ export function completeQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
-export function getUserQwests(successCallback) {
+export function getActiveUserQwests(successCallback) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
