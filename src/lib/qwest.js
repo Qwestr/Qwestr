@@ -82,3 +82,17 @@ export function restartQwest(qwestData, key) {
   // update the database
   return firebase.database().ref().update(updates);
 }
+
+export function deleteQwest(key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Delete the Qwest and UserQwest's data simultaneously
+  let updates = {};
+  updates['/qwests/' + key] = null;
+  updates['/user-qwests/' + userId + '/active/' + key] = null;
+  updates['/user-qwests/' + userId + '/completed/' + key] = null;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}

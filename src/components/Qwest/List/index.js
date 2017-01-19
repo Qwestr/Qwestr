@@ -12,8 +12,13 @@ import {
   Tab,
   Tabs
 } from 'react-bootstrap';
+import {
+  getUserQwests,
+  completeQwest,
+  restartQwest,
+  deleteQwest
+} from '../../../lib/qwest';
 import { getUser } from '../../../lib/user';
-import { completeQwest, getUserQwests, restartQwest } from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
@@ -76,7 +81,7 @@ class QwestList extends Component {
   }
 
   getActiveQwestList() {
-    if (this.state.qwests.active) {
+    if (this.state.qwests && this.state.qwests.active) {
       return Object.keys(this.state.qwests.active).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
@@ -84,11 +89,17 @@ class QwestList extends Component {
               <ButtonGroup className="Qwest-item-button-group">
                 <Button
                   bsStyle="primary"
-                  onClick={() => completeQwest(this.state.qwests.active[key], key)}>
+                  onClick={() => completeQwest(this.state.qwests.active[key], key)}
+                >
                   Complete
                 </Button>
                 {/* <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button> */}
-                <Button bsStyle="danger">Delete</Button>
+                <Button
+                  bsStyle="danger"
+                  onClick={() => deleteQwest(key)}
+                >
+                  Delete
+                </Button>
               </ButtonGroup>
           </div>
         </ListGroupItem>
@@ -99,7 +110,7 @@ class QwestList extends Component {
   }
 
   getCompletedQwestList() {
-    if (this.state.qwests.completed) {
+    if (this.state.qwests && this.state.qwests.completed) {
       return Object.keys(this.state.qwests.completed).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
@@ -107,10 +118,16 @@ class QwestList extends Component {
               <ButtonGroup className="Qwest-item-button-group">
                 <Button
                   bsStyle="primary"
-                  onClick={() => restartQwest(this.state.qwests.completed[key], key)}>
+                  onClick={() => restartQwest(this.state.qwests.completed[key], key)}
+                >
                   Restart
                 </Button>
-                <Button bsStyle="danger">Delete</Button>
+                <Button
+                  bsStyle="danger"
+                  onClick={() => deleteQwest(key)}
+                >
+                  Delete
+                </Button>
               </ButtonGroup>
           </div>
         </ListGroupItem>
@@ -121,6 +138,7 @@ class QwestList extends Component {
   }
 
   getUserQwestsCallback(data) {
+    console.log('qwests: ' + JSON.stringify(data.val()));
     // set the state
     this.setState({qwests: data.val()});
   }
