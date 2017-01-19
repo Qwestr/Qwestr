@@ -27,6 +27,12 @@ class QwestCreate extends Component {
     // bind functions
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.createQwestSuccessCallback = this.createQwestSuccessCallback.bind(this);
+  }
+
+  createQwestSuccessCallback(data) {
+    // redirect to Qwest list route
+    browserHistory.push('/qwest/list');
   }
 
   handleChange(event) {
@@ -44,7 +50,7 @@ class QwestCreate extends Component {
     };
 
     // create the Qwest
-    createQwest(qwestData);
+    createQwest(qwestData, this.createQwestSuccessCallback);
   }
 
   watchAuthState() {

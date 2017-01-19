@@ -138,7 +138,6 @@ class QwestList extends Component {
   }
 
   getUserQwestsCallback(data) {
-    console.log('qwests: ' + JSON.stringify(data.val()));
     // set the state
     this.setState({qwests: data.val()});
   }
