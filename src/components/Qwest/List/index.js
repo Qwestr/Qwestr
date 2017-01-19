@@ -8,10 +8,12 @@ import {
   ButtonGroup,
   ListGroup,
   ListGroupItem,
-  Panel
+  Panel,
+  Tab,
+  Tabs
 } from 'react-bootstrap';
 import { getUser } from '../../../lib/user';
-import { getUserQwests } from '../../../lib/qwest';
+import { completeQwest, getUserQwests, restartQwest } from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
@@ -21,13 +23,21 @@ class QwestList extends Component {
 
     // set state
     this.state = {
+      activeTab: 'active',
       qwests: {}
     };
 
     // bind functions
+    this.handleTabSelect = this.handleTabSelect.bind(this);
     this.getFriendsList = this.getFriendsList.bind(this);
-    this.getQwestList = this.getQwestList.bind(this);
-    this.dataSuccessCallback = this.dataSuccessCallback.bind(this);
+    this.getActiveQwestList = this.getActiveQwestList.bind(this);
+    this.getCompletedQwestList = this.getCompletedQwestList.bind(this);
+    this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
+  }
+
+  handleTabSelect(value) {
+    // update state values
+    this.setState({activeTab: value});
   }
 
   getFriendsList() {
@@ -44,22 +54,73 @@ class QwestList extends Component {
     });
   }
 
-  getQwestList() {
-    return Object.keys(this.state.qwests).map((key) =>
-      <ListGroupItem key={key}>
-        <div className="Qwest-item-content">
-          {this.state.qwests[key].title}
-            <ButtonGroup className="Qwest-item-button-group">
-              <Button bsStyle="primary">Complete</Button>
-              <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button>
-              <Button bsStyle="danger">Delete</Button>
-            </ButtonGroup>
-        </div>
-      </ListGroupItem>
+  getQwestListNavigation() {
+    return (
+      <Tabs id='Qwest-tabs' activeKey={this.state.activeTab} onSelect={this.handleTabSelect}>
+        <Tab eventKey='active' title="Active">
+          <div className="Qwest-list">
+            <ListGroup>
+              {this.getActiveQwestList()}
+            </ListGroup>
+          </div>
+        </Tab>
+        <Tab eventKey='completed' title="Completed">
+          <div className="Qwest-list">
+            <ListGroup>
+              {this.getCompletedQwestList()}
+            </ListGroup>
+          </div>
+        </Tab>
+      </Tabs>
     );
   }
 
-  dataSuccessCallback(data) {
+  getActiveQwestList() {
+    if (this.state.qwests.active) {
+      return Object.keys(this.state.qwests.active).map((key) =>
+        <ListGroupItem key={key}>
+          <div className="Qwest-item-content">
+            {this.state.qwests.active[key].title}
+              <ButtonGroup className="Qwest-item-button-group">
+                <Button
+                  bsStyle="primary"
+                  onClick={() => completeQwest(this.state.qwests.active[key], key)}>
+                  Complete
+                </Button>
+                {/* <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button> */}
+                <Button bsStyle="danger">Delete</Button>
+              </ButtonGroup>
+          </div>
+        </ListGroupItem>
+      );
+    } else {
+      return;
+    }
+  }
+
+  getCompletedQwestList() {
+    if (this.state.qwests.completed) {
+      return Object.keys(this.state.qwests.completed).map((key) =>
+        <ListGroupItem key={key}>
+          <div className="Qwest-item-content">
+            {this.state.qwests.completed[key].title}
+              <ButtonGroup className="Qwest-item-button-group">
+                <Button
+                  bsStyle="primary"
+                  onClick={() => restartQwest(this.state.qwests.completed[key], key)}>
+                  Restart
+                </Button>
+                <Button bsStyle="danger">Delete</Button>
+              </ButtonGroup>
+          </div>
+        </ListGroupItem>
+      );
+    } else {
+      return;
+    }
+  }
+
+  getUserQwestsCallback(data) {
     // set the state
     this.setState({qwests: data.val()});
   }
@@ -72,10 +133,7 @@ class QwestList extends Component {
         browserHistory.push('/');
       } else {
         // Else, get User's list of Qwests
-        getUserQwests(function(data) {
-          // set the state
-          this.setState({qwests: data.val()});
-        });
+        getUserQwests(this.getUserQwestsCallback);
       }
     });
   }
@@ -97,9 +155,7 @@ class QwestList extends Component {
       <div className={classnames('Qwest', className)}>
         <div className="Qwest-content">
           <Panel header={panelHeader}>
-            <ListGroup>
-              {this.getQwestList()}
-            </ListGroup>
+            {this.getQwestListNavigation()}
           </Panel>
         </div>
       </div>
