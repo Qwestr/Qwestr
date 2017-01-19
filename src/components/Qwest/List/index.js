@@ -8,7 +8,9 @@ import {
   ButtonGroup,
   ListGroup,
   ListGroupItem,
-  Panel
+  Panel,
+  Tab,
+  Tabs
 } from 'react-bootstrap';
 import { getUser } from '../../../lib/user';
 import {
@@ -25,13 +27,20 @@ class QwestList extends Component {
 
     // set state
     this.state = {
+      activeTab: 'active',
       qwests: {}
     };
 
     // bind functions
+    this.handleTabSelect = this.handleTabSelect.bind(this);
     this.getFriendsList = this.getFriendsList.bind(this);
     this.getQwestList = this.getQwestList.bind(this);
     this.getUserQwestsSuccessCallback = this.getUserQwestsSuccessCallback.bind(this);
+  }
+
+  handleTabSelect(value) {
+    // update state values
+    this.setState({activeTab: value});
   }
 
   completeAndRemoveQwest(qwestData, key) {
@@ -56,6 +65,23 @@ class QwestList extends Component {
         console.log(res);
       });
     });
+  }
+
+  getQwestListNavigation() {
+    return (
+      <Tabs id='qwestTabs' activeKey={this.state.activeTab} onSelect={this.handleTabSelect}>
+        <Tab eventKey='active' title="Acive">
+          <ListGroup>
+            {this.getQwestList()}
+          </ListGroup>
+        </Tab>
+        <Tab eventKey='completed' title="Completed">
+          <ListGroup>
+            {this.getQwestList()}
+          </ListGroup>
+        </Tab>
+      </Tabs>
+    );
   }
 
   getQwestList() {
@@ -114,9 +140,7 @@ class QwestList extends Component {
       <div className={classnames('Qwest', className)}>
         <div className="Qwest-content">
           <Panel header={panelHeader}>
-            <ListGroup>
-              {this.getQwestList()}
-            </ListGroup>
+            {this.getQwestListNavigation()}
           </Panel>
         </div>
       </div>
