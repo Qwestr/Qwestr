@@ -54,20 +54,10 @@ export function completeQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
-export function getActiveUserQwests(successCallback) {
+export function getUserQwests(successCallback) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
   // retrieve date from the database
-  firebase.database().ref('/user-qwests/' + userId + '/active/').once('value').then(successCallback);
-}
-
-export function getCompletedUserQwests() {
-  // Get current user id
-  const userId = firebase.auth().currentUser.uid;
-
-  // retrieve date from the database
-  firebase.database().ref('/user-qwests/' + userId + '/completed/').once('value').then(function(data) {
-    console.log('result: ' + JSON.stringify(data.val()));
-  });
+  firebase.database().ref('/user-qwests/' + userId).once('value').then(successCallback);
 }

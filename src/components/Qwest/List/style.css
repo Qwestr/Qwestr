@@ -6,6 +6,10 @@
   text-align: left;
 }
 
+.Qwest-list {
+  padding-top: 10px;
+}
+
 .Qwest-item-content {
   line-height: 45px;
 }
