@@ -32,32 +32,12 @@ class QwestList extends Component {
     this.getFriendsList = this.getFriendsList.bind(this);
     this.getActiveQwestList = this.getActiveQwestList.bind(this);
     this.getCompletedQwestList = this.getCompletedQwestList.bind(this);
-    this.getUserQwestsSuccessCallback = this.getUserQwestsSuccessCallback.bind(this);
+    this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
   }
 
   handleTabSelect(value) {
     // update state values
     this.setState({activeTab: value});
-  }
-
-  completeAndRemoveQwest(qwestData, key) {
-    // remove Qwest from state data and update state
-    let newState = this.state
-    delete newState.qwests.active[key];
-    this.setState(newState);
-
-    // complete the Qwest
-    completeQwest(qwestData, key);
-  }
-
-  restartAndRemoveQwest(qwestData, key) {
-    // remove Qwest from state data and update state
-    let newState = this.state
-    delete newState.qwests.completed[key];
-    this.setState(newState);
-
-    // restart the Qwest
-    restartQwest(qwestData, key);
   }
 
   getFriendsList() {
@@ -104,7 +84,7 @@ class QwestList extends Component {
               <ButtonGroup className="Qwest-item-button-group">
                 <Button
                   bsStyle="primary"
-                  onClick={() => this.completeAndRemoveQwest(this.state.qwests.active[key], key)}>
+                  onClick={() => completeQwest(this.state.qwests.active[key], key)}>
                   Complete
                 </Button>
                 {/* <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button> */}
@@ -127,7 +107,7 @@ class QwestList extends Component {
               <ButtonGroup className="Qwest-item-button-group">
                 <Button
                   bsStyle="primary"
-                  onClick={() => this.restartAndRemoveQwest(this.state.qwests.completed[key], key)}>
+                  onClick={() => restartQwest(this.state.qwests.completed[key], key)}>
                   Restart
                 </Button>
                 <Button bsStyle="danger">Delete</Button>
@@ -140,7 +120,7 @@ class QwestList extends Component {
     }
   }
 
-  getUserQwestsSuccessCallback(data) {
+  getUserQwestsCallback(data) {
     // set the state
     this.setState({qwests: data.val()});
   }
@@ -153,7 +133,7 @@ class QwestList extends Component {
         browserHistory.push('/');
       } else {
         // Else, get User's list of Qwests
-        getUserQwests(this.getUserQwestsSuccessCallback);
+        getUserQwests(this.getUserQwestsCallback);
       }
     });
   }

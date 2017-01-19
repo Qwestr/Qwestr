@@ -26,12 +26,12 @@ export function createQwest(qwestData) {
   return firebase.database().ref().update(updates);
 }
 
-export function getUserQwests(successCallback) {
+export function getUserQwests(dataReceivedCallback) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
   // retrieve date from the database
-  firebase.database().ref('/user-qwests/' + userId).once('value').then(successCallback);
+  firebase.database().ref('/user-qwests/' + userId).on('value', dataReceivedCallback);
 }
 
 export function completeQwest(qwestData, key) {
