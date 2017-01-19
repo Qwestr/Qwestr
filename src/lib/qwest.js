@@ -41,3 +41,13 @@ export function getUserQwests(successCallback) {
   // retrieve date from the database
   firebase.database().ref('/user-qwests/' + userId).once('value').then(successCallback);
 }
+
+export function getCompletedUserQwests() {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // retrieve date from the database
+  firebase.database().ref('/qwests/').orderByChild('completed').equalTo(true).once('value').then(function(data) {
+    console.log('result: ' + JSON.stringify(data.val()));
+  });
+}

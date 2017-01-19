@@ -11,7 +11,7 @@ import {
   Panel
 } from 'react-bootstrap';
 import { getUser } from '../../../lib/user';
-import { completeQwest, getUserQwests } from '../../../lib/qwest';
+import { completeQwest, getUserQwests, getCompletedUserQwests } from '../../../lib/qwest';
 import './style.css';
 
 class QwestList extends Component {
@@ -87,6 +87,8 @@ class QwestList extends Component {
       } else {
         // Else, get User's list of Qwests
         getUserQwests(this.getUserQwestsSuccessCallback);
+        // TODO: remove test of getCompletedUserQwests()
+        getCompletedUserQwests();
       }
     });
   }
