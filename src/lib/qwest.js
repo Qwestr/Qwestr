@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export function createQwest(qwestData) {
+export function createQwest(qwestData, successCallback) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
@@ -23,7 +23,7 @@ export function createQwest(qwestData) {
   updates['/user-qwests/' + userId + '/active/' + qwestKey] = userQwest;
 
   // update the database
-  return firebase.database().ref().update(updates);
+  return firebase.database().ref().update(updates).then(successCallback);
 }
 
 export function getUserQwests(dataReceivedCallback) {
@@ -78,6 +78,20 @@ export function restartQwest(qwestData, key) {
   updates['/qwests/' + key] = qwest;
   updates['/user-qwests/' + userId + '/completed/' + key] = null;
   updates['/user-qwests/' + userId + '/active/' + key] = userQwest;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
+export function deleteQwest(key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Delete the Qwest and UserQwest's data simultaneously
+  let updates = {};
+  updates['/qwests/' + key] = null;
+  updates['/user-qwests/' + userId + '/active/' + key] = null;
+  updates['/user-qwests/' + userId + '/completed/' + key] = null;
 
   // update the database
   return firebase.database().ref().update(updates);
