@@ -38,7 +38,7 @@ class QwestCreate extends Component {
     // stop the form submission from reloading the page
     event.preventDefault();
 
-    // Create Qwest object.
+    // Create Qwest data object.
     const qwestData = {
       title: this.state.title
     };

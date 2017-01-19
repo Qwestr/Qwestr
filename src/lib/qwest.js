@@ -5,13 +5,22 @@ export function createQwest(qwestData) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get a key for a new Qwest.
-  var newQwestKey = firebase.database().ref().child('qwests').push().key;
+  var qwestKey = firebase.database().ref().child('qwests').push().key;
 
-  // Write the new Qwest's data simultaneously
-  // in the Qwests list and the User's Qwest list.
+  // create Qwest and UserQwest objects from data
+  const qwest = {
+    createdBy: userId,
+    title: qwestData.title
+  }
+
+  const userQwest = {
+    title: qwestData.title
+  }
+
+  // Write the new Qwest and UserQwest's data simultaneously
   let updates = {};
-  updates['/qwests/' + newQwestKey] = qwestData;
-  updates['/user-qwests/' + userId + '/' + newQwestKey] = qwestData;
+  updates['/qwests/' + qwestKey] = qwest;
+  updates['/user-qwests/' + userId + '/active/' + qwestKey] = userQwest;
 
   // update the database
   return firebase.database().ref().update(updates);
