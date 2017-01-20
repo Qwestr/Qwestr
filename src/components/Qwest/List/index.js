@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import classnames from 'classnames';
-// import graph from 'fbgraph';
+import graph from 'fbgraph';
 import { browserHistory } from 'react-router';
 import {
   Button,
@@ -19,7 +19,7 @@ import {
   restartQwest,
   deleteQwest
 } from '../../../lib/qwest';
-// import { getUser } from '../../../lib/user';
+import { getUser } from '../../../lib/user';
 import './style.css';
 
 class QwestList extends Component {
@@ -31,17 +31,20 @@ class QwestList extends Component {
     this.state = {
       activeTab: 'active',
       showAssignQwestModal: false,
+      friends: [],
       qwests: {}
     };
 
     // bind functions
     this.handleTabSelect = this.handleTabSelect.bind(this);
     this.getFriendsList = this.getFriendsList.bind(this);
+    this.getFacebookFriends = this.getFacebookFriends.bind(this);
     this.getActiveQwestList = this.getActiveQwestList.bind(this);
     this.getCompletedQwestList = this.getCompletedQwestList.bind(this);
     this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
     this.getAssignQwestModal = this.getAssignQwestModal.bind(this);
     this.closeAssignQwestModal = this.closeAssignQwestModal.bind(this);
+    this.showAssignQwestModal = this.showAssignQwestModal.bind(this)
   }
 
   handleTabSelect(value) {
@@ -49,20 +52,19 @@ class QwestList extends Component {
     this.setState({activeTab: value});
   }
 
-  getFriendsList() {
-    // update state values
-    this.setState({showAssignQwestModal: true});
+  getFacebookFriends() {
     // Get User data
-    // getUser(function(data) {
-    //   // set Facebook Graph access token
-    //   let accessToken = data.val().credentials.Facebook.accessToken;
-    //   graph.setAccessToken(accessToken);
-    //
-    //   // get list of friends
-    //   graph.get('me/friends', function(err, res) {
-    //     console.log(res);
-    //   });
-    // });
+    getUser((data) => {
+      // set Facebook Graph access token
+      let accessToken = data.val().credentials.Facebook.accessToken;
+      graph.setAccessToken(accessToken);
+
+      // get list of friends
+      graph.get('me/friends', (err, res) => {
+        // update state values
+        this.setState({friends: res.data});
+      });
+    });
   }
 
   getQwestListNavigation() {
@@ -90,30 +92,28 @@ class QwestList extends Component {
     return (
       <Modal show={this.state.showAssignQwestModal} onHide={this.closeAssignQwestModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Assign a Qwest</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Text in a modal</h4>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-
-            <hr />
-
-            <h4>Overflowing text to show scroll behavior</h4>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            {this.getFriendsList()}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.closeAssignQwestModal}>Close</Button>
           </Modal.Footer>
         </Modal>
     );
+  }
+
+  getFriendsList() {
+    if (this.state.friends) {
+      return this.state.friends.map((friend, index) =>
+        <ListGroupItem key={index}>
+          {friend.name}
+        </ListGroupItem>
+      );
+    } else {
+      return null;
+    }
   }
 
   getActiveQwestList() {
@@ -129,7 +129,7 @@ class QwestList extends Component {
                 >
                   Complete
                 </Button>
-                <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button>
+                <Button bsStyle="success" onClick={this.showAssignQwestModal}>Assign</Button>
                 <Button
                   bsStyle="danger"
                   onClick={() => deleteQwest(key)}
@@ -171,6 +171,13 @@ class QwestList extends Component {
     } else {
       return;
     }
+  }
+
+  showAssignQwestModal() {
+    // set the state
+    this.setState({showAssignQwestModal: true});
+    // get list of friends from Facebook
+    this.getFacebookFriends();
   }
 
   closeAssignQwestModal() {
