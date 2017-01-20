@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import classnames from 'classnames';
-import graph from 'fbgraph';
+// import graph from 'fbgraph';
 import { browserHistory } from 'react-router';
 import {
   Button,
   ButtonGroup,
   ListGroup,
   ListGroupItem,
+  Modal,
   Panel,
   Tab,
   Tabs
@@ -18,7 +19,7 @@ import {
   restartQwest,
   deleteQwest
 } from '../../../lib/qwest';
-import { getUser } from '../../../lib/user';
+// import { getUser } from '../../../lib/user';
 import './style.css';
 
 class QwestList extends Component {
@@ -29,6 +30,7 @@ class QwestList extends Component {
     // set state
     this.state = {
       activeTab: 'active',
+      showAssignQwestModal: false,
       qwests: {}
     };
 
@@ -38,6 +40,8 @@ class QwestList extends Component {
     this.getActiveQwestList = this.getActiveQwestList.bind(this);
     this.getCompletedQwestList = this.getCompletedQwestList.bind(this);
     this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
+    this.getAssignQwestModal = this.getAssignQwestModal.bind(this);
+    this.closeAssignQwestModal = this.closeAssignQwestModal.bind(this);
   }
 
   handleTabSelect(value) {
@@ -46,17 +50,19 @@ class QwestList extends Component {
   }
 
   getFriendsList() {
+    // update state values
+    this.setState({showAssignQwestModal: true});
     // Get User data
-    getUser(function(data) {
-      // set Facebook Graph access token
-      let accessToken = data.val().credentials.Facebook.accessToken;
-      graph.setAccessToken(accessToken);
-
-      // get list of friends
-      graph.get('me/friends', function(err, res) {
-        console.log(res);
-      });
-    });
+    // getUser(function(data) {
+    //   // set Facebook Graph access token
+    //   let accessToken = data.val().credentials.Facebook.accessToken;
+    //   graph.setAccessToken(accessToken);
+    //
+    //   // get list of friends
+    //   graph.get('me/friends', function(err, res) {
+    //     console.log(res);
+    //   });
+    // });
   }
 
   getQwestListNavigation() {
@@ -80,6 +86,36 @@ class QwestList extends Component {
     );
   }
 
+  getAssignQwestModal() {
+    return (
+      <Modal show={this.state.showAssignQwestModal} onHide={this.closeAssignQwestModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Text in a modal</h4>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+
+            <hr />
+
+            <h4>Overflowing text to show scroll behavior</h4>
+            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.closeAssignQwestModal}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+    );
+  }
+
   getActiveQwestList() {
     if (this.state.qwests && this.state.qwests.active) {
       return Object.keys(this.state.qwests.active).map((key) =>
@@ -93,7 +129,7 @@ class QwestList extends Component {
                 >
                   Complete
                 </Button>
-                {/* <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button> */}
+                <Button bsStyle="success" onClick={this.getFriendsList}>Assign</Button>
                 <Button
                   bsStyle="danger"
                   onClick={() => deleteQwest(key)}
@@ -137,6 +173,11 @@ class QwestList extends Component {
     }
   }
 
+  closeAssignQwestModal() {
+    // set the state
+    this.setState({showAssignQwestModal: false});
+  }
+
   getUserQwestsCallback(data) {
     // set the state
     this.setState({qwests: data.val()});
@@ -174,6 +215,7 @@ class QwestList extends Component {
           <Panel header={panelHeader}>
             {this.getQwestListNavigation()}
           </Panel>
+          {this.getAssignQwestModal()}
         </div>
       </div>
     );
