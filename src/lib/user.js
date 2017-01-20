@@ -8,15 +8,21 @@ export function createUser(currentUser, credential, successCallback) {
   let updates = {};
   for (const provider of currentUser.providerData) {
     if (credential.provider===provider.providerId && provider.providerId==='facebook.com') {
-      updates['/users/' + userId + '/credentials/Facebook'] = {
+      updates['/users/general/' + userId + '/credentials/Facebook'] = {
         id: provider.uid,
         accessToken: credential.accessToken
-      }
+      };
+      updates['/users/social/Facebook/' + provider.uid] = {
+        userId: userId
+      };
     } else if (credential.provider===provider.providerId && provider.providerId==='google.com') {
-      updates['/users/' + userId + '/credentials/Google']  = {
+      updates['/users/general/' + userId + '/credentials/Google']  = {
         id: provider.uid,
         accessToken: credential.accessToken
-      }
+      };
+      updates['/users/social/Google/' + provider.uid] = {
+        userId: userId
+      };
     }
   }
 
