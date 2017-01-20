@@ -19,7 +19,7 @@ import {
   restartQwest,
   deleteQwest
 } from '../../../lib/qwest';
-import { getUser } from '../../../lib/user';
+import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
 import './style.css';
 
 class QwestList extends Component {
@@ -30,6 +30,7 @@ class QwestList extends Component {
     // set state
     this.state = {
       activeTab: 'active',
+      currentQwestKey: null,
       showAssignQwestModal: false,
       friends: [],
       qwests: {}
@@ -53,8 +54,8 @@ class QwestList extends Component {
   }
 
   getFacebookFriends() {
-    // Get User data
-    getUser((data) => {
+    // Get current User data
+    getCurrentUserInfo((data) => {
       // set Facebook Graph access token
       let accessToken = data.val().credentials.Facebook.accessToken;
       graph.setAccessToken(accessToken);
@@ -64,6 +65,13 @@ class QwestList extends Component {
         // update state values
         this.setState({friends: res.data});
       });
+    });
+  }
+
+  assignQwestToUser(userData) {
+    // Get User data
+    getUserInfo(userData, (data) => {
+      console.log('assignQwestToUser() successfull!');
     });
   }
 
@@ -107,7 +115,7 @@ class QwestList extends Component {
   getFriendsList() {
     if (this.state.friends) {
       return this.state.friends.map((friend, index) =>
-        <ListGroupItem key={index}>
+        <ListGroupItem key={index} onClick={() => this.assignQwestToUser(friend)}>
           {friend.name}
         </ListGroupItem>
       );
@@ -129,7 +137,12 @@ class QwestList extends Component {
                 >
                   Complete
                 </Button>
-                <Button bsStyle="success" onClick={this.showAssignQwestModal}>Assign</Button>
+                <Button
+                  bsStyle="success"
+                  onClick={() => this.showAssignQwestModal(key)}
+                >
+                  Assign
+                </Button>
                 <Button
                   bsStyle="danger"
                   onClick={() => deleteQwest(key)}
@@ -173,9 +186,12 @@ class QwestList extends Component {
     }
   }
 
-  showAssignQwestModal() {
+  showAssignQwestModal(qwestKey) {
     // set the state
-    this.setState({showAssignQwestModal: true});
+    this.setState({
+      currentQwestKey: qwestKey,
+      showAssignQwestModal: true
+    });
     // get list of friends from Facebook
     this.getFacebookFriends();
   }

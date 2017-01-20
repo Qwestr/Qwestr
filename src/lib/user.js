@@ -27,10 +27,19 @@ export function createUser(currentUser, credential, successCallback) {
   });
 }
 
-export function getUser(successCallback) {
+export function getCurrentUserInfo(successCallback) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
   // retrieve date from the database
   firebase.database().ref('/users/' + userId).once('value').then(successCallback);
+}
+
+export function getUserInfo(userData, successCallback) {
+  console.log('userData: ' + JSON.stringify(userData));
+  // Get user id
+  // const userId = firebase.auth().currentUser.uid;
+  //
+  // // retrieve date from the database
+  // firebase.database().ref('/users/' + userId).once('value').then(successCallback);
 }
