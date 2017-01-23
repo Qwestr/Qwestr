@@ -72,6 +72,7 @@ class QwestList extends Component {
     // Get User data
     getUserInfo(userData, (data) => {
       console.log('assignQwestToUser() successfull!');
+      console.log('data: ' + JSON.stringify(data.val()));
     });
   }
 

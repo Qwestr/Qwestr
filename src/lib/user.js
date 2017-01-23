@@ -38,14 +38,13 @@ export function getCurrentUserInfo(successCallback) {
   const userId = firebase.auth().currentUser.uid;
 
   // retrieve date from the database
-  firebase.database().ref('/users/' + userId).once('value').then(successCallback);
+  firebase.database().ref('/users/general/' + userId).once('value').then(successCallback);
 }
 
 export function getUserInfo(userData, successCallback) {
-  console.log('userData: ' + JSON.stringify(userData));
   // Get user id
-  // const userId = firebase.auth().currentUser.uid;
-  //
-  // // retrieve date from the database
-  // firebase.database().ref('/users/' + userId).once('value').then(successCallback);
+  const userId = userData.id;
+
+  // retrieve date from the database
+  firebase.database().ref('/users/social/Facebook/' + userId).once('value').then(successCallback);
 }
