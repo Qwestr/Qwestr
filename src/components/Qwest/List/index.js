@@ -147,26 +147,7 @@ class QwestList extends Component {
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
             {this.state.qwests.active[key].title}
-              <ButtonGroup className="Qwest-item-button-group">
-                <Button
-                  bsStyle="primary"
-                  onClick={() => completeQwest(this.state.qwests.active[key], key)}
-                >
-                  Complete
-                </Button>
-                <Button
-                  bsStyle="success"
-                  onClick={() => this.showAssignQwestModal(key)}
-                >
-                  Assign
-                </Button>
-                <Button
-                  bsStyle="danger"
-                  onClick={() => deleteQwest(key)}
-                >
-                  Delete
-                </Button>
-              </ButtonGroup>
+            {this.getActiveButtonGroup(this.state.qwests.active[key], key)}
           </div>
         </ListGroupItem>
       );
@@ -175,32 +156,71 @@ class QwestList extends Component {
     }
   }
 
+  getActiveButtonGroup(qwest, key) {
+    // setup assign button
+    let assignButton = null;
+    if (!qwest.assignedBy) {
+        assignButton = (
+          <Button
+            bsStyle="success"
+            onClick={() => this.showAssignQwestModal(key)}
+          >
+            Assign
+          </Button>
+        );
+    }
+
+    return (
+      <ButtonGroup className="Qwest-item-button-group">
+        <Button
+          bsStyle="primary"
+          onClick={() => completeQwest(qwest, key)}
+        >
+          Complete
+        </Button>
+        {assignButton}
+        <Button
+          bsStyle="danger"
+          onClick={() => deleteQwest(key)}
+        >
+          Delete
+        </Button>
+      </ButtonGroup>
+    );
+  }
+
   getCompletedQwestList() {
     if (this.state.qwests && this.state.qwests.completed) {
       return Object.keys(this.state.qwests.completed).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
             {this.state.qwests.completed[key].title}
-              <ButtonGroup className="Qwest-item-button-group">
-                <Button
-                  bsStyle="primary"
-                  onClick={() => restartQwest(this.state.qwests.completed[key], key)}
-                >
-                  Restart
-                </Button>
-                <Button
-                  bsStyle="danger"
-                  onClick={() => deleteQwest(key)}
-                >
-                  Delete
-                </Button>
-              </ButtonGroup>
+            {this.getCompletedButtonGroup(this.state.qwests.completed[key], key)}
           </div>
         </ListGroupItem>
       );
     } else {
       return;
     }
+  }
+
+  getCompletedButtonGroup(qwest, key) {
+    return (
+      <ButtonGroup className="Qwest-item-button-group">
+        <Button
+          bsStyle="primary"
+          onClick={() => restartQwest(this.state.qwests.completed[key], key)}
+        >
+          Restart
+        </Button>
+        <Button
+          bsStyle="danger"
+          onClick={() => deleteQwest(key)}
+        >
+          Delete
+        </Button>
+      </ButtonGroup>
+    );
   }
 
   showAssignQwestModal(qwestKey) {
