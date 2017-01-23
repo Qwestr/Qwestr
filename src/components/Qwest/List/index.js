@@ -44,6 +44,8 @@ class QwestList extends Component {
     this.getFacebookFriends = this.getFacebookFriends.bind(this);
     this.getActiveQwestList = this.getActiveQwestList.bind(this);
     this.getCompletedQwestList = this.getCompletedQwestList.bind(this);
+    this.getAssignedQwestList = this.getAssignedQwestList.bind(this);
+    this.getPendingQwestList = this.getPendingQwestList.bind(this);
     this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
     this.assignQwestCallback = this.assignQwestCallback.bind(this);
     this.getAssignQwestModal = this.getAssignQwestModal.bind(this);
@@ -109,6 +111,20 @@ class QwestList extends Component {
             </ListGroup>
           </div>
         </Tab>
+        <Tab eventKey='assigned' title="Assigned">
+          <div className="Qwest-list">
+            <ListGroup>
+              {this.getAssignedQwestList()}
+            </ListGroup>
+          </div>
+        </Tab>
+        <Tab eventKey='pending' title="Pending">
+          <div className="Qwest-list">
+            <ListGroup>
+              {this.getPendingQwestList()}
+            </ListGroup>
+          </div>
+        </Tab>
       </Tabs>
     );
   }
@@ -147,7 +163,7 @@ class QwestList extends Component {
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
             {this.state.qwests.active[key].title}
-            {this.getActiveButtonGroup(this.state.qwests.active[key], key)}
+            {this.getActiveQwestButtonGroup(this.state.qwests.active[key], key)}
           </div>
         </ListGroupItem>
       );
@@ -156,7 +172,7 @@ class QwestList extends Component {
     }
   }
 
-  getActiveButtonGroup(qwest, key) {
+  getActiveQwestButtonGroup(qwest, key) {
     // setup assign button
     let assignButton = null;
     if (!qwest.assignedBy) {
@@ -195,7 +211,7 @@ class QwestList extends Component {
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
             {this.state.qwests.completed[key].title}
-            {this.getCompletedButtonGroup(this.state.qwests.completed[key], key)}
+            {this.getCompletedQwestButtonGroup(this.state.qwests.completed[key], key)}
           </div>
         </ListGroupItem>
       );
@@ -204,7 +220,7 @@ class QwestList extends Component {
     }
   }
 
-  getCompletedButtonGroup(qwest, key) {
+  getCompletedQwestButtonGroup(qwest, key) {
     return (
       <ButtonGroup className="Qwest-item-button-group">
         <Button
@@ -218,6 +234,80 @@ class QwestList extends Component {
           onClick={() => deleteQwest(key)}
         >
           Delete
+        </Button>
+      </ButtonGroup>
+    );
+  }
+
+  getAssignedQwestList() {
+    if (this.state.qwests && this.state.qwests.assigned) {
+      return Object.keys(this.state.qwests.assigned).map((key) =>
+        <ListGroupItem key={key}>
+          <div className="Qwest-item-content">
+            {this.state.qwests.assigned[key].title}
+            {this.getAssignedQwestButtonGroup(this.state.qwests.assigned[key], key)}
+          </div>
+        </ListGroupItem>
+      );
+    } else {
+      return;
+    }
+  }
+
+  getAssignedQwestButtonGroup(qwest, key) {
+    return (
+      <ButtonGroup className="Qwest-item-button-group">
+        <Button
+          bsStyle="success"
+          onClick={() => this.showAssignQwestModal(key)}
+        >
+          Reassign
+        </Button>
+        <Button
+          bsStyle="warning"
+          // onClick={() => revokeQwest(key)}
+        >
+          Revoke
+        </Button>
+        <Button
+          bsStyle="danger"
+          onClick={() => deleteQwest(key)}
+        >
+          Delete
+        </Button>
+      </ButtonGroup>
+    );
+  }
+
+  getPendingQwestList() {
+    if (this.state.qwests && this.state.qwests.pending) {
+      return Object.keys(this.state.qwests.pending).map((key) =>
+        <ListGroupItem key={key}>
+          <div className="Qwest-item-content">
+            {this.state.qwests.pending[key].title}
+            {this.getPendingQwestButtonGroup(this.state.qwests.pending[key], key)}
+          </div>
+        </ListGroupItem>
+      );
+    } else {
+      return;
+    }
+  }
+
+  getPendingQwestButtonGroup(qwest, key) {
+    return (
+      <ButtonGroup className="Qwest-item-button-group">
+        <Button
+          bsStyle="primary"
+          // onClick={() => acceptQwest(key)}
+        >
+          Accept
+        </Button>
+        <Button
+          bsStyle="danger"
+          // onClick={() => rejectQwest(key)}
+        >
+          Reject
         </Button>
       </ButtonGroup>
     );
