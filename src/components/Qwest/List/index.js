@@ -17,6 +17,7 @@ import {
   getUserQwests,
   completeQwest,
   restartQwest,
+  assignQwest,
   deleteQwest
 } from '../../../lib/qwest';
 import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
@@ -31,6 +32,7 @@ class QwestList extends Component {
     this.state = {
       activeTab: 'active',
       currentQwestKey: null,
+      currentQwestData: null,
       showAssignQwestModal: false,
       friends: [],
       qwests: {}
@@ -43,6 +45,7 @@ class QwestList extends Component {
     this.getActiveQwestList = this.getActiveQwestList.bind(this);
     this.getCompletedQwestList = this.getCompletedQwestList.bind(this);
     this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
+    this.assignQwestCallback = this.assignQwestCallback.bind(this);
     this.getAssignQwestModal = this.getAssignQwestModal.bind(this);
     this.closeAssignQwestModal = this.closeAssignQwestModal.bind(this);
     this.showAssignQwestModal = this.showAssignQwestModal.bind(this)
@@ -71,9 +74,22 @@ class QwestList extends Component {
   assignQwestToUser(userData) {
     // Get User data
     getUserInfo(userData, (data) => {
-      console.log('assignQwestToUser() successfull!');
-      console.log('data: ' + JSON.stringify(data.val()));
+      // get user ID from data
+      const assignedUserId = data.val().userId;
+
+      // assign Qwest
+      assignQwest(
+        this.state.currentQwestData,
+        this.state.currentQwestKey,
+        assignedUserId,
+        this.assignQwestCallback
+      );
     });
+  }
+
+  assignQwestCallback(data) {
+    // close the Assign Qwest modal view
+    this.closeAssignQwestModal();
   }
 
   getQwestListNavigation() {
@@ -191,6 +207,7 @@ class QwestList extends Component {
     // set the state
     this.setState({
       currentQwestKey: qwestKey,
+      currentQwestData: this.state.qwests.active[qwestKey],
       showAssignQwestModal: true
     });
     // get list of friends from Facebook
