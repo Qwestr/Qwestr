@@ -18,3 +18,8 @@
   float: right;
   padding: 5px;
 }
+
+.badge {
+  margin-left: 5px;
+  background-color: red;
+}

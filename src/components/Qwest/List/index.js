@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import graph from 'fbgraph';
 import { browserHistory } from 'react-router';
 import {
+  Badge,
   Button,
   ButtonGroup,
   ListGroup,
@@ -118,7 +119,7 @@ class QwestList extends Component {
             </ListGroup>
           </div>
         </Tab>
-        <Tab eventKey='pending' title="Pending">
+        <Tab eventKey='pending' title={this.getPendingTabTitle()}>
           <div className="Qwest-list">
             <ListGroup>
               {this.getPendingQwestList()}
@@ -127,6 +128,21 @@ class QwestList extends Component {
         </Tab>
       </Tabs>
     );
+  }
+
+  getPendingTabTitle() {
+    if (this.state.qwests && this.state.qwests.pending) {
+      return (
+        <div>
+          Pending
+          <Badge>{Object.keys(this.state.qwests.pending).length}</Badge>
+        </div>
+      )
+    } else {
+      return (
+        <div>Pending</div>
+      )
+    }
   }
 
   getAssignQwestModal() {
