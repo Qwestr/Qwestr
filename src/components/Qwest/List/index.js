@@ -105,17 +105,17 @@ class QwestList extends Component {
             </ListGroup>
           </div>
         </Tab>
-        <Tab eventKey='completed' title="Completed">
-          <div className="Qwest-list">
-            <ListGroup>
-              {this.getCompletedQwestList()}
-            </ListGroup>
-          </div>
-        </Tab>
         <Tab eventKey='assigned' title="Assigned">
           <div className="Qwest-list">
             <ListGroup>
               {this.getAssignedQwestList()}
+            </ListGroup>
+          </div>
+        </Tab>
+        <Tab eventKey='completed' title="Completed">
+          <div className="Qwest-list">
+            <ListGroup>
+              {this.getCompletedQwestList()}
             </ListGroup>
           </div>
         </Tab>
