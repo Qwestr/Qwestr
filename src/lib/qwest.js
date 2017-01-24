@@ -84,12 +84,13 @@ export function restartQwest(qwestData, key) {
 }
 
 export function assignQwest(qwestData, key, assignedUserId, successCallback) {
+  console.log('assignedUserId: ' + assignedUserId);
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
   // create Pending Qwest and User Qwest objects from data
   const pendingQwest = {
-    assignedBy: assignedUserId,
+    assignedBy: userId,
     title: qwestData.title
   }
 
