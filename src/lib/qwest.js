@@ -100,13 +100,37 @@ export function assignQwest(qwestData, key, assignedUserId, successCallback) {
 
   // Assign the Qwest and UserQwest's data simultaneously
   let updates = {};
-  updates['/qwests/' + key + '/assignedTo/'] = assignedUserId;
+  updates['/qwests/' + key + '/assignedTo'] = assignedUserId;
   updates['/user-qwests/' + userId + '/active/' + key] = null;
   updates['/user-qwests/' + userId + '/assigned/' + key] = userQwest;
   updates['/user-qwests/' + assignedUserId + '/pending/' + key] = pendingQwest;
 
   // update the database
   return firebase.database().ref().update(updates).then(successCallback);
+}
+
+export function acceptQwest(qwestData, key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Get assiging user id
+  const assigningUserId = qwestData.assignedBy;
+
+  // create Accepted Qwest object from data
+  const acceptedQwest = {
+    assignedBy: qwestData.assignedBy,
+    title: qwestData.title
+  }
+
+  // Assign the Qwest and UserQwest's data simultaneously
+  let updates = {};
+  updates['/qwests/' + key + '/accepted'] = true;
+  updates['/user-qwests/' + assigningUserId + '/assigned/' + key + '/accepted'] = true;
+  updates['/user-qwests/' + userId + '/pending/' + key] = null;
+  updates['/user-qwests/' + userId + '/active/' + key] = acceptedQwest;
+
+  // update the database
+  return firebase.database().ref().update(updates);
 }
 
 export function deleteQwest(key) {
