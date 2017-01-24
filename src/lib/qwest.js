@@ -38,11 +38,13 @@ export function completeQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
-  // create Qwest and User Qwest objects from data
-  const qwest = {
-    createdBy: userId,
-    title: qwestData.title,
-    completed: true
+  // Get assiging user id
+  const assigningUserId = qwestData.assignedBy;
+
+  // create Assign User Qwest and User Qwest object from data
+  const assignedUserQwest = {
+    assignedBy: qwestData.assignedBy,
+    title: qwestData.title
   }
 
   const userQwest = {
@@ -51,9 +53,15 @@ export function completeQwest(qwestData, key) {
 
   // Write the new Qwest and UserQwest's data simultaneously
   let updates = {};
-  updates['/qwests/' + key] = qwest;
+  updates['/qwests/' + key + '/completed'] = true;
   updates['/user-qwests/' + userId + '/active/' + key] = null;
-  updates['/user-qwests/' + userId + '/completed/' + key] = userQwest;
+  if (assigningUserId) {
+    updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
+    updates['/user-qwests/' + assigningUserId + '/completed/' + key] = userQwest;
+    updates['/user-qwests/' + userId + '/completed/' + key] = assignedUserQwest;
+  } else {
+    updates['/user-qwests/' + userId + '/completed/' + key] = userQwest;
+  }
 
   // update the database
   return firebase.database().ref().update(updates);
@@ -84,7 +92,6 @@ export function restartQwest(qwestData, key) {
 }
 
 export function assignQwest(qwestData, key, assignedUserId, successCallback) {
-  console.log('assignedUserId: ' + assignedUserId);
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
