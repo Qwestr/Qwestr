@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { Image, Nav, Navbar, NavItem } from 'react-bootstrap';
 import firebase from 'firebase';
 import classnames from 'classnames';
 import { logout } from '../../lib/auth';
@@ -17,6 +17,15 @@ class NavBar extends Component {
     };
   }
 
+  getUserProfileNavItem(user) {
+    return (
+      <NavItem className="Navbar-profile-item">
+        {user.displayName}
+        <Image className="Navbar-profile-item-image" src={user.photoURL} circle />
+      </NavItem>
+    );
+  }
+
   getNavbarItems(activePath) {
     // Return nav items depending on if the User is authenticated
     if (this.state.user) {
@@ -27,6 +36,7 @@ class NavBar extends Component {
             <NavItem href="/qwest/new">New Qwest</NavItem>
           </Nav>
           <Nav pullRight>
+            {this.getUserProfileNavItem(this.state.user)}
             <NavItem onClick={logout}>Logout</NavItem>
           </Nav>
       </div>
