@@ -16,6 +16,7 @@ import {
 } from 'react-bootstrap';
 import {
   getUserQwests,
+  acceptQwest,
   completeQwest,
   restartQwest,
   assignQwest,
@@ -256,6 +257,7 @@ class QwestList extends Component {
   }
 
   getAssignedQwestList() {
+    console.log('this.state.qwests.assigned: ' + JSON.stringify(this.state.qwests.assigned));
     if (this.state.qwests && this.state.qwests.assigned) {
       return Object.keys(this.state.qwests.assigned).map((key) =>
         <ListGroupItem key={key}>
@@ -315,7 +317,7 @@ class QwestList extends Component {
       <ButtonGroup className="Qwest-item-button-group">
         <Button
           bsStyle="primary"
-          // onClick={() => acceptQwest(key)}
+          onClick={() => acceptQwest(qwest, key)}
         >
           Accept
         </Button>
