@@ -154,6 +154,32 @@ export function removeCompletedQwest(key) {
   return firebase.database().ref().update(updates);
 }
 
+export function revokeQwest(qwestData, key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Get assiged user id
+  const assignedUserId = qwestData.assignedTo;
+
+  // create Active Qwest object from data
+  const activeQwest = {
+    title: qwestData.title
+  }
+
+  // Revoke the Qwest and UserQwest's data simultaneously
+  let updates = {};
+  updates['/qwests/' + key + '/assignedTo'] = null;
+  updates['/user-qwests/' + userId + '/active/' + key] = activeQwest;
+  updates['/user-qwests/' + userId + '/assigned/' + key] = null;
+  updates['/user-qwests/' + userId + '/completed/' + key] = null;
+  updates['/user-qwests/' + assignedUserId + '/active/' + key] = null;
+  updates['/user-qwests/' + assignedUserId + '/completed/' + key] = null;
+  updates['/user-qwests/' + assignedUserId + '/pending/' + key] = null;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
 export function deleteQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;

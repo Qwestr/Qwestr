@@ -21,6 +21,7 @@ import {
   restartQwest,
   assignQwest,
   removeCompletedQwest,
+  revokeQwest,
   deleteQwest
 } from '../../../lib/qwest';
 import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
@@ -307,7 +308,7 @@ class QwestList extends Component {
         </Button>
         <Button
           bsStyle="warning"
-          // onClick={() => revokeQwest(key)}
+          onClick={() => revokeQwest(qwest, key)}
         >
           Revoke
         </Button>
