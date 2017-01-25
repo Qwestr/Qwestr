@@ -191,36 +191,47 @@ class QwestList extends Component {
   }
 
   getActiveQwestButtonGroup(qwest, key) {
-    // setup assign button
-    let assignButton = null;
-    if (!qwest.assignedBy) {
-        assignButton = (
+    if (qwest.assignedBy) {
+      return (
+        <ButtonGroup className="Qwest-item-button-group">
+          <Button
+            bsStyle="primary"
+            onClick={() => completeQwest(qwest, key)}
+          >
+            Complete
+          </Button>
+          <Button
+            bsStyle="danger"
+            // onClick={() => dropQwest(qwest, key)}
+          >
+            Drop
+          </Button>
+        </ButtonGroup>
+      );
+    } else {
+      return (
+        <ButtonGroup className="Qwest-item-button-group">
+          <Button
+            bsStyle="primary"
+            onClick={() => completeQwest(qwest, key)}
+          >
+            Complete
+          </Button>
           <Button
             bsStyle="success"
             onClick={() => this.showAssignQwestModal(key)}
           >
             Assign
           </Button>
-        );
+          <Button
+            bsStyle="danger"
+            // onClick={() => deleteQwest(qwest, key)}
+          >
+            Delete
+          </Button>
+        </ButtonGroup>
+      );
     }
-
-    return (
-      <ButtonGroup className="Qwest-item-button-group">
-        <Button
-          bsStyle="primary"
-          onClick={() => completeQwest(qwest, key)}
-        >
-          Complete
-        </Button>
-        {assignButton}
-        <Button
-          bsStyle="danger"
-          onClick={() => deleteQwest(key)}
-        >
-          Delete
-        </Button>
-      </ButtonGroup>
-    );
   }
 
   getCompletedQwestList() {
@@ -239,7 +250,6 @@ class QwestList extends Component {
   }
 
   getCompletedQwestButtonGroup(qwest, key) {
-    console.log('qwest: ' + JSON.stringify(qwest));
     if (qwest.assignedBy) {
       return (
         <ButtonGroup className="Qwest-item-button-group">
@@ -262,7 +272,7 @@ class QwestList extends Component {
           </Button>
           <Button
             bsStyle="danger"
-            onClick={() => deleteQwest(qwest, key)}
+            // onClick={() => deleteQwest(qwest, key)}
           >
             Delete
           </Button>
@@ -291,7 +301,7 @@ class QwestList extends Component {
       <ButtonGroup className="Qwest-item-button-group">
         <Button
           bsStyle="success"
-          onClick={() => this.showAssignQwestModal(key)}
+          // onClick={() => this.showAssignQwestModal(key)}
         >
           Reassign
         </Button>
@@ -303,7 +313,7 @@ class QwestList extends Component {
         </Button>
         <Button
           bsStyle="danger"
-          onClick={() => deleteQwest(key)}
+          // onClick={() => deleteQwest(qwest, key)}
         >
           Delete
         </Button>

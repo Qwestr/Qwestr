@@ -154,7 +154,7 @@ export function removeCompletedQwest(key) {
   return firebase.database().ref().update(updates);
 }
 
-export function deleteQwest(key) {
+export function deleteQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
