@@ -141,6 +141,18 @@ export function acceptQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
+export function removeCompletedQwest(key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Remove the Qwest from the User's completed Qwest list
+  let updates = {};
+  updates['/user-qwests/' + userId + '/completed/' + key] = null;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
 export function deleteQwest(key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;

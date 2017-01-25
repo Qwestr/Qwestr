@@ -20,6 +20,7 @@ import {
   completeQwest,
   restartQwest,
   assignQwest,
+  removeCompletedQwest,
   deleteQwest
 } from '../../../lib/qwest';
 import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
@@ -238,22 +239,36 @@ class QwestList extends Component {
   }
 
   getCompletedQwestButtonGroup(qwest, key) {
-    return (
-      <ButtonGroup className="Qwest-item-button-group">
-        <Button
-          bsStyle="primary"
-          onClick={() => restartQwest(this.state.qwests.completed[key], key)}
-        >
-          Restart
-        </Button>
-        <Button
-          bsStyle="danger"
-          onClick={() => deleteQwest(key)}
-        >
-          Delete
-        </Button>
-      </ButtonGroup>
-    );
+    console.log('qwest: ' + JSON.stringify(qwest));
+    if (qwest.assignedBy) {
+      return (
+        <ButtonGroup className="Qwest-item-button-group">
+          <Button
+            bsStyle="primary"
+            onClick={() => removeCompletedQwest(key)}
+          >
+            Remove
+          </Button>
+        </ButtonGroup>
+      );
+    } else {
+      return (
+        <ButtonGroup className="Qwest-item-button-group">
+          <Button
+            bsStyle="primary"
+            onClick={() => restartQwest(this.state.qwests.completed[key], key)}
+          >
+            Restart
+          </Button>
+          <Button
+            bsStyle="danger"
+            onClick={() => deleteQwest(key)}
+          >
+            Delete
+          </Button>
+        </ButtonGroup>
+      );
+    }
   }
 
   getAssignedQwestList() {
