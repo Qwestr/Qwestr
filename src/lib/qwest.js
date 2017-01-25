@@ -169,6 +169,7 @@ export function revokeQwest(qwestData, key) {
   // Revoke the Qwest and UserQwest's data simultaneously
   let updates = {};
   updates['/qwests/' + key + '/assignedTo'] = null;
+  updates['/qwests/' + key + '/accepted'] = null;
   updates['/user-qwests/' + userId + '/active/' + key] = activeQwest;
   updates['/user-qwests/' + userId + '/assigned/' + key] = null;
   updates['/user-qwests/' + userId + '/completed/' + key] = null;
@@ -181,7 +182,6 @@ export function revokeQwest(qwestData, key) {
 }
 
 export function rejectQwest(qwestData, key) {
-  console.log('qwestData: ' + JSON.stringify(qwestData));
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
@@ -197,6 +197,30 @@ export function rejectQwest(qwestData, key) {
   let updates = {};
   updates['/qwests/' + key + '/assignedTo'] = null;
   updates['/user-qwests/' + userId + '/pending/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
+export function dropQwest(qwestData, key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Get assigning user id
+  const assigningUserId = qwestData.assignedBy;
+
+  // create Active Qwest object from data
+  const activeQwest = {
+    title: qwestData.title
+  }
+
+  // Reject the Qwest and UserQwest's data simultaneously
+  let updates = {};
+  updates['/qwests/' + key + '/assignedTo'] = null;
+  updates['/qwests/' + key + '/accepted'] = null;
+  updates['/user-qwests/' + userId + '/active/' + key] = null;
   updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
   updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
 

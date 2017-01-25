@@ -23,6 +23,7 @@ import {
   removeQwest,
   revokeQwest,
   rejectQwest,
+  dropQwest,
   deleteQwest
 } from '../../../lib/qwest';
 import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
@@ -204,7 +205,7 @@ class QwestList extends Component {
           </Button>
           <Button
             bsStyle="danger"
-            // onClick={() => dropQwest(qwest, key)}
+            onClick={() => dropQwest(qwest, key)}
           >
             Drop
           </Button>
