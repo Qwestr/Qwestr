@@ -158,11 +158,22 @@ export function deleteQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
+  // Get assiged user id
+  const assignedUserId = qwestData.assignedTo;
+
   // Delete the Qwest and UserQwest's data simultaneously
   let updates = {};
   updates['/qwests/' + key] = null;
   updates['/user-qwests/' + userId + '/active/' + key] = null;
+  updates['/user-qwests/' + userId + '/assigned/' + key] = null;
   updates['/user-qwests/' + userId + '/completed/' + key] = null;
+  updates['/user-qwests/' + userId + '/pending/' + key] = null;
+  if (assignedUserId) {
+    updates['/user-qwests/' + assignedUserId + '/active/' + key] = null;
+    updates['/user-qwests/' + assignedUserId + '/assigned/' + key] = null;
+    updates['/user-qwests/' + assignedUserId + '/completed/' + key] = null;
+    updates['/user-qwests/' + assignedUserId + '/pending/' + key] = null;
+  }
 
   // update the database
   return firebase.database().ref().update(updates);
