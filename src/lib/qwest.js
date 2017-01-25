@@ -43,11 +43,12 @@ export function completeQwest(qwestData, key) {
 
   // create Assign User Qwest and User Qwest object from data
   const assignedUserQwest = {
-    assignedBy: qwestData.assignedBy,
+    assignedBy: assigningUserId,
     title: qwestData.title
   }
 
   const userQwest = {
+    assignedTo: userId,
     title: qwestData.title
   }
 

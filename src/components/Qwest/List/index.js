@@ -256,13 +256,13 @@ class QwestList extends Component {
         <ButtonGroup className="Qwest-item-button-group">
           <Button
             bsStyle="primary"
-            onClick={() => restartQwest(this.state.qwests.completed[key], key)}
+            onClick={() => restartQwest(qwest, key)}
           >
             Restart
           </Button>
           <Button
             bsStyle="danger"
-            onClick={() => deleteQwest(key)}
+            onClick={() => deleteQwest(qwest, key)}
           >
             Delete
           </Button>
