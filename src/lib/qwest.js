@@ -180,6 +180,30 @@ export function revokeQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
+export function rejectQwest(qwestData, key) {
+  console.log('qwestData: ' + JSON.stringify(qwestData));
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Get assigning user id
+  const assigningUserId = qwestData.assignedBy;
+
+  // create Active Qwest object from data
+  const activeQwest = {
+    title: qwestData.title
+  }
+
+  // Reject the Qwest and UserQwest's data simultaneously
+  let updates = {};
+  updates['/qwests/' + key + '/assignedTo'] = null;
+  updates['/user-qwests/' + userId + '/pending/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
 export function deleteQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
