@@ -142,7 +142,7 @@ export function acceptQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
-export function removeCompletedQwest(key) {
+export function removeQwest(key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 

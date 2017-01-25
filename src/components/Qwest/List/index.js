@@ -20,7 +20,7 @@ import {
   completeQwest,
   restartQwest,
   assignQwest,
-  removeCompletedQwest,
+  removeQwest,
   revokeQwest,
   rejectQwest,
   deleteQwest
@@ -257,7 +257,7 @@ class QwestList extends Component {
         <ButtonGroup className="Qwest-item-button-group">
           <Button
             bsStyle="primary"
-            onClick={() => removeCompletedQwest(key)}
+            onClick={() => removeQwest(key)}
           >
             Remove
           </Button>
