@@ -96,6 +96,14 @@ export function assignQwest(qwestData, key, assignedUserId, successCallback) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
+  // Get currently assigined user id
+  const currentAssignedUserId = qwestData.assignedTo;
+
+  // if the Qwest is already assigned to the same user, return without updating
+  if (currentAssignedUserId === assignedUserId) {
+    return successCallback();
+  }
+
   // create Pending Qwest and User Qwest objects from data
   const pendingQwest = {
     assignedBy: userId,
@@ -109,10 +117,15 @@ export function assignQwest(qwestData, key, assignedUserId, successCallback) {
 
   // Assign the Qwest and UserQwest's data simultaneously
   let updates = {};
+  updates['/qwests/' + key + '/accepted'] = null;
   updates['/qwests/' + key + '/assignedTo'] = assignedUserId;
   updates['/user-qwests/' + userId + '/active/' + key] = null;
   updates['/user-qwests/' + userId + '/assigned/' + key] = userQwest;
   updates['/user-qwests/' + assignedUserId + '/pending/' + key] = pendingQwest;
+  if (currentAssignedUserId) {
+    updates['/user-qwests/' + currentAssignedUserId + '/active/' + key] = null;
+    updates['/user-qwests/' + currentAssignedUserId + '/pending/' + key] = null;
+  }
 
   // update the database
   return firebase.database().ref().update(updates).then(successCallback);

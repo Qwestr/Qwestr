@@ -222,7 +222,7 @@ class QwestList extends Component {
           </Button>
           <Button
             bsStyle="success"
-            onClick={() => this.showAssignQwestModal(key)}
+            onClick={() => this.showAssignQwestModal(qwest, key)}
           >
             Assign
           </Button>
@@ -304,7 +304,7 @@ class QwestList extends Component {
       <ButtonGroup className="Qwest-item-button-group">
         <Button
           bsStyle="success"
-          // onClick={() => this.showAssignQwestModal(key)}
+          onClick={() => this.showAssignQwestModal(qwest, key)}
         >
           Reassign
         </Button>
@@ -358,11 +358,11 @@ class QwestList extends Component {
     );
   }
 
-  showAssignQwestModal(qwestKey) {
+  showAssignQwestModal(qwestData, key) {
     // set the state
     this.setState({
-      currentQwestKey: qwestKey,
-      currentQwestData: this.state.qwests.active[qwestKey],
+      currentQwestKey: key,
+      currentQwestData: qwestData,
       showAssignQwestModal: true
     });
     // get list of friends from Facebook
