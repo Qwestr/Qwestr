@@ -272,7 +272,7 @@ class QwestList extends Component {
           </Button>
           <Button
             bsStyle="danger"
-            // onClick={() => deleteQwest(qwest, key)}
+            onClick={() => deleteQwest(qwest, key)}
           >
             Delete
           </Button>
