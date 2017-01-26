@@ -1,8 +1,8 @@
 import firebase from 'firebase';
 
-export function createQwest(qwestData, successCallback) {
-  // Get current user id
-  const userId = firebase.auth().currentUser.uid;
+export function createQwest(userData, qwestData, successCallback) {
+  // Get user id
+  const userId = userData.uid;
 
   // Get a key for a new Qwest.
   var qwestKey = firebase.database().ref().child('qwests').push().key;
