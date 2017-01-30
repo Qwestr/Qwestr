@@ -1,3 +1,5 @@
+import String from 'string';
+
 // Mock out functions of original module
 const firebase = jest.genMockFromModule('firebase');
 
@@ -27,10 +29,42 @@ firebase.database = () => {
               };
             }
           };
+        },
+        update: (updates) => {
+          for (let key in updates) {
+            if ({}.hasOwnProperty.call(updates, key)) {
+              firebase.__updateMockDatabase(key, updates[key]);
+            }
+          }
+
+          return {
+            then: (callback) => {
+              return;
+            }
+          }
         }
       };
     }
   };
+}
+
+firebase.__getMockDatabase = () => {
+  return JSON.stringify(mockDatabase);
+}
+
+firebase.__updateMockObject = (obj,  value, [firstKey, ...otherKeys]) => {
+  if (!otherKeys.length) {
+    obj[firstKey] = value;
+    return obj;
+  } else {
+    obj[firstKey] = firebase.__updateMockObject(obj[firstKey] || {}, value, otherKeys);
+    return obj;
+  }
+}
+
+firebase.__updateMockDatabase = (key, update) => {
+  const dbObjectNames = String(key).stripLeft('/').stripRight('/').splitLeft('/');
+  firebase.__updateMockObject(mockDatabase, update, dbObjectNames);
 }
 
 export default firebase;

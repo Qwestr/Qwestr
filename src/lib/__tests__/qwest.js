@@ -1,25 +1,16 @@
-import { createQwest } from '../qwest';
 import firebase from 'firebase';
+import { createQwest } from '../qwest';
 
-it('works', () => {
+it('Successfully creates a Qwest', () => {
+  // Create Qwest data object.
+  const qwestData = {
+    title: 'Test'
+  };
 
-  // var qwestKey = firebase.database().ref().child('qwests').push().key;
-  const userId = firebase.auth().currentUser.uid;
-  console.log('userId: ' + userId);
+  // Create the Qwest
+  createQwest(qwestData);
 
-  // // Create User data object
-  // const userData = {
-  //   uid: 'test'
-  // };
-  //
-  // // Create Qwest data object.
-  // const qwestData = {
-  //   title: 'Test'
-  // };
-  //
-  // createQwest(userData, qwestData, function(data) {
-  //   console.log('createQwest done!');
-  // });
+  console.log('mock database result: ' + firebase.__getMockDatabase());
 
   expect(true);
 });
