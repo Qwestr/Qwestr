@@ -3,9 +3,9 @@ import firebase from 'firebase';
 
 it('works', () => {
 
-  // Get a key for a new Qwest.
-  var qwestKey = firebase.database().ref().child('qwests').push().key;
-  console.log('qwestKey: ' + qwestKey);
+  // var qwestKey = firebase.database().ref().child('qwests').push().key;
+  const userId = firebase.auth().currentUser.uid;
+  console.log('userId: ' + userId);
 
   // // Create User data object
   // const userData = {

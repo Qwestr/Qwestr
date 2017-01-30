@@ -7,6 +7,14 @@ firebase.loadMockDatabase = (database) => {
   mockDatabase = database;
 }
 
+firebase.auth = () => {
+  return {
+    currentUser: {
+      uid: 'currentUserId'
+    }
+  };
+}
+
 firebase.database = () => {
   return {
     ref: (refPath) => {
@@ -14,9 +22,8 @@ firebase.database = () => {
         child: (childPath) => {
           return {
             push: () => {
-              const key = Object.keys(mockDatabase[childPath] || {}).length + 1;
               return {
-                key
+                key: Object.keys(mockDatabase[childPath] || {}).length + 1
               };
             }
           };
