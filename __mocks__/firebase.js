@@ -5,10 +5,6 @@ const firebase = jest.genMockFromModule('firebase');
 
 let mockDatabase = {};
 
-firebase.loadMockDatabase = (database) => {
-  mockDatabase = database;
-}
-
 firebase.auth = () => {
   return {
     currentUser: {
@@ -48,8 +44,12 @@ firebase.database = () => {
   };
 }
 
+firebase.__loadMockDatabase = (database) => {
+  mockDatabase = database;
+}
+
 firebase.__getMockDatabase = () => {
-  return JSON.stringify(mockDatabase);
+  return mockDatabase;
 }
 
 firebase.__updateMockObject = (obj,  value, [firstKey, ...otherKeys]) => {
