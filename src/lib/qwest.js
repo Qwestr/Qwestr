@@ -26,14 +26,6 @@ export function createQwest(qwestData, successCallback) {
   return firebase.database().ref().update(updates).then(successCallback);
 }
 
-export function getUserQwests(dataReceivedCallback) {
-  // Get current user id
-  const userId = firebase.auth().currentUser.uid;
-
-  // retrieve date from the database
-  firebase.database().ref('/user-qwests/' + userId).on('value', dataReceivedCallback);
-}
-
 export function completeQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
@@ -267,4 +259,12 @@ export function deleteQwest(qwestData, key) {
 
   // update the database
   return firebase.database().ref().update(updates);
+}
+
+export function getUserQwests(dataReceivedCallback) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // retrieve date from the database
+  firebase.database().ref('/user-qwests/' + userId).on('value', dataReceivedCallback);
 }

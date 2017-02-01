@@ -1,5 +1,10 @@
 import firebase from 'firebase';
-import { createQwest, completeQwest, restartQwest } from '../qwest';
+import {
+  createQwest,
+  completeQwest,
+  restartQwest,
+  getUserQwests
+} from '../qwest';
 
 afterEach(() => {
   firebase.__clearMockDatabase();
@@ -93,4 +98,24 @@ it('successfully restarts a Qwest', () => {
   expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId]['active'])).toHaveLength(1);
   expect(database['user-qwests'][currentAuthUserId]['active']['mockId1'].title).toBe('Test Qwest');
+});
+
+it('successfully returns a list of User Qwests', () => {
+  // Create Qwest data object.
+  const qwestData = {
+    title: 'Test Qwest'
+  };
+
+  // Create the Qwest
+  createQwest(qwestData);
+
+  // Get list of User Qwests
+  let result = null;
+  getUserQwests((data) => {
+    result = data.val();
+  });
+
+  // Expect that the returned list of User Qwests is correct
+  expect(Object.keys(result)).toHaveLength(1);
+  expect(Object.keys(result['active'])).toHaveLength(1);
 });

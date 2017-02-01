@@ -29,6 +29,16 @@ firebase.database = () => {
             }
           };
         },
+        on: (prop, callback) => {
+          if (prop !== 'value') {
+            throw new Error("'value' must be used as the first argument")
+          }
+          callback({
+            val: () => {
+              return firebase.__getMockObject(refPath);
+            }
+          });
+        },
         update: (updates) => {
           for (let key in updates) {
             if ({}.hasOwnProperty.call(updates, key)) {
@@ -64,6 +74,17 @@ firebase.__clearMockDatabase = (database) => {
 
 firebase.__getMockDatabase = () => {
   return mockDatabase;
+}
+
+firebase.__getMockObject = (refPath) => {
+  let returnedObject = mockDatabase;
+  const dbObjectNames = String(refPath).stripLeft('/').stripRight('/').splitLeft('/');
+
+  for (let object of dbObjectNames) {
+    returnedObject = returnedObject[object];
+  }
+
+  return returnedObject;
 }
 
 firebase.__updateMockDatabase = (key, update) => {
