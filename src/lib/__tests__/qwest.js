@@ -9,6 +9,7 @@ import {
   revokeQwest,
   dropQwest,
   removeQwest,
+  deleteQwest,
   getUserQwests
 } from '../qwest';
 
@@ -357,7 +358,7 @@ it('successfully removes a Qwest', () => {
   completeQwest(assignedQwestData, 'mockId1');
 
   // Remove the Qwest
-  removeQwest('mockId1')
+  removeQwest('mockId1');
 
   // Get resulting database
   const database = firebase.__getMockDatabase();
@@ -370,6 +371,28 @@ it('successfully removes a Qwest', () => {
   expect(Object.keys(database['user-qwests'])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId]['completed'])).toHaveLength(1);
+});
+
+it('successfully deletes a Qwest', () => {
+  // Create Qwest data object
+  const qwestData = {
+    title: 'Test Qwest'
+  };
+
+  // Create the Qwest
+  createQwest(qwestData);
+
+  // Delete the Qwest
+  deleteQwest(qwestData, 'mockId1');
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase();
+
+  // Expect that the approriate Qwests have been deleted
+  expect(database['qwests']).toBeFalsy();
+
+  // Expect that the approriate User Qwests have been deleted
+  expect(database['user-qwests']).toBeFalsy();
 });
 
 it('successfully returns a list of User Qwests', () => {
