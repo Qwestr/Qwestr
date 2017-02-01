@@ -21,7 +21,7 @@ firebase.database = () => {
           return {
             push: () => {
               return {
-                key: Object.keys(mockDatabase[childPath] || {}).length + 1
+                key: 'mockId' + (Object.keys(mockDatabase[childPath] || {}).length + 1)
               };
             }
           };
@@ -44,12 +44,21 @@ firebase.database = () => {
   };
 }
 
+firebase.__getAuthUserId = () => {
+  return firebase.auth().currentUser.uid;
+}
+
 firebase.__loadMockDatabase = (database) => {
   mockDatabase = database;
 }
 
 firebase.__getMockDatabase = () => {
   return mockDatabase;
+}
+
+firebase.__updateMockDatabase = (key, update) => {
+  const dbObjectNames = String(key).stripLeft('/').stripRight('/').splitLeft('/');
+  firebase.__updateMockObject(mockDatabase, update, dbObjectNames);
 }
 
 firebase.__updateMockObject = (obj,  value, [firstKey, ...otherKeys]) => {
@@ -60,11 +69,6 @@ firebase.__updateMockObject = (obj,  value, [firstKey, ...otherKeys]) => {
     obj[firstKey] = firebase.__updateMockObject(obj[firstKey] || {}, value, otherKeys);
     return obj;
   }
-}
-
-firebase.__updateMockDatabase = (key, update) => {
-  const dbObjectNames = String(key).stripLeft('/').stripRight('/').splitLeft('/');
-  firebase.__updateMockObject(mockDatabase, update, dbObjectNames);
 }
 
 export default firebase;
