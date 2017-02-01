@@ -150,6 +150,29 @@ export function acceptQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
+export function rejectQwest(qwestData, key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Get assigning user id
+  const assigningUserId = qwestData.assignedBy;
+
+  // create Active Qwest object from data
+  const activeQwest = {
+    title: qwestData.title
+  }
+
+  // Reject the Qwest and UserQwest's data simultaneously
+  let updates = {};
+  updates['/qwests/' + key + '/assignedTo'] = null;
+  updates['/user-qwests/' + userId + '/pending/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
 export function revokeQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
@@ -177,41 +200,6 @@ export function revokeQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
-export function rejectQwest(qwestData, key) {
-  // Get current user id
-  const userId = firebase.auth().currentUser.uid;
-
-  // Get assigning user id
-  const assigningUserId = qwestData.assignedBy;
-
-  // create Active Qwest object from data
-  const activeQwest = {
-    title: qwestData.title
-  }
-
-  // Reject the Qwest and UserQwest's data simultaneously
-  let updates = {};
-  updates['/qwests/' + key + '/assignedTo'] = null;
-  updates['/user-qwests/' + userId + '/pending/' + key] = null;
-  updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
-  updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
-
-  // update the database
-  return firebase.database().ref().update(updates);
-}
-
-export function removeQwest(key) {
-  // Get current user id
-  const userId = firebase.auth().currentUser.uid;
-
-  // Remove the Qwest from the User's completed Qwest list
-  let updates = {};
-  updates['/user-qwests/' + userId + '/completed/' + key] = null;
-
-  // update the database
-  return firebase.database().ref().update(updates);
-}
-
 export function dropQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
@@ -231,6 +219,18 @@ export function dropQwest(qwestData, key) {
   updates['/user-qwests/' + userId + '/active/' + key] = null;
   updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
   updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
+export function removeQwest(key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Remove the Qwest from the User's completed Qwest list
+  let updates = {};
+  updates['/user-qwests/' + userId + '/completed/' + key] = null;
 
   // update the database
   return firebase.database().ref().update(updates);

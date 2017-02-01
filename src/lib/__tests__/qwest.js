@@ -7,6 +7,7 @@ import {
   acceptQwest,
   rejectQwest,
   revokeQwest,
+  dropQwest,
   getUserQwests
 } from '../qwest';
 
@@ -262,6 +263,51 @@ it('successfully revokes a Qwest', () => {
 
   // Revoke the Qwest
   revokeQwest(assigningQwestData, 'mockId1');
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase();
+
+  // Expect that the approriate Qwests have been created/ updated
+  expect(Object.keys(database['qwests'])).toHaveLength(1);
+  expect(database['qwests']['mockId1'].assignedTo).toBeFalsy();
+
+  // Expect that the approriate User Qwests have been created/ updated
+  expect(Object.keys(database['user-qwests'])).toHaveLength(1);
+  expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
+  expect(Object.keys(database['user-qwests'][currentAuthUserId]['active'])).toHaveLength(1);
+});
+
+it('successfully drops a Qwest', () => {
+  // Get authorized User ID
+  const currentAuthUserId = firebase.__getAuthUserId();
+
+  // Create test assigning User ID
+  const assigningUserId = 'testUserId';
+
+  // Create Qwest data objects
+  const qwestData = {
+    title: 'Test Qwest'
+  };
+
+  const assignedQwestData = {
+    title: 'Test Qwest',
+    assignedBy: currentAuthUserId
+  };
+
+  // Create the Qwest
+  createQwest(qwestData);
+
+  // Assign the Qwest
+  assignQwest(qwestData, 'mockId1', assigningUserId);
+
+  // set the authorized User ID to the assigning User
+  firebase.__setAuthUserId(assigningUserId);
+
+  // Accept the Qwest
+  acceptQwest(assignedQwestData, 'mockId1');
+
+  // Drop the Qwest
+  dropQwest(assignedQwestData, 'mockId1');
 
   // Get resulting database
   const database = firebase.__getMockDatabase();
