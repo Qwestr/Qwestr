@@ -6,6 +6,7 @@ import {
   assignQwest,
   acceptQwest,
   rejectQwest,
+  revokeQwest,
   getUserQwests
 } from '../qwest';
 
@@ -18,7 +19,7 @@ it('successfully creates a Qwest', () => {
   // Get authorized User ID
   const currentAuthUserId = firebase.__getAuthUserId();
 
-  // Create Qwest data object.
+  // Create Qwest data object
   const qwestData = {
     title: 'Test Qwest'
   };
@@ -45,7 +46,7 @@ it('successfully completes a Qwest', () => {
   // Get authorized User ID
   const currentAuthUserId = firebase.__getAuthUserId();
 
-  // Create Qwest data object.
+  // Create Qwest data object
   const qwestData = {
     title: 'Test Qwest'
   };
@@ -67,14 +68,13 @@ it('successfully completes a Qwest', () => {
   expect(Object.keys(database['user-qwests'])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId]['completed'])).toHaveLength(1);
-  expect(database['user-qwests'][currentAuthUserId]['completed']['mockId1'].title).toBe('Test Qwest');
 });
 
 it('successfully restarts a Qwest', () => {
   // Get authorized User ID
   const currentAuthUserId = firebase.__getAuthUserId();
 
-  // Create Qwest data object.
+  // Create Qwest data object
   const qwestData = {
     title: 'Test Qwest'
   };
@@ -99,7 +99,6 @@ it('successfully restarts a Qwest', () => {
   expect(Object.keys(database['user-qwests'])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId]['active'])).toHaveLength(1);
-  expect(database['user-qwests'][currentAuthUserId]['active']['mockId1'].title).toBe('Test Qwest');
 });
 
 it('successfully assigns a Qwest', () => {
@@ -109,7 +108,7 @@ it('successfully assigns a Qwest', () => {
   // Create test assigning User ID
   const assigningUserId = 'testUserId';
 
-  // Create Qwest data object.
+  // Create Qwest data object
   const qwestData = {
     title: 'Test Qwest'
   };
@@ -144,7 +143,7 @@ it('successfully accepts a Qwest', () => {
   // Create test assigning User ID
   const assigningUserId = 'testUserId';
 
-  // Create Qwest data object.
+  // Create Qwest data objects
   const qwestData = {
     title: 'Test Qwest'
   };
@@ -189,7 +188,7 @@ it('successfully rejects a Qwest', () => {
   // Create test assigning User ID
   const assigningUserId = 'testUserId';
 
-  // Create Qwest data object.
+  // Create Qwest data objects
   const qwestData = {
     title: 'Test Qwest'
   };
@@ -222,7 +221,59 @@ it('successfully rejects a Qwest', () => {
   expect(Object.keys(database['user-qwests'])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][currentAuthUserId]['active'])).toHaveLength(1);
-  expect(database['user-qwests'][currentAuthUserId]['active']['mockId1'].title).toBe('Test Qwest');
+});
+
+it('successfully revokes a Qwest', () => {
+  // Get authorized User ID
+  const currentAuthUserId = firebase.__getAuthUserId();
+
+  // Create test assigning User ID
+  const assigningUserId = 'testUserId';
+
+  // Create Qwest data objects
+  const qwestData = {
+    title: 'Test Qwest'
+  };
+
+  const assigningQwestData = {
+    title: 'Test Qwest',
+    assignedTo: assigningUserId
+  };
+
+  const assignedQwestData = {
+    title: 'Test Qwest',
+    assignedBy: currentAuthUserId
+  };
+
+  // Create the Qwest
+  createQwest(qwestData);
+
+  // Assign the Qwest
+  assignQwest(qwestData, 'mockId1', assigningUserId);
+
+  // set the authorized User ID to the assigning User
+  firebase.__setAuthUserId(assigningUserId);
+
+  // Accept the Qwest
+  acceptQwest(assignedQwestData, 'mockId1');
+
+  // set the authorized User ID back to the original User
+  firebase.__setAuthUserId(currentAuthUserId);
+
+  // Revoke the Qwest
+  revokeQwest(assigningQwestData, 'mockId1');
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase();
+
+  // Expect that the approriate Qwests have been created/ updated
+  expect(Object.keys(database['qwests'])).toHaveLength(1);
+  expect(database['qwests']['mockId1'].assignedTo).toBeFalsy();
+
+  // Expect that the approriate User Qwests have been created/ updated
+  expect(Object.keys(database['user-qwests'])).toHaveLength(1);
+  expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
+  expect(Object.keys(database['user-qwests'][currentAuthUserId]['active'])).toHaveLength(1);
 });
 
 it('successfully returns a list of User Qwests', () => {
