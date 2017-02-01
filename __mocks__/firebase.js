@@ -4,6 +4,7 @@ import String from 'string';
 const firebase = jest.genMockFromModule('firebase');
 
 let mockDatabase = {};
+let mockAuthUserId = 'mockAuthUserId';
 
 // Mocked Methods
 // ##############
@@ -11,7 +12,7 @@ let mockDatabase = {};
 firebase.auth = () => {
   return {
     currentUser: {
-      uid: 'currentUserId'
+      uid: mockAuthUserId
     }
   };
 }
@@ -62,6 +63,14 @@ firebase.database = () => {
 
 firebase.__getAuthUserId = () => {
   return firebase.auth().currentUser.uid;
+}
+
+firebase.__setAuthUserId = (uid) => {
+  mockAuthUserId = uid;
+}
+
+firebase.__resetAuthUserId = (uid) => {
+  mockAuthUserId = 'mockAuthUserId';
 }
 
 firebase.__loadMockDatabase = (database) => {
