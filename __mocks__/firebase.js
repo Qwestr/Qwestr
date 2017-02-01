@@ -5,6 +5,9 @@ const firebase = jest.genMockFromModule('firebase');
 
 let mockDatabase = {};
 
+// Mocked Methods
+// ##############
+
 firebase.auth = () => {
   return {
     currentUser: {
@@ -44,12 +47,19 @@ firebase.database = () => {
   };
 }
 
+// Custom Methods
+// ##############
+
 firebase.__getAuthUserId = () => {
   return firebase.auth().currentUser.uid;
 }
 
 firebase.__loadMockDatabase = (database) => {
   mockDatabase = database;
+}
+
+firebase.__clearMockDatabase = (database) => {
+  mockDatabase = {};
 }
 
 firebase.__getMockDatabase = () => {
@@ -61,13 +71,20 @@ firebase.__updateMockDatabase = (key, update) => {
   firebase.__updateMockObject(mockDatabase, update, dbObjectNames);
 }
 
-firebase.__updateMockObject = (obj,  value, [firstKey, ...otherKeys]) => {
+firebase.__updateMockObject = (object,  value, [firstKey, ...otherKeys]) => {
   if (!otherKeys.length) {
-    obj[firstKey] = value;
-    return obj;
+    if (!value) {
+      delete object[firstKey];
+    } else {
+      object[firstKey] = value;
+    }
+    return object;
   } else {
-    obj[firstKey] = firebase.__updateMockObject(obj[firstKey] || {}, value, otherKeys);
-    return obj;
+    object[firstKey] = firebase.__updateMockObject(object[firstKey] || {}, value, otherKeys);
+    if (!(Object.keys(object[firstKey]).length)) {
+      delete object[firstKey];
+    }
+    return object;
   }
 }
 
