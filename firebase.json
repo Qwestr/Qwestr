@@ -3,6 +3,10 @@
     "rules": "src/config/db/rules.json"
   },
   "hosting": {
-    "public": "public"
+    "public": "build",
+    "rewrites": [ {
+      "source": "**",
+      "destination": "/index.html"
+    }]
   }
 }
