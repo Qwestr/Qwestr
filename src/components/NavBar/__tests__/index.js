@@ -1,7 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import NavBar from '../';
 
 it('renders without crashing', () => {
-  mount(<NavBar />);
+  shallow(<NavBar />);
 });

@@ -1,7 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import App from '../';
 
 it('renders without crashing', () => {
-  mount(<App />);
+  const location = {
+    pathname: '/'
+  };
+
+  shallow(<App location={location}/>);
 });
