@@ -15,8 +15,10 @@ export function startFirebaseUI(containerID, signInSuccessCallback) {
         scopes: [
           'user_friends'
         ]
-      },
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID
+      }
+      // TODO: Implement Google Login
+      // },
+      // firebase.auth.GoogleAuthProvider.PROVIDER_ID
     ]
   };
 

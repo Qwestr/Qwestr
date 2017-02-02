@@ -26,20 +26,15 @@ export function createQwest(qwestData, successCallback) {
   return firebase.database().ref().update(updates).then(successCallback);
 }
 
-export function getUserQwests(dataReceivedCallback) {
-  // Get current user id
-  const userId = firebase.auth().currentUser.uid;
-
-  // retrieve date from the database
-  firebase.database().ref('/user-qwests/' + userId).on('value', dataReceivedCallback);
-}
-
 export function completeQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
   // Get assiging user id
   const assigningUserId = qwestData.assignedBy;
+
+  // Get assigned user id
+  const assignedUserId = qwestData.assignedTo;
 
   // create Assign User Qwest and User Qwest object from data
   const assignedUserQwest = {
@@ -48,7 +43,7 @@ export function completeQwest(qwestData, key) {
   }
 
   const userQwest = {
-    assignedTo: userId,
+    assignedTo: assignedUserId,
     title: qwestData.title
   }
 
@@ -155,13 +150,24 @@ export function acceptQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
-export function removeQwest(key) {
+export function rejectQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
 
-  // Remove the Qwest from the User's completed Qwest list
+  // Get assigning user id
+  const assigningUserId = qwestData.assignedBy;
+
+  // create Active Qwest object from data
+  const activeQwest = {
+    title: qwestData.title
+  }
+
+  // Reject the Qwest and UserQwest's data simultaneously
   let updates = {};
-  updates['/user-qwests/' + userId + '/completed/' + key] = null;
+  updates['/qwests/' + key + '/assignedTo'] = null;
+  updates['/user-qwests/' + userId + '/pending/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
+  updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
 
   // update the database
   return firebase.database().ref().update(updates);
@@ -194,29 +200,6 @@ export function revokeQwest(qwestData, key) {
   return firebase.database().ref().update(updates);
 }
 
-export function rejectQwest(qwestData, key) {
-  // Get current user id
-  const userId = firebase.auth().currentUser.uid;
-
-  // Get assigning user id
-  const assigningUserId = qwestData.assignedBy;
-
-  // create Active Qwest object from data
-  const activeQwest = {
-    title: qwestData.title
-  }
-
-  // Reject the Qwest and UserQwest's data simultaneously
-  let updates = {};
-  updates['/qwests/' + key + '/assignedTo'] = null;
-  updates['/user-qwests/' + userId + '/pending/' + key] = null;
-  updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
-  updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
-
-  // update the database
-  return firebase.database().ref().update(updates);
-}
-
 export function dropQwest(qwestData, key) {
   // Get current user id
   const userId = firebase.auth().currentUser.uid;
@@ -236,6 +219,18 @@ export function dropQwest(qwestData, key) {
   updates['/user-qwests/' + userId + '/active/' + key] = null;
   updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
   updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
+
+  // update the database
+  return firebase.database().ref().update(updates);
+}
+
+export function removeQwest(key) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // Remove the Qwest from the User's completed Qwest list
+  let updates = {};
+  updates['/user-qwests/' + userId + '/completed/' + key] = null;
 
   // update the database
   return firebase.database().ref().update(updates);
@@ -264,4 +259,12 @@ export function deleteQwest(qwestData, key) {
 
   // update the database
   return firebase.database().ref().update(updates);
+}
+
+export function getUserQwests(dataReceivedCallback) {
+  // Get current user id
+  const userId = firebase.auth().currentUser.uid;
+
+  // retrieve date from the database
+  firebase.database().ref('/user-qwests/' + userId).on('value', dataReceivedCallback);
 }
