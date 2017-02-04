@@ -52,7 +52,6 @@ export function completeQwest(qwestData, key) {
   updates['/qwests/' + key + '/completed'] = true;
   updates['/user-qwests/' + userId + '/active/' + key] = null;
   if (assigningUserId) {
-    console.log('assigningUserId is TRUE');
     updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
     updates['/user-qwests/' + assigningUserId + '/completed/' + key] = userQwest;
     updates['/user-qwests/' + userId + '/completed/' + key] = assignedUserQwest;
