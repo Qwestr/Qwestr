@@ -10,7 +10,8 @@ coverage
 build
 
 # config
-src/config/*.json
+database.rules.json
+firebase.json
 
 # misc
 .DS_Store
