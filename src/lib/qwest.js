@@ -31,10 +31,10 @@ export function completeQwest(qwestData, key) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get assiging user id
-  const assigningUserId = qwestData.assignedBy;
+  const assigningUserId = qwestData.assignedBy || null;
 
   // Get assigned user id
-  const assignedUserId = qwestData.assignedTo;
+  const assignedUserId = qwestData.assignedTo || null;
 
   // create Assign User Qwest and User Qwest object from data
   const assignedUserQwest = {
@@ -92,7 +92,7 @@ export function assignQwest(qwestData, key, assignedUserId, successCallback) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get currently assigined user id
-  const currentAssignedUserId = qwestData.assignedTo;
+  const currentAssignedUserId = qwestData.assignedTo || null;
 
   // if the Qwest is already assigned to the same user, return without updating
   if (currentAssignedUserId === assignedUserId) {
@@ -131,7 +131,7 @@ export function acceptQwest(qwestData, key) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get assiging user id
-  const assigningUserId = qwestData.assignedBy;
+  const assigningUserId = qwestData.assignedBy || null;
 
   // create Accepted Qwest object from data
   const acceptedQwest = {
@@ -155,7 +155,7 @@ export function rejectQwest(qwestData, key) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get assigning user id
-  const assigningUserId = qwestData.assignedBy;
+  const assigningUserId = qwestData.assignedBy || null;
 
   // create Active Qwest object from data
   const activeQwest = {
@@ -178,7 +178,7 @@ export function revokeQwest(qwestData, key) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get assiged user id
-  const assignedUserId = qwestData.assignedTo;
+  const assignedUserId = qwestData.assignedTo || null;
 
   // create Active Qwest object from data
   const activeQwest = {
@@ -205,7 +205,7 @@ export function dropQwest(qwestData, key) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get assigning user id
-  const assigningUserId = qwestData.assignedBy;
+  const assigningUserId = qwestData.assignedBy || null;
 
   // create Active Qwest object from data
   const activeQwest = {
@@ -241,7 +241,7 @@ export function deleteQwest(qwestData, key) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get assiged user id
-  const assignedUserId = qwestData.assignedTo;
+  const assignedUserId = qwestData.assignedTo || null;
 
   // Delete the Qwest and UserQwest's data simultaneously
   let updates = {};

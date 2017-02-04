@@ -1,0 +1,8 @@
+Copy the contents of this file to a new file named database.rules.json and update accordingly
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
