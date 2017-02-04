@@ -2,14 +2,14 @@ Copy the contents of this file to a new file named firebase.json and update acco
 
 {
   "keys": {
-    "dev": {
+    "development": {
       "apiKey": "<API_KEY>",
       "authDomain": "<PROJECT_ID>.firebaseapp.com",
       "databaseURL": "https://<DATABASE_NAME>.firebaseio.com",
       "storageBucket": "<BUCKET>.appspot.com",
       "messagingSenderId": "<SENDER_ID>"
     },
-    "prod": {
+    "production": {
       "apiKey": "<API_KEY>",
       "authDomain": "<PROJECT_ID>.firebaseapp.com",
       "databaseURL": "https://<DATABASE_NAME>.firebaseio.com",

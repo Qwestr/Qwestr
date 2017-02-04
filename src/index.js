@@ -7,7 +7,7 @@ import Routes from './routes';
 import './index.css';
 
 // initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig.keys[process.env.NODE_ENV]);
 
 // Render React DOM
 ReactDOM.render(
