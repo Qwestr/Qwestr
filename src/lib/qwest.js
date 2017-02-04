@@ -31,10 +31,10 @@ export function completeQwest(qwestData, key) {
   const userId = firebase.auth().currentUser.uid;
 
   // Get assiging user id
-  const assigningUserId = qwestData.assignedBy;
-
+  const assigningUserId = qwestData.assignedBy || null;
+  console.log('assigningUserId: ' + assigningUserId);
   // Get assigned user id
-  const assignedUserId = qwestData.assignedTo;
+  const assignedUserId = qwestData.assignedTo || null;
 
   // create Assign User Qwest and User Qwest object from data
   const assignedUserQwest = {
@@ -52,6 +52,7 @@ export function completeQwest(qwestData, key) {
   updates['/qwests/' + key + '/completed'] = true;
   updates['/user-qwests/' + userId + '/active/' + key] = null;
   if (assigningUserId) {
+    console.log('assigningUserId is TRUE');
     updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
     updates['/user-qwests/' + assigningUserId + '/completed/' + key] = userQwest;
     updates['/user-qwests/' + userId + '/completed/' + key] = assignedUserQwest;
