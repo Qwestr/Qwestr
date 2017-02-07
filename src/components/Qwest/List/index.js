@@ -15,16 +15,17 @@ import {
   Tabs
 } from 'react-bootstrap';
 import {
-  getUserQwests,
-  acceptQwest,
   completeQwest,
   restartQwest,
   assignQwest,
-  removeQwest,
-  revokeQwest,
+  shareQwest,
+  acceptQwest,
   rejectQwest,
+  revokeQwest,
   dropQwest,
-  deleteQwest
+  removeQwest,
+  deleteQwest,
+  getUserQwests
 } from '../../../lib/qwest';
 import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
 import './style.css';
@@ -114,6 +115,13 @@ class QwestList extends Component {
           <div className="Qwest-list">
             <ListGroup>
               {this.getAssignedQwestList()}
+            </ListGroup>
+          </div>
+        </Tab>
+        <Tab eventKey='shared' title="Shared">
+          <div className="Qwest-list">
+            <ListGroup>
+              {this.getSharedQwestList()}
             </ListGroup>
           </div>
         </Tab>
@@ -227,6 +235,12 @@ class QwestList extends Component {
             Assign
           </Button>
           <Button
+            bsStyle="primary"
+            onClick={() => shareQwest(qwest, key)}
+          >
+            Share
+          </Button>
+          <Button
             bsStyle="danger"
             onClick={() => deleteQwest(qwest, key)}
           >
@@ -319,6 +333,34 @@ class QwestList extends Component {
           onClick={() => deleteQwest(qwest, key)}
         >
           Delete
+        </Button>
+      </ButtonGroup>
+    );
+  }
+
+  getSharedQwestList() {
+    if (this.state.qwests && this.state.qwests.shared) {
+      return Object.keys(this.state.qwests.shared).map((key) =>
+        <ListGroupItem key={key}>
+          <div className="Qwest-item-content">
+            {this.state.qwests.shared[key].title}
+            {this.getSharedQwestButtonGroup(this.state.qwests.shared[key], key)}
+          </div>
+        </ListGroupItem>
+      );
+    } else {
+      return;
+    }
+  }
+
+  getSharedQwestButtonGroup(qwest, key) {
+    return (
+      <ButtonGroup className="Qwest-item-button-group">
+        <Button
+          bsStyle="danger"
+          onClick={() => removeQwest(key)}
+        >
+          Remove
         </Button>
       </ButtonGroup>
     );
