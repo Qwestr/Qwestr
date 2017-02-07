@@ -252,11 +252,15 @@ export function dropQwest(qwestData, key) {
 
   // Reject the Qwest and UserQwest's data simultaneously
   let updates = {};
-  updates['/qwests/' + key + '/assignedTo'] = null;
-  updates['/qwests/' + key + '/accepted'] = null;
+  if (assigningUserId) {
+    updates['/qwests/' + key + '/assignedTo'] = null;
+    updates['/qwests/' + key + '/accepted'] = null;
+    updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
+    updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
+  }
+  updates['/qwests/' + key + '/sharedWith/' + userId] = null;
   updates['/user-qwests/' + userId + '/active/' + key] = null;
-  updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
-  updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
+  updates['/user-qwests/' + userId + '/shared/' + key] = null;
 
   // update the database
   return firebase.database().ref().update(updates);
