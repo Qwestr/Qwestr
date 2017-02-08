@@ -15,11 +15,6 @@ class QwestCreate extends Component {
     this.state = {
       title: ''
     }
-
-    // bind functions
-    this.handleChange = this.handleChange.bind(this)
-    this.handleFormSubmit = this.handleFormSubmit.bind(this)
-    this.createQwestSuccessCallback = this.createQwestSuccessCallback.bind(this)
   }
 
   createQwestSuccessCallback(data) {
@@ -71,14 +66,14 @@ class QwestCreate extends Component {
       <div className={classnames('Qwest', className)}>
         <div className="Qwest-content">
           <Panel header={panelHeader}>
-            <Form horizontal onSubmit={this.handleFormSubmit}>
+            <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
               <FormGroup controlId="title">
                 <Col componentClass={ControlLabel} sm={2}>Title</Col>
                 <Col sm={10}>
                   <FormControl
                     type="text"
                     placeholder="What This Qwest will be Called"
-                    onChange={this.handleChange}
+                    onChange={(event) => this.handleChange(event)}
                     value={this.state.title}
                   />
                 </Col>
