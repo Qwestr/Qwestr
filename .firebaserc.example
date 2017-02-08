@@ -1,7 +1,0 @@
-Copy the contents of this file to a new file named .firebaserc and update accordingly
-
-{
-  "projects": {
-    "default": "<PROJECT_ID>"
-  }
-}
