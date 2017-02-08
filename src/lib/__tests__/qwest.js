@@ -4,6 +4,7 @@ import {
   completeQwest,
   restartQwest,
   assignQwest,
+  shareQwest,
   acceptQwest,
   rejectQwest,
   revokeQwest,
@@ -137,6 +138,40 @@ it('successfully assigns a Qwest', () => {
   expect(Object.keys(database['user-qwests'][assigningUserId])).toHaveLength(1);
   expect(Object.keys(database['user-qwests'][assigningUserId]['pending'])).toHaveLength(1);
   expect(database['user-qwests'][assigningUserId]['pending']['mockId1'].assignedBy).toBe(currentAuthUserId);
+});
+
+it('successfully shares a Qwest', () => {
+  // Get authorized User ID
+  const currentAuthUserId = firebase.__getAuthUserId();
+
+  // Create test sharing User ID
+  const sharingUserId = 'testUserId';
+
+  // Create Qwest data object
+  const qwestData = {
+    title: 'Test Qwest'
+  };
+
+  // Create the Qwest
+  createQwest(qwestData);
+
+  // Share the Qwest
+  shareQwest(qwestData, 'mockId1', sharingUserId);
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase();
+
+  // Expect that the approriate Qwests have been created/ updated
+  expect(Object.keys(database['qwests'])).toHaveLength(1);
+  expect(database['qwests']['mockId1']['sharedWith'][sharingUserId]).toBeTruthy();
+
+  // Expect that the approriate User Qwests have been created/ updated
+  expect(Object.keys(database['user-qwests'])).toHaveLength(2);
+  expect(Object.keys(database['user-qwests'][currentAuthUserId])).toHaveLength(1);
+  expect(Object.keys(database['user-qwests'][currentAuthUserId]['active'])).toHaveLength(1);
+  expect(Object.keys(database['user-qwests'][sharingUserId])).toHaveLength(1);
+  expect(Object.keys(database['user-qwests'][sharingUserId]['shared'])).toHaveLength(1);
+  expect(database['user-qwests'][sharingUserId]['shared']['mockId1'].sharedBy).toBe(currentAuthUserId);
 });
 
 it('successfully accepts a Qwest', () => {
