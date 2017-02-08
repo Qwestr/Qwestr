@@ -1,17 +1,9 @@
-import React, { Component } from 'react';
-import {
-  Button,
-  Col,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  Panel
-} from 'react-bootstrap';
-import classnames from 'classnames';
 import firebase from 'firebase';
+import classnames from 'classnames';
+import React, { Component } from 'react';
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
-import { createQwest } from '../../../lib/qwest';
+import Qwest from '../../../models/Qwest';
 import './style.css';
 
 class QwestCreate extends Component {
@@ -41,16 +33,15 @@ class QwestCreate extends Component {
   }
 
   handleFormSubmit(event) {
-    // stop the form submission from reloading the page
+    // Stop the form submission from reloading the page
     event.preventDefault();
 
-    // Create Qwest data object.
-    const qwestData = {
+    // Create new Qwest object and save
+    const newQwest = new Qwest({
       title: this.state.title
-    };
+    });
 
-    // create the Qwest
-    createQwest(qwestData, this.createQwestSuccessCallback);
+    newQwest.create(this.createQwestSuccessCallback);
   }
 
   watchAuthState() {
