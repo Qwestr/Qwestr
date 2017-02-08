@@ -8,22 +8,22 @@ import './style.css'
 
 class QwestCreate extends Component {
   constructor(props) {
-    // set props
+    // Set props
     super(props)
 
-    // set state
+    // Set state
     this.state = {
       title: ''
     }
   }
 
   createQwestSuccessCallback(data) {
-    // redirect to Qwest list route
+    // Redirect to Qwest list route
     browserHistory.push('/qwest/list')
   }
 
   handleChange(event) {
-    // update state values
+    // Update state values
     this.setState({title: event.target.value})
   }
 
@@ -40,7 +40,7 @@ class QwestCreate extends Component {
   }
 
   watchAuthState() {
-    // setup auth change listener
+    // Setup auth change listener
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         // If User has not been authenticated, redirect to home
@@ -50,18 +50,18 @@ class QwestCreate extends Component {
   }
 
   componentDidMount() {
-    // setup listeners
+    // Setup listeners
     this.watchAuthState()
   }
 
   render() {
-    // declare relevant properties as local variables
+    // Declare relevant properties as local variables
     const { className, ..._props } = this.props
 
-    // declare other local variables
+    // Declare other local variables
     const panelHeader = (<h3>Create New Qwest</h3>)
 
-    // render the veiw
+    // Render the veiw
     return (
       <div className={classnames('Qwest', className)}>
         <div className="Qwest-content">
