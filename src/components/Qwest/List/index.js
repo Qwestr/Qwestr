@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Linkify from 'react-linkify';
 import firebase from 'firebase';
 import classnames from 'classnames';
 import graph from 'fbgraph';
@@ -247,7 +248,9 @@ class QwestList extends Component {
       return Object.keys(this.state.qwests.active).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
-            {this.state.qwests.active[key].title}
+            <Linkify>
+              {this.state.qwests.active[key].title}
+            </Linkify>
             {this.getActiveQwestButtonGroup(this.state.qwests.active[key], key)}
           </div>
         </ListGroupItem>
@@ -312,7 +315,9 @@ class QwestList extends Component {
       return Object.keys(this.state.qwests.completed).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
-            {this.state.qwests.completed[key].title}
+            <Linkify>
+              {this.state.qwests.completed[key].title}
+            </Linkify>
             {this.getCompletedQwestButtonGroup(this.state.qwests.completed[key], key)}
           </div>
         </ListGroupItem>
@@ -359,7 +364,9 @@ class QwestList extends Component {
       return Object.keys(this.state.qwests.assigned).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
-            {this.state.qwests.assigned[key].title}
+            <Linkify>
+              {this.state.qwests.assigned[key].title}
+            </Linkify>
             {this.getAssignedQwestButtonGroup(this.state.qwests.assigned[key], key)}
           </div>
         </ListGroupItem>
@@ -399,7 +406,9 @@ class QwestList extends Component {
       return Object.keys(this.state.qwests.shared).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
-            {this.state.qwests.shared[key].title}
+            <Linkify>
+              {this.state.qwests.shared[key].title}
+            </Linkify>
             {this.getSharedQwestButtonGroup(this.state.qwests.shared[key], key)}
           </div>
         </ListGroupItem>
@@ -426,7 +435,9 @@ class QwestList extends Component {
       return Object.keys(this.state.qwests.pending).map((key) =>
         <ListGroupItem key={key}>
           <div className="Qwest-item-content">
-            {this.state.qwests.pending[key].title}
+            <Linkify>
+              {this.state.qwests.pending[key].title}
+            </Linkify>
             {this.getPendingQwestButtonGroup(this.state.qwests.pending[key], key)}
           </div>
         </ListGroupItem>
