@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "qwestrdev"
+    "dev": "qwestrdev",
+    "prod": "qwestr-74ab2"
   }
 }
