@@ -1,47 +1,47 @@
-import firebase from 'firebase';
-import classnames from 'classnames';
-import React, { Component } from 'react';
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap';
-import { browserHistory } from 'react-router';
-import Qwest from '../../../models/Qwest';
-import './style.css';
+import firebase from 'firebase'
+import classnames from 'classnames'
+import React, { Component } from 'react'
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap'
+import { browserHistory } from 'react-router'
+import Qwest from '../../../models/Qwest'
+import './style.css'
 
 class QwestCreate extends Component {
   constructor(props) {
     // set props
-    super(props);
+    super(props)
 
     // set state
     this.state = {
       title: ''
-    };
+    }
 
     // bind functions
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.createQwestSuccessCallback = this.createQwestSuccessCallback.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.createQwestSuccessCallback = this.createQwestSuccessCallback.bind(this)
   }
 
   createQwestSuccessCallback(data) {
     // redirect to Qwest list route
-    browserHistory.push('/qwest/list');
+    browserHistory.push('/qwest/list')
   }
 
   handleChange(event) {
     // update state values
-    this.setState({title: event.target.value});
+    this.setState({title: event.target.value})
   }
 
   handleFormSubmit(event) {
     // Stop the form submission from reloading the page
-    event.preventDefault();
+    event.preventDefault()
 
     // Create new Qwest object and save
     const newQwest = new Qwest({
       title: this.state.title
-    });
+    })
 
-    newQwest.create(this.createQwestSuccessCallback);
+    newQwest.create(this.createQwestSuccessCallback)
   }
 
   watchAuthState() {
@@ -49,22 +49,22 @@ class QwestCreate extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         // If User has not been authenticated, redirect to home
-        browserHistory.push('/');
+        browserHistory.push('/')
       }
-    });
+    })
   }
 
   componentDidMount() {
     // setup listeners
-    this.watchAuthState();
+    this.watchAuthState()
   }
 
   render() {
     // declare relevant properties as local variables
-    const { className, ..._props } = this.props;
+    const { className, ..._props } = this.props
 
     // declare other local variables
-    const panelHeader = (<h3>Create New Qwest</h3>);
+    const panelHeader = (<h3>Create New Qwest</h3>)
 
     // render the veiw
     return (
@@ -92,8 +92,8 @@ class QwestCreate extends Component {
           </Panel>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default QwestCreate;
+export default QwestCreate
