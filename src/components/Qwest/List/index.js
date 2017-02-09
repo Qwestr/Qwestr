@@ -15,10 +15,11 @@ import {
   revokeQwest,
   dropQwest,
   removeQwest,
-  deleteQwest,
-  getUserQwests
+  deleteQwest
+  // getUserQwests
 } from '../../../lib/qwest';
 import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
+import UserQwestList from '../../../models/UserQwestList'
 import './style.css';
 
 class QwestList extends Component {
@@ -34,7 +35,7 @@ class QwestList extends Component {
       showAssignQwestModal: false,
       showShareQwestModal: false,
       friends: [],
-      qwests: {}
+      qwests: new UserQwestList()
     };
 
     // bind functions
@@ -45,7 +46,7 @@ class QwestList extends Component {
     this.getAssignedQwestList = this.getAssignedQwestList.bind(this);
     this.getSharedQwestList = this.getSharedQwestList.bind(this);
     this.getPendingQwestList = this.getPendingQwestList.bind(this);
-    this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
+    // this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
     this.getAssignQwestModal = this.getAssignQwestModal.bind(this);
     this.getFriendsAssignList = this.getFriendsAssignList.bind(this);
     this.showAssignQwestModal = this.showAssignQwestModal.bind(this);
@@ -490,9 +491,9 @@ class QwestList extends Component {
     this.setState({showShareQwestModal: false});
   }
 
-  getUserQwestsCallback(data) {
+  getQwestListCallback(data) {
     // set the state
-    this.setState({qwests: data.val()});
+    this.setState({qwests: data});
   }
 
   watchAuthState() {
@@ -503,7 +504,7 @@ class QwestList extends Component {
         browserHistory.push('/');
       } else {
         // Else, get User's list of Qwests
-        getUserQwests(this.getUserQwestsCallback);
+        this.state.qwests.getAll((data) => this.getQwestListCallback(data))
       }
     });
   }
