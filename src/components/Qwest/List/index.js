@@ -1,20 +1,10 @@
-import React, { Component } from 'react';
-import Linkify from 'react-linkify';
 import firebase from 'firebase';
 import classnames from 'classnames';
 import graph from 'fbgraph';
+import React, { Component } from 'react';
+import { Badge, Button, ButtonGroup, ListGroup, ListGroupItem, Modal, Panel, Tab, Tabs } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
-import {
-  Badge,
-  Button,
-  ButtonGroup,
-  ListGroup,
-  ListGroupItem,
-  Modal,
-  Panel,
-  Tab,
-  Tabs
-} from 'react-bootstrap';
+import Linkify from 'react-linkify';
 import {
   completeQwest,
   restartQwest,
