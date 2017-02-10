@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 import Linkify from 'react-linkify';
 import {
   completeQwest,
-  restartQwest,
+  // restartQwest,
   assignQwest,
   shareQwest,
   acceptQwest,
@@ -335,7 +335,7 @@ class QwestList extends Component {
         <ButtonGroup className="Qwest-item-button-group">
           <Button
             bsStyle="primary"
-            onClick={() => restartQwest(qwest, key)}
+            onClick={() => this.state.qwests.restart(key)}
           >
             Restart
           </Button>

@@ -49,12 +49,13 @@ export default class UserQwestList {
       // Write the new Qwest and UserQwest's data simultaneously
       let updates = {}
       updates['/qwests/' + key] = qwest
-      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
       if (qwest.assignedTo) {
-        updates['/user-qwests/' + qwest.assignedBy + '/assigned/' + key] = null
-        updates['/user-qwests/' + qwest.assignedBy + '/completed/' + key] = userQwest
-        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = assignedUserQwest
+        updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = null
+        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
+        updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = null
+        updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = assignedUserQwest
       } else {
+        updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
         updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
       }
 
@@ -63,40 +64,57 @@ export default class UserQwestList {
     })
   }
 
-  // export function completeQwest(qwestData, key) {
+  restart(key) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const assignedUserQwest = new UserQwest(data.val())
+
+      // Update/ Modify Qwest/ UserQwest objects
+      delete qwest.completed
+      userQwest.assignedBy = null
+      assignedUserQwest.assignedTo = null
+
+      // Write the new Qwest and UserQwest's data simultaneously
+      let updates = {};
+      updates['/qwests/' + key] = qwest;
+      if (qwest.assignedTo) {
+        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
+        updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
+        updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
+        updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = assignedUserQwest
+      } else {
+        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
+        updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
+      }
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
+
+  // export function restartQwest(qwestData, key) {
   //   // Get current user id
-  //   const userId = firebase.auth().currentUser.uid
+  //   const userId = firebase.auth().currentUser.uid;
   //
-  //   // Get assiging user id
-  //   const assigningUserId = qwestData.assignedBy || null
-  //
-  //   // Get assigned user id
-  //   const assignedUserId = qwestData.assignedTo || null
-  //
-  //   // Create Assign User Qwest and User Qwest object from data
-  //   const assignedUserQwest = {
-  //     assignedBy: assigningUserId,
+  //   // Create Qwest and User Qwest objects from data
+  //   const qwest = {
+  //     createdBy: userId,
   //     title: qwestData.title
   //   }
   //
   //   const userQwest = {
-  //     assignedTo: assignedUserId,
   //     title: qwestData.title
   //   }
   //
   //   // Write the new Qwest and UserQwest's data simultaneously
-  //   let updates = {}
-  //   updates['/qwests/' + key + '/completed'] = true
-  //   updates['/user-qwests/' + userId + '/active/' + key] = null
-  //   if (assigningUserId) {
-  //     updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null
-  //     updates['/user-qwests/' + assigningUserId + '/completed/' + key] = userQwest
-  //     updates['/user-qwests/' + userId + '/completed/' + key] = assignedUserQwest
-  //   } else {
-  //     updates['/user-qwests/' + userId + '/completed/' + key] = userQwest
-  //   }
+  //   let updates = {};
+  //   updates['/qwests/' + key] = qwest;
+  //   updates['/user-qwests/' + userId + '/completed/' + key] = null;
+  //   updates['/user-qwests/' + userId + '/active/' + key] = userQwest;
   //
   //   // Update the database
-  //   return firebase.database().ref().update(updates)
+  //   return firebase.database().ref().update(updates);
   // }
 }
