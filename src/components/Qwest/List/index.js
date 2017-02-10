@@ -274,7 +274,7 @@ class QwestList extends Component {
         <ButtonGroup className="Qwest-item-button-group">
           <Button
             bsStyle="primary"
-            onClick={() => completeQwest(qwest, key)}
+            onClick={() => this.state.qwests.complete(key)}
           >
             Complete
           </Button>

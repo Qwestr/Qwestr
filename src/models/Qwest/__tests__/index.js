@@ -14,7 +14,6 @@ it('successfully creates a Qwest', () => {
   const newQwest = new Qwest({
     title: 'New Qwest'
   })
-
   newQwest.create()
 
   // Get resulting database

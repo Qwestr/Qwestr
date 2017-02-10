@@ -12,15 +12,39 @@ it('successfully returns a list of User Qwests', () => {
   const qwest = new Qwest({
     title: 'Test Qwest'
   })
-
   qwest.create()
 
   // Create User Qwest List and get all User Qwests
   const userQwestList = new UserQwestList()
-
   userQwestList.getAll(() => {})
 
   // Expect that the correct list of User Qwests has been returned
-  expect(Object.keys(userQwestList)).toHaveLength(1)
   expect(Object.keys(userQwestList['active'])).toHaveLength(1)
+})
+
+it('successfully completes a User Qwest', () => {
+  // Create Qwest object and save
+  const qwest = new Qwest({
+    title: 'Test Qwest'
+  })
+  qwest.create()
+
+  // Create User Qwest List and get all User Qwests
+  const userQwestList = new UserQwestList()
+  userQwestList.getAll(() => {})
+
+  // Complete the Qwest
+  userQwestList.complete('mockId1')
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase()
+
+  // Expect that the approriate Qwests have been created/ updated
+  expect(Object.keys(database['qwests'])).toHaveLength(1)
+  expect(database['qwests']['mockId1'].completed).toBeTruthy()
+
+  // Expect that the approriate User Qwests have been created/ updated
+  expect(Object.keys(database['user-qwests'])).toHaveLength(1)
+  expect(Object.keys(database['user-qwests'][qwest.createdBy])).toHaveLength(1)
+  expect(Object.keys(database['user-qwests'][qwest.createdBy]['completed'])).toHaveLength(1)
 })
