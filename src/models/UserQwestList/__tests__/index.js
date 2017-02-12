@@ -10,7 +10,7 @@ afterEach(() => {
 it('successfully returns a list of User Qwests', () => {
   // Create Qwest object and save
   const qwest = new Qwest({
-    title: 'Test Qwest'
+    title: 'New Qwest'
   })
   qwest.create()
 
@@ -19,13 +19,13 @@ it('successfully returns a list of User Qwests', () => {
   userQwestList.getAll(() => {})
 
   // Expect that the correct list of User Qwests has been returned
-  expect(Object.keys(userQwestList['active'])).toHaveLength(1)
+  expect(userQwestList['active']).toBeFalsy()
 })
 
-it('successfully completes a Qwest', () => {
+it('successfully completes a User Qwest', () => {
   // Create Qwest object and save
   const qwest = new Qwest({
-    title: 'Test Qwest'
+    title: 'Complete Qwest'
   })
   qwest.create()
 
@@ -41,15 +41,14 @@ it('successfully completes a Qwest', () => {
 
   // Expect that the approriate Qwests have been created/ updated
   expect(Object.keys(database['qwests'])).toHaveLength(1)
-  expect(database['qwests']['mockId1'].completed).toBeTruthy()
+  expect(database['qwests']['mockId1']['completed']).toBeTruthy()
 
   // Expect that the approriate User Qwests have been created/ updated
-  expect(Object.keys(database['user-qwests'])).toHaveLength(1)
-  expect(Object.keys(database['user-qwests'][qwest.createdBy])).toHaveLength(1)
-  expect(Object.keys(database['user-qwests'][qwest.createdBy]['completed'])).toHaveLength(1)
+  expect(userQwestList['active']).toBeFalsy()
+  expect(userQwestList['completed']).toBeTruthy()
 })
 
-it('successfully restarts a Qwest', () => {
+it('successfully restarts a User Qwest', () => {
   // Create Qwest object and save
   const qwest = new Qwest({
     title: 'Test Qwest'
@@ -71,21 +70,20 @@ it('successfully restarts a Qwest', () => {
 
   // Expect that the approriate Qwests have been created/ updated
   expect(Object.keys(database['qwests'])).toHaveLength(1)
-  expect(database['qwests']['mockId1'].completed).toBeFalsy()
+  expect(database['qwests']['mockId1']['completed']).toBeFalsy()
 
   // Expect that the approriate User Qwests have been created/ updated
-  expect(Object.keys(database['user-qwests'])).toHaveLength(1)
-  expect(Object.keys(database['user-qwests'][qwest.createdBy])).toHaveLength(1)
-  expect(Object.keys(database['user-qwests'][qwest.createdBy]['active'])).toHaveLength(1)
+  expect(userQwestList['completed']).toBeFalsy()
+  expect(userQwestList['active']).toBeTruthy()
 })
 
-it('successfully assigns a Qwest', () => {
+it('successfully assigns a User Qwest', () => {
   // Create test assigning User ID
-  const assignedUserId = 'testUserId';
+  const assignedUserId = 'testUserId'
 
   // Create Qwest object and save
   const qwest = new Qwest({
-    title: 'Test Qwest'
+    title: 'Test Assigned Qwest'
   })
   qwest.create()
 
@@ -97,18 +95,15 @@ it('successfully assigns a Qwest', () => {
   userQwestList.assign('mockId1', assignedUserId)
 
   // Get resulting database
-  const database = firebase.__getMockDatabase();
+  const database = firebase.__getMockDatabase()
 
   // Expect that the approriate Qwests have been created/ updated
-  expect(Object.keys(database['qwests'])).toHaveLength(1);
-  expect(database['qwests']['mockId1'].assignedTo).toBe(assignedUserId);
+  expect(Object.keys(database['qwests'])).toHaveLength(1)
+  expect(database['qwests']['mockId1']['assignedTo']).toBe(assignedUserId)
 
   // Expect that the approriate User Qwests have been created/ updated
-  expect(Object.keys(database['user-qwests'])).toHaveLength(2);
-  expect(Object.keys(database['user-qwests'][qwest.createdBy])).toHaveLength(1);
-  expect(Object.keys(database['user-qwests'][qwest.createdBy]['assigned'])).toHaveLength(1);
-  expect(database['user-qwests'][qwest.createdBy]['assigned']['mockId1'].assignedTo).toBe(assignedUserId);
-  expect(Object.keys(database['user-qwests'][assignedUserId])).toHaveLength(1);
-  expect(Object.keys(database['user-qwests'][assignedUserId]['pending'])).toHaveLength(1);
-  expect(database['user-qwests'][assignedUserId]['pending']['mockId1'].assignedBy).toBe(qwest.createdBy);
-});
+  expect(userQwestList['active']).toBeFalsy()
+  expect(userQwestList['assigned']).toBeTruthy()
+  expect(userQwestList['assigned']['mockId1']['assignedTo']).toBe(assignedUserId)
+  expect(database['user-qwests'][assignedUserId]['pending']['mockId1']['assignedBy']).toBe(qwest.createdBy)
+})

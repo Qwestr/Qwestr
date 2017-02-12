@@ -56,13 +56,13 @@ export default class UserQwestList {
       let updates = {}
       updates['/qwests/' + key] = qwest
       if (qwest.assignedTo) {
+        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
         updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = null
-        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
-        updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = null
         updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = assignedUserQwest
+        updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = null
       } else {
-        updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
         updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
+        updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
       }
 
       // Update the database
@@ -86,13 +86,13 @@ export default class UserQwestList {
       let updates = {}
       updates['/qwests/' + key] = qwest
       if (qwest.assignedTo) {
-        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
         updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
-        updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
-        updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = assignedUserQwest
-      } else {
         updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
+        updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = assignedUserQwest
+        updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
+      } else {
         updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
+        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
       }
 
       // Update the database
@@ -126,8 +126,8 @@ export default class UserQwestList {
       // Write the Qwest and UserQwest's data simultaneously
       let updates = {}
       updates['/qwests/' + key] = qwest
-      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
       updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
+      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
       updates['/user-qwests/' + qwest.assignedTo + '/pending/' + key] = assignedUserQwest
       if (currentAssignedUserId) {
         updates['/user-qwests/' + currentAssignedUserId + '/active/' + key] = null

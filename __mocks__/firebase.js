@@ -1,9 +1,11 @@
+import gawk from 'gawk'
 import String from 'string'
 
 // Mock out functions of original module
 const firebase = jest.genMockFromModule('firebase')
 
-let mockDatabase = {}
+let mockDatabase = gawk({})
+
 let mockAuthUserId = 'mockAuthUserId'
 
 // Mocked Methods
@@ -48,11 +50,19 @@ firebase.database = () => {
           if (prop !== 'value') {
             throw new Error("'value' must be used as the first argument")
           }
-          callback({
-            val: () => {
-              return firebase.__getMockObject(refPath)
-            }
+          // Watch for changes to the database at the specified path
+          gawk.watch(firebase.__getMockObject(refPath), (obj, source) => {
+            callback({
+              val: () => {
+                return obj
+              }
+            })
           })
+          // callback({
+          //   val: () => {
+          //     return firebase.__getMockObject(refPath)
+          //   }
+          // })
         },
         update: (updates) => {
           for (let key in updates) {
@@ -92,7 +102,7 @@ firebase.__loadMockDatabase = (database) => {
 }
 
 firebase.__clearMockDatabase = (database) => {
-  mockDatabase = {}
+  mockDatabase = gawk({})
 }
 
 firebase.__getMockDatabase = () => {
