@@ -1,10 +1,10 @@
-import firebase from 'firebase';
-import classnames from 'classnames';
-import graph from 'fbgraph';
-import React, { Component } from 'react';
-import { Badge, Button, ButtonGroup, ListGroup, ListGroupItem, Modal, Panel, Tab, Tabs } from 'react-bootstrap';
-import { browserHistory } from 'react-router';
-import Linkify from 'react-linkify';
+import firebase from 'firebase'
+import classnames from 'classnames'
+import graph from 'fbgraph'
+import React, { Component } from 'react'
+import { Badge, Button, ButtonGroup, ListGroup, ListGroupItem, Modal, Panel, Tab, Tabs } from 'react-bootstrap'
+import { browserHistory } from 'react-router'
+import Linkify from 'react-linkify'
 import {
   completeQwest,
   // restartQwest,
@@ -17,15 +17,15 @@ import {
   removeQwest,
   deleteQwest
   // getUserQwests
-} from '../../../lib/qwest';
-import { getCurrentUserInfo, getUserInfo } from '../../../lib/user';
+} from '../../../lib/qwest'
+import { getCurrentUserInfo, getUserInfo } from '../../../lib/user'
 import UserQwestList from '../../../models/UserQwestList'
-import './style.css';
+import './style.css'
 
 class QwestList extends Component {
   constructor(props) {
     // set props
-    super(props);
+    super(props)
 
     // set state
     this.state = {
@@ -34,56 +34,56 @@ class QwestList extends Component {
       currentQwestData: null,
       showAssignQwestModal: false,
       showShareQwestModal: false,
-      friends: [],
-      qwests: new UserQwestList()
-    };
+      qwests: new UserQwestList(),
+      friends: []
+    }
 
     // bind functions
-    this.handleTabSelect = this.handleTabSelect.bind(this);
-    this.getFacebookFriends = this.getFacebookFriends.bind(this);
-    this.getActiveQwestList = this.getActiveQwestList.bind(this);
-    this.getCompletedQwestList = this.getCompletedQwestList.bind(this);
-    this.getAssignedQwestList = this.getAssignedQwestList.bind(this);
-    this.getSharedQwestList = this.getSharedQwestList.bind(this);
-    this.getPendingQwestList = this.getPendingQwestList.bind(this);
-    // this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this);
-    this.getAssignQwestModal = this.getAssignQwestModal.bind(this);
-    this.getFriendsAssignList = this.getFriendsAssignList.bind(this);
-    this.showAssignQwestModal = this.showAssignQwestModal.bind(this);
-    this.closeAssignQwestModal = this.closeAssignQwestModal.bind(this);
-    this.assignQwestCallback = this.assignQwestCallback.bind(this);
-    this.getShareQwestModal = this.getShareQwestModal.bind(this);
-    this.getFriendsShareList = this.getFriendsShareList.bind(this);
-    this.showShareQwestModal = this.showShareQwestModal.bind(this);
-    this.closeShareQwestModal = this.closeShareQwestModal.bind(this);
-    this.shareQwestCallback = this.shareQwestCallback.bind(this);
+    this.handleTabSelect = this.handleTabSelect.bind(this)
+    this.getFacebookFriends = this.getFacebookFriends.bind(this)
+    this.getActiveQwestList = this.getActiveQwestList.bind(this)
+    this.getCompletedQwestList = this.getCompletedQwestList.bind(this)
+    this.getAssignedQwestList = this.getAssignedQwestList.bind(this)
+    this.getSharedQwestList = this.getSharedQwestList.bind(this)
+    this.getPendingQwestList = this.getPendingQwestList.bind(this)
+    // this.getUserQwestsCallback = this.getUserQwestsCallback.bind(this)
+    this.getAssignQwestModal = this.getAssignQwestModal.bind(this)
+    this.getFriendsAssignList = this.getFriendsAssignList.bind(this)
+    this.showAssignQwestModal = this.showAssignQwestModal.bind(this)
+    this.closeAssignQwestModal = this.closeAssignQwestModal.bind(this)
+    this.assignQwestCallback = this.assignQwestCallback.bind(this)
+    this.getShareQwestModal = this.getShareQwestModal.bind(this)
+    this.getFriendsShareList = this.getFriendsShareList.bind(this)
+    this.showShareQwestModal = this.showShareQwestModal.bind(this)
+    this.closeShareQwestModal = this.closeShareQwestModal.bind(this)
+    this.shareQwestCallback = this.shareQwestCallback.bind(this)
   }
 
   handleTabSelect(value) {
     // update state values
-    this.setState({activeTab: value});
+    this.setState({activeTab: value})
   }
 
   getFacebookFriends() {
     // Get current User data
     getCurrentUserInfo((data) => {
       // set Facebook Graph access token
-      let accessToken = data.val().credentials.Facebook.accessToken;
-      graph.setAccessToken(accessToken);
+      let accessToken = data.val().credentials.Facebook.accessToken
+      graph.setAccessToken(accessToken)
 
       // get list of friends
       graph.get('me/friends', (err, res) => {
         // update state values
-        this.setState({friends: res.data});
-      });
-    });
+        this.setState({friends: res.data})
+      })
+    })
   }
 
   assignQwestToUser(userData) {
     // Get User data
     getUserInfo(userData, (data) => {
       // get user ID from data
-      const assignedUserId = data.val().userId;
+      const assignedUserId = data.val().userId
 
       // assign Qwest
       assignQwest(
@@ -91,20 +91,20 @@ class QwestList extends Component {
         this.state.currentQwestKey,
         assignedUserId,
         this.assignQwestCallback
-      );
-    });
+      )
+    })
   }
 
   assignQwestCallback(data) {
     // close the Assign Qwest modal view
-    this.closeAssignQwestModal();
+    this.closeAssignQwestModal()
   }
 
   shareQwestWithUser(userData) {
     // Get User data
     getUserInfo(userData, (data) => {
       // get user ID from data
-      const sharingUserId = data.val().userId;
+      const sharingUserId = data.val().userId
 
       // assign Qwest
       shareQwest(
@@ -112,13 +112,13 @@ class QwestList extends Component {
         this.state.currentQwestKey,
         sharingUserId,
         this.shareQwestCallback
-      );
-    });
+      )
+    })
   }
 
   shareQwestCallback(data) {
     // close the Share Qwest modal view
-    this.closeShareQwestModal();
+    this.closeShareQwestModal()
   }
 
   getQwestListNavigation() {
@@ -160,7 +160,7 @@ class QwestList extends Component {
           </div>
         </Tab>
       </Tabs>
-    );
+    )
   }
 
   getPendingTabTitle() {
@@ -191,7 +191,7 @@ class QwestList extends Component {
             <Button onClick={this.closeAssignQwestModal}>Close</Button>
           </Modal.Footer>
         </Modal>
-    );
+    )
   }
 
   getFriendsAssignList() {
@@ -200,9 +200,9 @@ class QwestList extends Component {
         <ListGroupItem key={index} onClick={() => this.assignQwestToUser(friend)}>
           {friend.name}
         </ListGroupItem>
-      );
+      )
     } else {
-      return null;
+      return null
     }
   }
 
@@ -219,7 +219,7 @@ class QwestList extends Component {
             <Button onClick={this.closeShareQwestModal}>Close</Button>
           </Modal.Footer>
         </Modal>
-    );
+    )
   }
 
   getFriendsShareList() {
@@ -228,9 +228,9 @@ class QwestList extends Component {
         <ListGroupItem key={index} onClick={() => this.shareQwestWithUser(friend)}>
           {friend.name}
         </ListGroupItem>
-      );
+      )
     } else {
-      return null;
+      return null
     }
   }
 
@@ -245,9 +245,9 @@ class QwestList extends Component {
             {this.getActiveQwestButtonGroup(this.state.qwests.active[key], key)}
           </div>
         </ListGroupItem>
-      );
+      )
     } else {
-      return;
+      return
     }
   }
 
@@ -268,7 +268,7 @@ class QwestList extends Component {
             Drop
           </Button>
         </ButtonGroup>
-      );
+      )
     } else {
       return (
         <ButtonGroup className="Qwest-item-button-group">
@@ -297,7 +297,7 @@ class QwestList extends Component {
             Delete
           </Button>
         </ButtonGroup>
-      );
+      )
     }
   }
 
@@ -312,9 +312,9 @@ class QwestList extends Component {
             {this.getCompletedQwestButtonGroup(this.state.qwests.completed[key], key)}
           </div>
         </ListGroupItem>
-      );
+      )
     } else {
-      return;
+      return
     }
   }
 
@@ -329,7 +329,7 @@ class QwestList extends Component {
             Remove
           </Button>
         </ButtonGroup>
-      );
+      )
     } else {
       return (
         <ButtonGroup className="Qwest-item-button-group">
@@ -346,7 +346,7 @@ class QwestList extends Component {
             Delete
           </Button>
         </ButtonGroup>
-      );
+      )
     }
   }
 
@@ -361,9 +361,9 @@ class QwestList extends Component {
             {this.getAssignedQwestButtonGroup(this.state.qwests.assigned[key], key)}
           </div>
         </ListGroupItem>
-      );
+      )
     } else {
-      return;
+      return
     }
   }
 
@@ -389,7 +389,7 @@ class QwestList extends Component {
           Delete
         </Button>
       </ButtonGroup>
-    );
+    )
   }
 
   getSharedQwestList() {
@@ -403,9 +403,9 @@ class QwestList extends Component {
             {this.getSharedQwestButtonGroup(this.state.qwests.shared[key], key)}
           </div>
         </ListGroupItem>
-      );
+      )
     } else {
-      return;
+      return
     }
   }
 
@@ -418,7 +418,7 @@ class QwestList extends Component {
           Drop
         </Button>
       </ButtonGroup>
-    );
+    )
   }
 
   getPendingQwestList() {
@@ -432,9 +432,9 @@ class QwestList extends Component {
             {this.getPendingQwestButtonGroup(this.state.qwests.pending[key], key)}
           </div>
         </ListGroupItem>
-      );
+      )
     } else {
-      return;
+      return
     }
   }
 
@@ -454,7 +454,7 @@ class QwestList extends Component {
           Reject
         </Button>
       </ButtonGroup>
-    );
+    )
   }
 
   showAssignQwestModal(qwestData, key) {
@@ -463,15 +463,15 @@ class QwestList extends Component {
       currentQwestKey: key,
       currentQwestData: qwestData,
       showAssignQwestModal: true
-    });
+    })
 
     // get list of friends from Facebook
-    this.getFacebookFriends();
+    this.getFacebookFriends()
   }
 
   closeAssignQwestModal() {
     // set the state
-    this.setState({showAssignQwestModal: false});
+    this.setState({showAssignQwestModal: false})
   }
 
   showShareQwestModal(qwestData, key) {
@@ -480,20 +480,20 @@ class QwestList extends Component {
       currentQwestKey: key,
       currentQwestData: qwestData,
       showShareQwestModal: true
-    });
+    })
 
     // get list of friends from Facebook
-    this.getFacebookFriends();
+    this.getFacebookFriends()
   }
 
   closeShareQwestModal() {
     // set the state
-    this.setState({showShareQwestModal: false});
+    this.setState({showShareQwestModal: false})
   }
 
   getQwestListCallback(data) {
     // set the state
-    this.setState({qwests: data});
+    this.setState({qwests: data})
   }
 
   watchAuthState() {
@@ -501,25 +501,25 @@ class QwestList extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         // If User has not been authenticated, redirect to home
-        browserHistory.push('/');
+        browserHistory.push('/')
       } else {
         // Else, get User's list of Qwests
         this.state.qwests.getAll((data) => this.getQwestListCallback(data))
       }
-    });
+    })
   }
 
   componentDidMount() {
     // setup listeners
-    this.watchAuthState();
+    this.watchAuthState()
   }
 
   render() {
     // declare relevant properties as local variables
-    const { className, ..._props } = this.props;
+    const { className, ..._props } = this.props
 
     // declare other local variables
-    const panelHeader = (<h3>Qwests</h3>);
+    const panelHeader = (<h3>Qwests</h3>)
 
     // render the veiw
     return (
@@ -532,8 +532,8 @@ class QwestList extends Component {
           {this.getShareQwestModal()}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default QwestList;
+export default QwestList

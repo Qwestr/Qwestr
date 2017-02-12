@@ -5,13 +5,19 @@ import UserQwest from '../UserQwest'
 export default class UserQwestList {
   constructor() {
     this.active = null
+    this.assigned = null
+    this.shared = null
     this.completed = null
+    this.pending = null
   }
 
   getDataSuccess(data, dataUpdateCallback) {
     // Update data
     this.active = data.val().active
+    this.assigned = data.val().assigned
+    this.shared = data.val().shared
     this.completed = data.val().completed
+    this.pending = data.val().pending
 
     // Call data update callback method
     dataUpdateCallback(this)
@@ -43,8 +49,8 @@ export default class UserQwestList {
 
       // Update/ Modify Qwest/ UserQwest objects
       qwest.completed = true
-      userQwest.assignedBy = null
-      assignedUserQwest.assignedTo = null
+      delete userQwest.assignedBy
+      delete assignedUserQwest.assignedTo
 
       // Write the new Qwest and UserQwest's data simultaneously
       let updates = {}
@@ -73,12 +79,12 @@ export default class UserQwestList {
 
       // Update/ Modify Qwest/ UserQwest objects
       delete qwest.completed
-      userQwest.assignedBy = null
-      assignedUserQwest.assignedTo = null
+      delete userQwest.assignedBy
+      delete assignedUserQwest.assignedTo
 
       // Write the new Qwest and UserQwest's data simultaneously
-      let updates = {};
-      updates['/qwests/' + key] = qwest;
+      let updates = {}
+      updates['/qwests/' + key] = qwest
       if (qwest.assignedTo) {
         updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
         updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
@@ -94,27 +100,42 @@ export default class UserQwestList {
     })
   }
 
-  // export function restartQwest(qwestData, key) {
-  //   // Get current user id
-  //   const userId = firebase.auth().currentUser.uid;
-  //
-  //   // Create Qwest and User Qwest objects from data
-  //   const qwest = {
-  //     createdBy: userId,
-  //     title: qwestData.title
-  //   }
-  //
-  //   const userQwest = {
-  //     title: qwestData.title
-  //   }
-  //
-  //   // Write the new Qwest and UserQwest's data simultaneously
-  //   let updates = {};
-  //   updates['/qwests/' + key] = qwest;
-  //   updates['/user-qwests/' + userId + '/completed/' + key] = null;
-  //   updates['/user-qwests/' + userId + '/active/' + key] = userQwest;
-  //
-  //   // Update the database
-  //   return firebase.database().ref().update(updates);
-  // }
+  assign(key, assignedUserId, successCallback) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const assignedUserQwest = new UserQwest(data.val())
+
+      // Get currently assigined user id
+      const currentAssignedUserId = qwest.assignedTo || null
+
+      // If the Qwest is already assigned to the same user, return without updating
+      if (currentAssignedUserId === assignedUserId) {
+        return successCallback()
+      }
+
+      // Update/ Modify Qwest/ UserQwest objects
+      delete qwest.accepted
+      qwest.assignedTo = assignedUserId
+      delete userQwest.assignedBy
+      userQwest.assignedTo = assignedUserId
+      delete assignedUserQwest.assignedTo
+      assignedUserQwest.assignedBy = qwest.createdBy
+
+      // Write the Qwest and UserQwest's data simultaneously
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
+      updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
+      updates['/user-qwests/' + qwest.assignedTo + '/pending/' + key] = assignedUserQwest
+      if (currentAssignedUserId) {
+        updates['/user-qwests/' + currentAssignedUserId + '/active/' + key] = null
+        updates['/user-qwests/' + currentAssignedUserId + '/pending/' + key] = null
+      }
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
 }
