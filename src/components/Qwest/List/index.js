@@ -8,7 +8,7 @@ import Linkify from 'react-linkify'
 import {
   completeQwest,
   // restartQwest,
-  assignQwest,
+  // assignQwest,
   shareQwest,
   acceptQwest,
   rejectQwest,
@@ -86,12 +86,7 @@ class QwestList extends Component {
       const assignedUserId = data.val().userId
 
       // assign Qwest
-      assignQwest(
-        this.state.currentQwestData,
-        this.state.currentQwestKey,
-        assignedUserId,
-        this.assignQwestCallback
-      )
+      this.state.qwests.assign(this.state.currentQwestKey, assignedUserId, this.assignQwestCallback)
     })
   }
 

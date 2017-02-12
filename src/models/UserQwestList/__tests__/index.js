@@ -51,7 +51,7 @@ it('successfully completes a User Qwest', () => {
 it('successfully restarts a User Qwest', () => {
   // Create Qwest object and save
   const qwest = new Qwest({
-    title: 'Test Qwest'
+    title: 'Restart Qwest'
   })
   qwest.create()
 
@@ -83,7 +83,7 @@ it('successfully assigns a User Qwest', () => {
 
   // Create Qwest object and save
   const qwest = new Qwest({
-    title: 'Test Assigned Qwest'
+    title: 'Assign Qwest'
   })
   qwest.create()
 
