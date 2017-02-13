@@ -2,14 +2,15 @@ import firebase from 'firebase'
 
 export class UserQwest {
   constructor(props) {
+    this.assignedTo = props.assignedTo
     this.title = props.title
   }
 }
 
 export class AssignedUserQwest {
   constructor(props) {
-    this.title = props.title
     this.assignedBy = props.createdBy
+    this.title = props.title
   }
 }
 

@@ -48,7 +48,7 @@ export default class QwestManager {
       // Update/ Modify Qwest/ UserQwest objects
       qwest.completed = true
 
-      // Write the new Qwest and UserQwest's data simultaneously
+      // Prepare updates for Qwest/ UserQwest data
       let updates = {}
       updates['/qwests/' + key] = qwest
       if (qwest.assignedTo) {
@@ -59,6 +59,34 @@ export default class QwestManager {
       } else {
         updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
         updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
+      }
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
+
+  restart(key) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const assignedUserQwest = new AssignedUserQwest(data.val())
+
+      // Update/ Modify Qwest/ UserQwest objects
+      delete qwest.completed
+
+      // Prepare updates for Qwest/ UserQwest data
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      if (qwest.assignedTo) {
+        updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
+        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
+        updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = assignedUserQwest
+        updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
+      } else {
+        updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
+        updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = null
       }
 
       // Update the database
