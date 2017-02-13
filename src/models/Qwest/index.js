@@ -14,9 +14,17 @@ export class AssignedUserQwest {
   }
 }
 
+export class AssigningUserQwest {
+  constructor(props) {
+    this.assignedTo = props.assignedTo
+    this.accepted = props.accepted
+    this.title = props.title
+  }
+}
+
 export default class Qwest {
   constructor(props) {
-    this.createdBy = firebase.auth().currentUser.uid
+    this.createdBy = props.createdBy || firebase.auth().currentUser.uid
     this.assignedTo = props.assignedTo
     this.accepted = props.accepted
     this.completed = props.completed
