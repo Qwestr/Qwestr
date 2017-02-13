@@ -58,6 +58,12 @@ firebase.database = () => {
               }
             })
           })
+          // Call the callback once initially
+          callback({
+            val: () => {
+              return firebase.__getMockObject(refPath)
+            }
+          })
         },
         update: (updates) => {
           for (let key in updates) {
