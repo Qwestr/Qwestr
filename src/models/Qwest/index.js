@@ -1,5 +1,17 @@
 import firebase from 'firebase'
-import UserQwest from '../UserQwest'
+
+export class UserQwest {
+  constructor(props) {
+    this.title = props.title
+  }
+}
+
+export class AssignedUserQwest {
+  constructor(props) {
+    this.title = props.title
+    this.assignedBy = props.createdBy
+  }
+}
 
 export default class Qwest {
   constructor(props) {
