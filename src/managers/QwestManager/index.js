@@ -93,4 +93,40 @@ export default class QwestManager {
       return firebase.database().ref().update(updates)
     })
   }
+
+  assign(key, assignedUserId, successCallback) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const assignedUserQwest = new AssignedUserQwest(data.val())
+
+      // Get currently assigined user id
+      const currentAssignedUserId = qwest.assignedTo || null
+
+      // If the Qwest is already assigned to the same user, return without updating
+      if (currentAssignedUserId === assignedUserId) {
+        return successCallback()
+      }
+
+      // Update/ Modify Qwest/ UserQwest objects
+      delete qwest.accepted
+      qwest.assignedTo = assignedUserId
+      userQwest.assignedTo = assignedUserId
+
+      // Prepare updates for Qwest/ UserQwest data
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
+      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
+      updates['/user-qwests/' + qwest.assignedTo + '/pending/' + key] = assignedUserQwest
+      if (currentAssignedUserId) {
+        updates['/user-qwests/' + currentAssignedUserId + '/active/' + key] = null
+        updates['/user-qwests/' + currentAssignedUserId + '/pending/' + key] = null
+      }
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
 }

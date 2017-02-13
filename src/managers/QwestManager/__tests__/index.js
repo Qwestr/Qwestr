@@ -93,3 +93,35 @@ it('successfully restarts a Qwest', () => {
   expect(userQwests.completed).toBeFalsy()
   expect(userQwests.active['mockId1'].title).toBe(qwest.title)
 })
+
+it('successfully assigns a Qwest', () => {
+  // Create a new Qwest
+  const qwest = createNewQwest()
+
+  // Create an initial User Qwests object
+  let userQwests = {}
+
+  // Create a new QwestManager and get all User Qwests
+  const qwestManager = new QwestManager()
+  qwestManager.getAllUserQwests((data) => {
+    userQwests = data
+  })
+
+  // Create test assigning User ID
+  const assignedUserId = 'testUserId'
+
+  // Assign the Qwest
+  qwestManager.assign('mockId1', assignedUserId)
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase()
+
+  // Expect that the correct Qwest data has been created/ updated
+  expect(database['qwests']['mockId1'].assignedTo).toBe(assignedUserId)
+
+  // Expect that the correct User Qwest data has been created/ updated
+  expect(userQwests.active).toBeFalsy()
+  expect(userQwests.assigned).toBeTruthy()
+  expect(userQwests.assigned['mockId1'].assignedTo).toBe(assignedUserId)
+  expect(database['user-qwests'][assignedUserId]['pending']['mockId1'].assignedBy).toBe(qwest.createdBy)
+})
