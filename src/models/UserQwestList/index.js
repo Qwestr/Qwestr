@@ -138,4 +138,74 @@ export default class UserQwestList {
       return firebase.database().ref().update(updates)
     })
   }
+
+  accept(key) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const acceptedUserQwest = new UserQwest(data.val())
+
+      //   // Get assiging user id
+      //   const assigningUserId = qwestData.assignedBy || null;
+      //
+      //   // create Accepted Qwest object from data
+      //   const acceptedQwest = {
+      //     assignedBy: qwestData.assignedBy,
+      //     title: qwestData.title
+      //   }
+      //
+      //   // Assign the Qwest and UserQwest's data simultaneously
+      //   let updates = {};
+      //   updates['/qwests/' + key + '/accepted'] = true;
+      //   updates['/user-qwests/' + assigningUserId + '/assigned/' + key + '/accepted'] = true;
+      //   updates['/user-qwests/' + userId + '/pending/' + key] = null;
+      //   updates['/user-qwests/' + userId + '/active/' + key] = acceptedQwest;
+
+      // Update/ Modify Qwest/ UserQwest objects
+      qwest.accepted = true
+      delete userQwest.assignedBy
+      userQwest.assignedTo = assignedUserId
+      delete assignedUserQwest.assignedTo
+      assignedUserQwest.assignedBy = qwest.createdBy
+
+      // Write the Qwest and UserQwest's data simultaneously
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
+      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = null
+      updates['/user-qwests/' + qwest.assignedTo + '/pending/' + key] = assignedUserQwest
+      if (currentAssignedUserId) {
+        updates['/user-qwests/' + currentAssignedUserId + '/active/' + key] = null
+        updates['/user-qwests/' + currentAssignedUserId + '/pending/' + key] = null
+      }
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
+
+  // export function acceptQwest(qwestData, key) {
+  //   // Get current user id
+  //   const userId = firebase.auth().currentUser.uid;
+  //
+  //   // Get assiging user id
+  //   const assigningUserId = qwestData.assignedBy || null;
+  //
+  //   // create Accepted Qwest object from data
+  //   const acceptedQwest = {
+  //     assignedBy: qwestData.assignedBy,
+  //     title: qwestData.title
+  //   }
+  //
+  //   // Assign the Qwest and UserQwest's data simultaneously
+  //   let updates = {};
+  //   updates['/qwests/' + key + '/accepted'] = true;
+  //   updates['/user-qwests/' + assigningUserId + '/assigned/' + key + '/accepted'] = true;
+  //   updates['/user-qwests/' + userId + '/pending/' + key] = null;
+  //   updates['/user-qwests/' + userId + '/active/' + key] = acceptedQwest;
+  //
+  //   // update the database
+  //   return firebase.database().ref().update(updates);
+  // }
 }

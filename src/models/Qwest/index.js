@@ -4,6 +4,9 @@ import UserQwest from '../UserQwest'
 export default class Qwest {
   constructor(props) {
     this.createdBy = firebase.auth().currentUser.uid
+    this.assignedTo = props.assignedTo
+    this.accepted = props.accepted
+    this.completed = props.completed
     this.title = props.title
   }
 
