@@ -280,19 +280,20 @@ export default class QwestManager {
     })
   }
 
-  //
-  // export function removeQwest(key) {
-  //   // Get current user id
-  //   const userId = firebase.auth().currentUser.uid;
-  //
-  //   // Remove the Qwest from the User's completed Qwest list
-  //   let updates = {};
-  //   updates['/user-qwests/' + userId + '/completed/' + key] = null;
-  //
-  //   // update the database
-  //   return firebase.database().ref().update(updates);
-  // }
-  //
+  remove(key) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+
+      // Prepare updates for Qwest/ UserQwest data
+      let updates = {}
+      updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
+
   // export function deleteQwest(qwestData, key) {
   //   // Get current user id
   //   const userId = firebase.auth().currentUser.uid;
