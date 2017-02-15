@@ -142,9 +142,6 @@ it('successfully accepts a Qwest', () => {
   // Assign the Qwest
   qwestManager.assign('mockId1', assignedUserId)
 
-  // set the authorized User ID to the assigned User
-  firebase.__setAuthUserId(assignedUserId)
-
   // Accept the Qwest
   qwestManager.accept('mockId1')
 
@@ -178,9 +175,6 @@ it('successfully rejects a Qwest', () => {
 
   // Assign the Qwest
   qwestManager.assign('mockId1', assignedUserId)
-
-  // set the authorized User ID to the assigned User
-  firebase.__setAuthUserId(assignedUserId)
 
   // Reject the Qwest
   qwestManager.reject('mockId1')
@@ -216,14 +210,8 @@ it('successfully revokes a Qwest', () => {
   // Assign the Qwest
   qwestManager.assign('mockId1', assignedUserId)
 
-  // set the authorized User ID to the assigned User
-  firebase.__setAuthUserId(assignedUserId)
-
   // Accept the Qwest
   qwestManager.accept('mockId1')
-
-  // Reset the authorized User back to the original User
-  firebase.__resetAuthUserId()
 
   // Revoke the Qwest
   qwestManager.revoke('mockId1')
@@ -291,14 +279,8 @@ it('successfully drops an assigned Qwest', () => {
   // Assign the Qwest
   qwestManager.assign('mockId1', assignedUserId)
 
-  // set the authorized User ID to the assigned User
-  firebase.__setAuthUserId(assignedUserId)
-
   // Accept the Qwest
   qwestManager.accept('mockId1')
-
-  // Reset the authorized User back to the original User
-  firebase.__resetAuthUserId()
 
   // Drop the assigned Qwest
   qwestManager.dropAssigned('mockId1')
@@ -315,6 +297,41 @@ it('successfully drops an assigned Qwest', () => {
   expect(userQwests.active['mockId1'].assignedTo).toBeFalsy()
   expect(database['user-qwests'][assignedUserId]).toBeFalsy()
 })
+
+it('successfully drops a shared Qwest', () => {
+  // Create a new Qwest
+  createNewQwest()
+
+  // Create an initial User Qwests object
+  let userQwests = {}
+
+  // Create a new QwestManager and get all User Qwests
+  const qwestManager = new QwestManager()
+  qwestManager.getAllUserQwests((data) => {
+    userQwests = data
+  })
+
+  // Create test shared User ID
+  const sharedUserId = 'testUserId'
+
+  // Share the Qwest
+  qwestManager.share('mockId1', sharedUserId)
+
+  // Drop the shared Qwest
+  qwestManager.dropShared('mockId1', sharedUserId)
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase()
+
+  // Expect that the correct Qwest data has been created/ updated
+  expect(database['qwests']['mockId1'].sharedWith[sharedUserId]).toBeFalsy()
+
+  // Expect that the correct User Qwest data has been created/ updated
+  expect(userQwests.shared).toBeFalsy()
+  expect(userQwests.active['mockId1'].sharedWith[sharedUserId]).toBeFalsy()
+  expect(database['user-qwests'][sharedUserId]).toBeFalsy()
+})
+
 //
 // it('successfully removes a Qwest', () => {
 //   // Get authorized User ID

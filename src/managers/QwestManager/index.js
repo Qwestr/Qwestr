@@ -128,7 +128,7 @@ export default class QwestManager {
       }
 
       // Update the database
-      return firebase.database().ref().update(updates)
+      return firebase.database().ref().update(updates).then(successCallback)
     })
   }
 
@@ -216,7 +216,7 @@ export default class QwestManager {
 
       // Update/ Modify Qwest/ UserQwest objects
       qwest.sharedWith[sharedUserId] = true
-      qwest.sharedWith[sharedUserId] = true
+      userQwest.sharedWith[sharedUserId] = true
 
       // Prepare updates for Qwest/ UserQwest data
       let updates = {}
@@ -225,7 +225,7 @@ export default class QwestManager {
       updates['/user-qwests/' + sharedUserId + '/shared/' + key] = sharedUserQwest
 
       // Update the database
-      return firebase.database().ref().update(updates)
+      return firebase.database().ref().update(updates).then(successCallback)
     })
   }
 
@@ -255,33 +255,31 @@ export default class QwestManager {
     })
   }
 
-  // export function dropQwest(qwestData, key) {
-  //   // Get current user id
-  //   const userId = firebase.auth().currentUser.uid;
-  //
-  //   // Get assigning user id
-  //   const assigningUserId = qwestData.assignedBy || null;
-  //
-  //   // create Active Qwest object from data
-  //   const activeQwest = {
-  //     title: qwestData.title
-  //   }
-  //
-  //   // Reject the Qwest and UserQwest's data simultaneously
-  //   let updates = {};
-  //   if (assigningUserId) {
-  //     updates['/qwests/' + key + '/assignedTo'] = null;
-  //     updates['/qwests/' + key + '/accepted'] = null;
-  //     updates['/user-qwests/' + assigningUserId + '/assigned/' + key] = null;
-  //     updates['/user-qwests/' + assigningUserId + '/active/' + key] = activeQwest;
-  //   }
-  //   updates['/qwests/' + key + '/sharedWith/' + userId] = null;
-  //   updates['/user-qwests/' + userId + '/active/' + key] = null;
-  //   updates['/user-qwests/' + userId + '/shared/' + key] = null;
-  //
-  //   // update the database
-  //   return firebase.database().ref().update(updates);
-  // }
+  dropShared(key, sharedUserId) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+
+      // Update/ Modify Qwest/ UserQwest objects
+      delete qwest.sharedWith[sharedUserId]
+      delete userQwest.sharedWith[sharedUserId]
+
+      // Prepare updates for Qwest/ UserQwest data
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      updates['/user-qwests/' + sharedUserId + '/shared/' + key] = null
+      if (qwest.assignedTo) {
+        updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
+      } else {
+        updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
+      }
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
+
   //
   // export function removeQwest(key) {
   //   // Get current user id
