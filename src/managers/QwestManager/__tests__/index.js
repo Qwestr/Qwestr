@@ -59,7 +59,6 @@ it('successfully completes a Qwest', () => {
 
   // Expect that the correct User Qwest data has been created/ updated
   expect(userQwests.active).toBeFalsy()
-  expect(userQwests.completed).toBeTruthy()
   expect(userQwests.completed['mockId1'].title).toBe(qwest.title)
 })
 
@@ -89,7 +88,6 @@ it('successfully restarts a Qwest', () => {
   expect(database['qwests']['mockId1'].completed).toBeFalsy()
 
   // Expect that the correct User Qwest data has been created/ updated
-  expect(userQwests.active).toBeTruthy()
   expect(userQwests.completed).toBeFalsy()
   expect(userQwests.active['mockId1'].title).toBe(qwest.title)
 })
@@ -121,9 +119,39 @@ it('successfully assigns a Qwest', () => {
 
   // Expect that the correct User Qwest data has been created/ updated
   expect(userQwests.active).toBeFalsy()
-  expect(userQwests.assigned).toBeTruthy()
   expect(userQwests.assigned['mockId1'].assignedTo).toBe(assignedUserId)
   expect(database['user-qwests'][assignedUserId]['pending']['mockId1'].assignedBy).toBe(qwest.createdBy)
+})
+
+it('successfully shares a Qwest', () => {
+  // Create a new Qwest
+  const qwest = createNewQwest()
+
+  // Create an initial User Qwests object
+  let userQwests = {}
+
+  // Create a new QwestManager and get all User Qwests
+  const qwestManager = new QwestManager()
+  qwestManager.getAllUserQwests((data) => {
+    userQwests = data
+  })
+
+  // Create test shared User ID
+  const sharedUserId = 'testUserId'
+
+  // Share the Qwest
+  qwestManager.share('mockId1', sharedUserId)
+
+  // Get resulting database
+  const database = firebase.__getMockDatabase()
+console.log('database: ' + JSON.stringify(database));
+  // Expect that the correct Qwest data has been created/ updated
+  expect(database['qwests']['mockId1'].sharedWith[sharedUserId]).toBeTruthy()
+
+  // Expect that the correct User Qwest data has been created/ updated
+  expect(userQwests.active).toBeTruthy()
+  expect(userQwests.active['mockId1'].sharedWith[sharedUserId]).toBeTruthy()
+  expect(database['user-qwests'][sharedUserId]['shared']['mockId1'].sharedBy).toBe(qwest.createdBy)
 })
 
 it('successfully accepts a Qwest', () => {
@@ -160,7 +188,6 @@ it('successfully accepts a Qwest', () => {
   // Expect that the correct User Qwest data has been created/ updated
   expect(userQwests.assigned['mockId1'].accepted).toBeTruthy()
   expect(database['user-qwests'][assignedUserId]['pending']).toBeFalsy()
-  expect(database['user-qwests'][assignedUserId]['active']).toBeTruthy()
   expect(database['user-qwests'][assignedUserId]['active']['mockId1'].assignedBy).toBe(qwest.createdBy)
 })
 
@@ -197,7 +224,6 @@ it('successfully rejects a Qwest', () => {
 
   // Expect that the correct User Qwest data has been created/ updated
   expect(userQwests.assigned).toBeFalsy()
-  expect(userQwests.active).toBeTruthy()
   expect(userQwests.active['mockId1'].assignedTo).toBeFalsy()
   expect(database['user-qwests'][assignedUserId]).toBeFalsy()
 })
@@ -242,7 +268,6 @@ it('successfully revokes a Qwest', () => {
 
   // Expect that the correct User Qwest data has been created/ updated
   expect(userQwests.assigned).toBeFalsy()
-  expect(userQwests.active).toBeTruthy()
   expect(userQwests.active['mockId1'].assignedTo).toBeFalsy()
   expect(database['user-qwests'][assignedUserId]).toBeFalsy()
 })

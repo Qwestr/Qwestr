@@ -3,6 +3,7 @@ import firebase from 'firebase'
 export class UserQwest {
   constructor(props) {
     this.assignedTo = props.assignedTo
+    this.sharedWith = props.sharedWith
     this.title = props.title
   }
 }
@@ -22,9 +23,17 @@ export class AssigningUserQwest {
   }
 }
 
+export class SharedUserQwest {
+  constructor(props) {
+    this.sharedBy = props.createdBy
+    this.title = props.title
+  }
+}
+
 export default class Qwest {
   constructor(props) {
     this.createdBy = props.createdBy || firebase.auth().currentUser.uid
+    this.sharedWith = props.sharedWith || {}
     this.assignedTo = props.assignedTo
     this.accepted = props.accepted
     this.completed = props.completed
