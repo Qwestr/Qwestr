@@ -132,28 +132,6 @@ export default class QwestManager {
     })
   }
 
-  share(key, sharedUserId, successCallback) {
-    this.getQwest(key, (data) => {
-      // Create Qwest/ UserQwest objects from data
-      const qwest = new Qwest(data.val())
-      const userQwest = new UserQwest(data.val())
-      const sharedUserQwest = new SharedUserQwest(data.val())
-
-      // Update/ Modify Qwest/ UserQwest objects
-      qwest.sharedWith[sharedUserId] = true
-      qwest.sharedWith[sharedUserId] = true
-
-      // Prepare updates for Qwest/ UserQwest data
-      let updates = {}
-      updates['/qwests/' + key] = qwest
-      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
-      updates['/user-qwests/' + sharedUserId + '/shared/' + key] = sharedUserQwest
-
-      // Update the database
-      return firebase.database().ref().update(updates)
-    })
-  }
-
   accept(key) {
     this.getQwest(key, (data) => {
       // Create Qwest/ UserQwest objects from data
@@ -229,32 +207,53 @@ export default class QwestManager {
     })
   }
 
-  // drop(key) {
-  //   this.getQwest(key, (data) => {
-  //     // Create Qwest/ UserQwest objects from data
-  //     const qwest = new Qwest(data.val())
-  //     const userQwest = new UserQwest(data.val())
-  //
-  //     // Get assigned User ID
-  //     const assignedUserId = qwest.assignedTo
-  //
-  //     // Update/ Modify Qwest/ UserQwest objects
-  //     delete qwest.assignedTo
-  //     delete qwest.accepted
-  //     delete userQwest.assignedTo
-  //
-  //     // Prepare updates for Qwest/ UserQwest data
-  //     let updates = {}
-  //     updates['/qwests/' + key] = qwest
-  //     updates['/user-qwests/' + assignedUserId + '/active/' + key] = null
-  //     updates['/user-qwests/' + assignedUserId + '/pending/' + key] = null
-  //     updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
-  //     updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = null
-  //
-  //     // Update the database
-  //     return firebase.database().ref().update(updates)
-  //   })
-  // }
+  share(key, sharedUserId, successCallback) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const sharedUserQwest = new SharedUserQwest(data.val())
+
+      // Update/ Modify Qwest/ UserQwest objects
+      qwest.sharedWith[sharedUserId] = true
+      qwest.sharedWith[sharedUserId] = true
+
+      // Prepare updates for Qwest/ UserQwest data
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
+      updates['/user-qwests/' + sharedUserId + '/shared/' + key] = sharedUserQwest
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
+
+  dropAssigned(key) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+
+      // Get assigned User ID
+      const assignedUserId = qwest.assignedTo
+
+      // Update/ Modify Qwest/ UserQwest objects
+      delete qwest.assignedTo
+      delete qwest.accepted
+      delete userQwest.assignedTo
+
+      // Prepare updates for Qwest/ UserQwest data
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      updates['/user-qwests/' + assignedUserId + '/active/' + key] = null
+      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
+      updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = null
+
+      // Update the database
+      return firebase.database().ref().update(updates)
+    })
+  }
 
   // export function dropQwest(qwestData, key) {
   //   // Get current user id
