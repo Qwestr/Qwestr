@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
 import Linkify from 'react-linkify'
-import QwestManager from '../../../managers/QwestManager'
+import QwestManager from '../../../managers/Qwest'
 import { getCurrentUserInfo, getUserInfo } from '../../../lib/user'
 import './style.css'
 
