@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, Nav, Navbar, NavItem } from 'react-bootstrap';
 import firebase from 'firebase';
 import classnames from 'classnames';
-import { logout } from '../../lib/auth';
+import { logout } from '../../helpers/Auth';
 import './style.css';
 
 class NavBar extends Component {

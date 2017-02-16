@@ -3,7 +3,7 @@ import { Panel } from 'react-bootstrap';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { createUser } from '../../lib/user';
-import { startFirebaseUI } from '../../lib/auth';
+import { startFirebaseUI } from '../../helpers/Auth';
 import './style.css';
 
 class Login extends Component {
