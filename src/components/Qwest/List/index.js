@@ -25,6 +25,7 @@ class QwestList extends Component {
       showShareQwestModal: false,
       qwestManager: new QwestManager(),
       userQwests: {},
+      user: {},
       friends: []
     }
   }
@@ -369,7 +370,7 @@ class QwestList extends Component {
     return (
       <ButtonGroup className="Qwest-item-button-group">
         <Button
-          onClick={() => this.state.qwestManager.drop(key)}
+          onClick={() => this.state.qwestManager.dropShared(key, this.state.user.uid)}
         >
           Drop
         </Button>
@@ -457,7 +458,9 @@ class QwestList extends Component {
         // If User has not been authenticated, redirect to home
         browserHistory.push('/')
       } else {
-        // Else, get User's list of Qwests
+        // set the state
+        this.setState({user: user})
+        // Get User's list of Qwests
         this.state.qwestManager.getAllUserQwests((data) => this.getAllUserQwestsCallback(data))
       }
     })
