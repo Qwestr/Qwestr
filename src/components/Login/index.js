@@ -21,9 +21,10 @@ class Login extends Component {
     browserHistory.push('/');
   }
 
-  signInSuccessCallback(currentUser, credential, redirectUrl) {
+  signInSuccessCallback(userData, credential, redirectUrl) {
+    console.log('current user: ' + JSON.stringify(userData));
     // create the User
-    createUser(currentUser, credential, this.createUserSuccessCallback);
+    createUser(userData, credential, this.createUserSuccessCallback);
 
     // do NOT redirect, otherwise createUser() db write will fail
     return false;
