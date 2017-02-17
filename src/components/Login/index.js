@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
-import { createUser } from '../../lib/user';
+import UserManager from '../../managers/User'
 import { startFirebaseUI } from '../../helpers/Auth';
 import './style.css';
 
@@ -10,6 +10,11 @@ class Login extends Component {
   constructor(props) {
     // set props
     super(props);
+
+    // set state
+    this.state = {
+      userManager: new UserManager()
+    }
 
     // bind functions
     this.createUserSuccessCallback = this.createUserSuccessCallback.bind(this);
@@ -21,13 +26,9 @@ class Login extends Component {
     browserHistory.push('/');
   }
 
-  signInSuccessCallback(userData, credential, redirectUrl) {
-    console.log('current user: ' + JSON.stringify(userData));
-    // create the User
-    createUser(userData, credential, this.createUserSuccessCallback);
-
-    // do NOT redirect, otherwise createUser() db write will fail
-    return false;
+  signInSuccessCallback(userData, credentials, redirectUrl) {
+    // create or update the User
+    this.state.userManager.updateUser(userData, credentials, this.createUserSuccessCallback)
   }
 
   componentDidMount() {
