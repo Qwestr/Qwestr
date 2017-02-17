@@ -17,6 +17,9 @@ Copy the contents of this file to a new file named firebase.json and update acco
       "messagingSenderId": "<SENDER_ID>"
     }
   },
+  "version": {
+    "user": "0.1"
+  },
   "database": {
     "rules": "database.rules.json"
   },

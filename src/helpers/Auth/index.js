@@ -1,6 +1,8 @@
 import firebase from 'firebase'
 import firebaseui from 'firebaseui'
 import { browserHistory } from 'react-router'
+import UserManager from '../../managers/User'
+import firebaseConfig from '../../../firebase.json'
 
 export function startFirebaseUI(containerID, signInSuccessCallback) {
   // FirebaseUI config.
@@ -27,6 +29,19 @@ export function startFirebaseUI(containerID, signInSuccessCallback) {
 
   // The start method will wait until the DOM is loaded.
   ui.start(containerID, uiConfig)
+}
+
+export function validateUserVersion(user) {
+  // Get User data
+  new UserManager().getUser(user, (data) => {
+    // get User version
+    const version = data.val()._version
+
+    // logout the User if the version is not present/ invalid
+    if (!version || version !== firebaseConfig.version.user) {
+      logout()
+    }
+  })
 }
 
 export function logout() {

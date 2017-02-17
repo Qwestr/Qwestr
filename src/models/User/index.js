@@ -1,3 +1,5 @@
+import firebaseConfig from '../../../firebase.json'
+
 export class SocialUser {
   constructor(props) {
     this.uid = props.uid
@@ -6,6 +8,7 @@ export class SocialUser {
 
 export default class User {
   constructor(props) {
+    this._version = props._version || firebaseConfig.version.user
     this.displayName = props.displayName
     this.photoURL = props.photoURL
     this.credentials = props.credentials || {}
