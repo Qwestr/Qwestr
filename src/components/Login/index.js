@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { Panel } from 'react-bootstrap';
-import classnames from 'classnames';
-import { browserHistory } from 'react-router';
+import React, { Component } from 'react'
+import { Panel } from 'react-bootstrap'
+import classnames from 'classnames'
+import { browserHistory } from 'react-router'
 import UserManager from '../../managers/User'
-import { startFirebaseUI } from '../../helpers/Auth';
-import './style.css';
+import { startFirebaseUI } from '../../helpers/Auth'
+import './style.css'
 
 class Login extends Component {
   constructor(props) {
     // set props
-    super(props);
+    super(props)
 
     // set state
     this.state = {
@@ -17,13 +17,13 @@ class Login extends Component {
     }
 
     // bind functions
-    this.updateUserSuccessCallback = this.updateUserSuccessCallback.bind(this);
-    // this.signInSuccessCallback = this.signInSuccessCallback.bind(this);
+    this.updateUserSuccessCallback = this.updateUserSuccessCallback.bind(this)
+    // this.signInSuccessCallback = this.signInSuccessCallback.bind(this)
   }
 
   updateUserSuccessCallback() {
     // Redirect to home
-    browserHistory.push('/');
+    browserHistory.push('/')
   }
 
   signInSuccessCallback(userData, credentials, redirectUrl) {
@@ -35,15 +35,15 @@ class Login extends Component {
     // start FirebaseUI
     startFirebaseUI('#firebaseui-auth-container', (userData, credentials, redirectUrl) => {
       this.signInSuccessCallback(userData, credentials, redirectUrl)
-    });
+    })
   }
 
   render() {
     // declare relevant properties as local variables
-    const { className, ..._props } = this.props;
+    const { className, ..._props } = this.props
 
     // declare other local variables
-    const panelHeader = (<h3>Login</h3>);
+    const panelHeader = (<h3>Login</h3>)
 
     // render the veiw
     return (
@@ -54,8 +54,8 @@ class Login extends Component {
           </Panel>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login

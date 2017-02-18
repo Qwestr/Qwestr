@@ -52,7 +52,7 @@ export default class Qwest {
     var newQwestKey = firebase.database().ref().child('qwests').push().key
 
     // Create UserQwest object from properties
-    const userQwest = new UserQwest(this);
+    const userQwest = new UserQwest(this)
 
     // Prepare updates
     let updates = {}

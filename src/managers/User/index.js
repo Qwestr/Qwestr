@@ -4,7 +4,7 @@ import User, { SocialUser } from '../../models/User'
 export default class UserManager {
   getUser(userData, successCallback) {
     // Retrieve data from the database
-    firebase.database().ref('/users/general/' + userData.uid).once('value').then(successCallback);
+    firebase.database().ref('/users/general/' + userData.uid).once('value').then(successCallback)
   }
 
   updateUser(userData, credentials, successCallback) {
@@ -63,6 +63,6 @@ export default class UserManager {
 
   getSocialUser(userData, successCallback) {
     // retrieve date from the database
-    firebase.database().ref('/users/social/Facebook/' + userData.id).once('value').then(successCallback);
+    firebase.database().ref('/users/social/Facebook/' + userData.id).once('value').then(successCallback)
   }
 }

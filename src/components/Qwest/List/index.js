@@ -31,7 +31,7 @@ class QwestList extends Component {
     }
 
     // bind functions
-    // this.getFacebookFriends = this.getFacebookFriends.bind(this);
+    // this.getFacebookFriends = this.getFacebookFriends.bind(this)
   }
 
   handleTabSelect(value) {

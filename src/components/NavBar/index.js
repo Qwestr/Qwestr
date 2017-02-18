@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import { Image, Nav, Navbar, NavItem } from 'react-bootstrap';
-import firebase from 'firebase';
-import classnames from 'classnames';
-import { logout } from '../../helpers/Auth';
-import './style.css';
+import React, { Component } from 'react'
+import { Image, Nav, Navbar, NavItem } from 'react-bootstrap'
+import firebase from 'firebase'
+import classnames from 'classnames'
+import { logout } from '../../helpers/Auth'
+import './style.css'
 
 class NavBar extends Component {
   constructor(props) {
     // set props
-    super(props);
+    super(props)
 
     // set state
     this.state = {
       isAuthLoaded: false,
       user: null
-    };
+    }
   }
 
   getUserProfileNavItem(user) {
@@ -23,7 +23,7 @@ class NavBar extends Component {
         {user.displayName}
         <Image className="Navbar-profile-item-image" src={user.photoURL} circle />
       </NavItem>
-    );
+    )
   }
 
   getNavbarItems(activePath) {
@@ -40,7 +40,7 @@ class NavBar extends Component {
             <NavItem onClick={logout}>Logout</NavItem>
           </Nav>
       </div>
-      );
+      )
     } else {
       if (this.state.isAuthLoaded) {
         return (
@@ -49,12 +49,12 @@ class NavBar extends Component {
               <NavItem href="/login">Login</NavItem>
             </Nav>
           </div>
-        );
+        )
       } else {
         // Do not return any items until authentication is loaded
         return (
           <div className="App-navbar-items" />
-        );
+        )
       }
     }
   }
@@ -66,18 +66,18 @@ class NavBar extends Component {
       this.setState({
         isAuthLoaded: true,
         user: user
-      });
-    });
+      })
+    })
   }
 
   componentDidMount() {
     // setup listeners
-    this.watchAuthState();
+    this.watchAuthState()
   }
 
   render() {
     // declare relevant properties as local variables
-    const { activePath, className, ..._props } = this.props;
+    const { activePath, className, ..._props } = this.props
 
     // render the veiw
     return (
@@ -91,8 +91,8 @@ class NavBar extends Component {
           {this.getNavbarItems(activePath)}
         </Navbar>
       </div>
-    );
+    )
   }
 }
 
-export default NavBar;
+export default NavBar
