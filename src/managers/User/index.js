@@ -3,7 +3,7 @@ import User, { SocialUser } from '../../models/User'
 
 export default class UserManager {
   getUser(userData, successCallback) {
-    // Retrieve date from the database
+    // Retrieve data from the database
     firebase.database().ref('/users/general/' + userData.uid).once('value').then(successCallback);
   }
 
@@ -19,6 +19,10 @@ export default class UserManager {
         user = new User(data.val())
       }
 
+      // Update User data
+      console.log('updating user data...');
+      user.update(userData)
+
       // Update User credentials
       user.updateCredentials(userData.providerData, credentials)
 
@@ -33,6 +37,7 @@ export default class UserManager {
       }
 
       // Update the database
+      console.log('updates: ' + JSON.stringify(updates));
       return firebase.database().ref().update(updates).then(successCallback)
     })
   }

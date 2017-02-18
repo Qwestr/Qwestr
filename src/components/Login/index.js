@@ -17,23 +17,26 @@ class Login extends Component {
     }
 
     // bind functions
-    this.createUserSuccessCallback = this.createUserSuccessCallback.bind(this);
-    this.signInSuccessCallback = this.signInSuccessCallback.bind(this);
+    this.updateUserSuccessCallback = this.updateUserSuccessCallback.bind(this);
+    // this.signInSuccessCallback = this.signInSuccessCallback.bind(this);
   }
 
-  createUserSuccessCallback() {
+  updateUserSuccessCallback() {
     // Redirect to home
     browserHistory.push('/');
   }
 
   signInSuccessCallback(userData, credentials, redirectUrl) {
     // create or update the User
-    this.state.userManager.updateUser(userData, credentials, this.createUserSuccessCallback)
+    console.log('signInSuccessCallback triggered');
+    this.state.userManager.updateUser(userData, credentials, this.updateUserSuccessCallback)
   }
 
   componentDidMount() {
     // start FirebaseUI
-    startFirebaseUI('#firebaseui-auth-container', this.signInSuccessCallback);
+    startFirebaseUI('#firebaseui-auth-container', (userData, credentials, redirectUrl) => {
+      this.signInSuccessCallback(userData, credentials, redirectUrl)
+    });
   }
 
   render() {

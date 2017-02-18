@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import React, { Component } from 'react'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-import { validateUserVersion } from '../../../helpers/Auth';
 import Qwest from '../../../models/Qwest'
 import './style.css'
 
@@ -46,9 +45,6 @@ class QwestCreate extends Component {
       if (!user) {
         // If User has not been authenticated, redirect to home
         browserHistory.push('/')
-      } else {
-        // Validate User data is up-to-date
-        validateUserVersion(user)
       }
     })
   }

@@ -51,7 +51,7 @@ class NavBar extends Component {
           </div>
         );
       } else {
-        // don't return any nav items until authentication is loaded
+        // Do not return any items until authentication is loaded
         return (
           <div className="App-navbar-items" />
         );
