@@ -20,7 +20,6 @@ export default class UserManager {
       }
 
       // Update User data
-      console.log('updating user data...');
       user.update(userData)
 
       // Update User credentials

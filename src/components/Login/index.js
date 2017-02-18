@@ -28,7 +28,6 @@ class Login extends Component {
 
   signInSuccessCallback(userData, credentials, redirectUrl) {
     // create or update the User
-    console.log('signInSuccessCallback triggered');
     this.state.userManager.updateUser(userData, credentials, this.updateUserSuccessCallback)
   }
 
