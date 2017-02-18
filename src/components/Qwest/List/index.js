@@ -9,7 +9,7 @@ import {
 import { browserHistory } from 'react-router'
 import Linkify from 'react-linkify'
 import QwestManager from '../../../managers/Qwest'
-import { getCurrentUserInfo, getUserInfo } from '../../../lib/user'
+import UserManager from '../../../managers/User'
 import './style.css'
 
 class QwestList extends Component {
@@ -25,9 +25,13 @@ class QwestList extends Component {
       showShareQwestModal: false,
       qwestManager: new QwestManager(),
       userQwests: {},
+      userManager: new UserManager(),
       user: {},
       friends: []
     }
+
+    // bind functions
+    // this.getFacebookFriends = this.getFacebookFriends.bind(this);
   }
 
   handleTabSelect(value) {
@@ -36,12 +40,11 @@ class QwestList extends Component {
   }
 
   getFacebookFriends() {
-    // Get current User data
-    getCurrentUserInfo((data) => {
+    // Get general User data
+    this.state.userManager.getUser(this.state.user, (data) => {
       // Set Facebook Graph access token
       let accessToken = data.val().credentials.Facebook.accessToken
       graph.setAccessToken(accessToken)
-
       // Get list of friends
       graph.get('me/friends', (err, res) => {
         // Update state values
@@ -51,8 +54,8 @@ class QwestList extends Component {
   }
 
   assignQwestToUser(userData) {
-    // Get User data
-    getUserInfo(userData, (data) => {
+    // Get SocialUser data
+    this.state.userManager.getSocialUser(userData, (data) => {
       // Get User ID from the data
       const assignedUserId = data.val().userId
 
@@ -66,7 +69,7 @@ class QwestList extends Component {
 
   shareQwestWithUser(userData) {
     // Get User data
-    getUserInfo(userData, (data) => {
+    this.state.userManager.getSocialUser(userData, (data) => {
       // Get User ID from the data
       const sharingUserId = data.val().userId
 
@@ -461,7 +464,9 @@ class QwestList extends Component {
         // set the state
         this.setState({user: user})
         // Get User's list of Qwests
-        this.state.qwestManager.getAllUserQwests((data) => this.getAllUserQwestsCallback(data))
+        this.state.qwestManager.getAllUserQwests((data) => {
+          this.getAllUserQwestsCallback(data)
+        })
       }
     })
   }

@@ -215,8 +215,10 @@ export default class QwestManager {
       const sharedUserQwest = new SharedUserQwest(data.val())
 
       // Update/ Modify Qwest/ UserQwest objects
-      qwest.sharedWith[sharedUserId] = true
-      userQwest.sharedWith[sharedUserId] = true
+      qwest.addSharedUser(sharedUserId)
+      // qwest.sharedWith[sharedUserId] = true
+      userQwest.addSharedUser(sharedUserId)
+      // userQwest.sharedWith[sharedUserId] = true
 
       // Prepare updates for Qwest/ UserQwest data
       let updates = {}
