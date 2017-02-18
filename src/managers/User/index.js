@@ -36,7 +36,6 @@ export default class UserManager {
       }
 
       // Update the database
-      console.log('updates: ' + JSON.stringify(updates));
       return firebase.database().ref().update(updates).then(successCallback)
     })
   }

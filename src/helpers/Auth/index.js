@@ -30,7 +30,6 @@ export function startFirebaseUI(containerID, signInSuccessCallback) {
 }
 
 export function logout() {
-  console.log('logging out...');
   firebase.auth().signOut().then(function() {
     // Redirect to login
     browserHistory.push('/login')
