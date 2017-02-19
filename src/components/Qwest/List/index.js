@@ -22,7 +22,6 @@ class QwestList extends Component {
       activeTab: 'active',
       selectedQwestKey: null,
       showAssignQwestModal: false,
-      showShareQwestModal: false,
       qwestManager: new QwestManager(),
       userQwests: {},
       userManager: new UserManager(),
@@ -67,20 +66,6 @@ class QwestList extends Component {
     })
   }
 
-  shareQwestWithUser(userData) {
-    // Get User data
-    this.state.userManager.getSocialUser(userData, (data) => {
-      // Get User ID from the data
-      const sharingUserId = data.val().userId
-
-      // Share the Qwest
-      this.state.qwestManager.share(this.state.selectedQwestKey, sharingUserId, (data) => {
-        // close the Share Qwest modal view
-        this.closeShareQwestModal()
-      })
-    })
-  }
-
   getQwestListNavigation() {
     return (
       <Tabs id='Qwest-tabs' activeKey={this.state.activeTab} onSelect={(value) => this.handleTabSelect(value)}>
@@ -95,13 +80,6 @@ class QwestList extends Component {
           <div className="Qwest-list">
             <ListGroup>
               {this.getAssignedQwestList()}
-            </ListGroup>
-          </div>
-        </Tab>
-        <Tab eventKey='shared' title="Shared">
-          <div className="Qwest-list">
-            <ListGroup>
-              {this.getSharedQwestList()}
             </ListGroup>
           </div>
         </Tab>
@@ -166,34 +144,6 @@ class QwestList extends Component {
     }
   }
 
-  getShareQwestModal() {
-    return (
-      <Modal show={this.state.showShareQwestModal} onHide={() => this.closeShareQwestModal()}>
-          <Modal.Header closeButton>
-            <Modal.Title>Share a Qwest</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {this.getFriendsShareList()}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => this.closeShareQwestModal()}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-    )
-  }
-
-  getFriendsShareList() {
-    if (this.state.friends) {
-      return this.state.friends.map((friend, index) =>
-        <ListGroupItem key={index} onClick={() => this.shareQwestWithUser(friend)}>
-          {friend.name}
-        </ListGroupItem>
-      )
-    } else {
-      return null
-    }
-  }
-
   getActiveQwestList() {
     if (this.state.userQwests.active) {
       return Object.keys(this.state.userQwests.active).map((key) =>
@@ -223,7 +173,7 @@ class QwestList extends Component {
           </Button>
           <Button
             bsStyle="danger"
-            onClick={() => this.state.qwestManager.dropAssigned(key)}
+            onClick={() => this.state.qwestManager.drop(key)}
           >
             Drop
           </Button>
@@ -243,12 +193,6 @@ class QwestList extends Component {
             onClick={() => this.showAssignQwestModal(key)}
           >
             Assign
-          </Button>
-          <Button
-            bsStyle="warning"
-            onClick={() => this.showShareQwestModal(key)}
-          >
-            Share
           </Button>
           <Button
             bsStyle="danger"
@@ -352,35 +296,6 @@ class QwestList extends Component {
     )
   }
 
-  getSharedQwestList() {
-    if (this.state.userQwests.shared) {
-      return Object.keys(this.state.userQwests.shared).map((key) =>
-        <ListGroupItem key={key}>
-          <div className="Qwest-item-content">
-            <Linkify>
-              {this.state.userQwests.shared[key].title}
-            </Linkify>
-            {this.getSharedQwestButtonGroup(key)}
-          </div>
-        </ListGroupItem>
-      )
-    } else {
-      return
-    }
-  }
-
-  getSharedQwestButtonGroup(key) {
-    return (
-      <ButtonGroup className="Qwest-item-button-group">
-        <Button
-          onClick={() => this.state.qwestManager.dropShared(key, this.state.user.uid)}
-        >
-          Drop
-        </Button>
-      </ButtonGroup>
-    )
-  }
-
   getPendingQwestList() {
     if (this.state.userQwests.pending) {
       return Object.keys(this.state.userQwests.pending).map((key) =>
@@ -433,22 +348,6 @@ class QwestList extends Component {
     this.setState({showAssignQwestModal: false})
   }
 
-  showShareQwestModal(key) {
-    // set the state
-    this.setState({
-      selectedQwestKey: key,
-      showShareQwestModal: true
-    })
-
-    // get list of friends from Facebook
-    this.getFacebookFriends()
-  }
-
-  closeShareQwestModal() {
-    // set the state
-    this.setState({showShareQwestModal: false})
-  }
-
   getAllUserQwestsCallback(data) {
     // set the state
     this.setState({userQwests: data})
@@ -491,7 +390,6 @@ class QwestList extends Component {
             {this.getQwestListNavigation()}
           </Panel>
           {this.getAssignQwestModal()}
-          {this.getShareQwestModal()}
         </div>
       </div>
     )

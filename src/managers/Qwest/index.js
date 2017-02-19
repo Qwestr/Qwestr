@@ -207,31 +207,7 @@ export default class QwestManager {
     })
   }
 
-  share(key, sharedUserId, successCallback) {
-    this.getQwest(key, (data) => {
-      // Create Qwest/ UserQwest objects from data
-      const qwest = new Qwest(data.val())
-      const userQwest = new UserQwest(data.val())
-      const sharedUserQwest = new SharedUserQwest(data.val())
-
-      // Update/ Modify Qwest/ UserQwest objects
-      qwest.addSharedUser(sharedUserId)
-      // qwest.sharedWith[sharedUserId] = true
-      userQwest.addSharedUser(sharedUserId)
-      // userQwest.sharedWith[sharedUserId] = true
-
-      // Prepare updates for Qwest/ UserQwest data
-      let updates = {}
-      updates['/qwests/' + key] = qwest
-      updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
-      updates['/user-qwests/' + sharedUserId + '/shared/' + key] = sharedUserQwest
-
-      // Update the database
-      return firebase.database().ref().update(updates).then(successCallback)
-    })
-  }
-
-  dropAssigned(key) {
+  drop(key) {
     this.getQwest(key, (data) => {
       // Create Qwest/ UserQwest objects from data
       const qwest = new Qwest(data.val())
@@ -251,31 +227,6 @@ export default class QwestManager {
       updates['/user-qwests/' + assignedUserId + '/active/' + key] = null
       updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
       updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = null
-
-      // Update the database
-      return firebase.database().ref().update(updates)
-    })
-  }
-
-  dropShared(key, sharedUserId) {
-    this.getQwest(key, (data) => {
-      // Create Qwest/ UserQwest objects from data
-      const qwest = new Qwest(data.val())
-      const userQwest = new UserQwest(data.val())
-
-      // Update/ Modify Qwest/ UserQwest objects
-      delete qwest.sharedWith[sharedUserId]
-      delete userQwest.sharedWith[sharedUserId]
-
-      // Prepare updates for Qwest/ UserQwest data
-      let updates = {}
-      updates['/qwests/' + key] = qwest
-      updates['/user-qwests/' + sharedUserId + '/shared/' + key] = null
-      if (qwest.assignedTo) {
-        updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = userQwest
-      } else {
-        updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
-      }
 
       // Update the database
       return firebase.database().ref().update(updates)
@@ -311,11 +262,6 @@ export default class QwestManager {
         updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = null
         updates['/user-qwests/' + qwest.assignedTo + '/pending/' + key] = null
         updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
-      }
-      if (qwest.sharedWith) {
-        for (let sharedUserId of Object.keys(qwest.sharedWith)) {
-          updates['/user-qwests/' + sharedUserId + '/shared/' + key] = null
-        }
       }
 
       // Update the database

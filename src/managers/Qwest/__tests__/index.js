@@ -229,37 +229,6 @@ it('successfully revokes a Qwest', () => {
   expect(database['user-qwests'][assignedUserId]).toBeFalsy()
 })
 
-it('successfully shares a Qwest', () => {
-  // Create a new Qwest
-  const qwest = createNewQwest()
-
-  // Create an initial User Qwests object
-  let userQwests = {}
-
-  // Create a new QwestManager and get all User Qwests
-  const qwestManager = new QwestManager()
-  qwestManager.getAllUserQwests((data) => {
-    userQwests = data
-  })
-
-  // Create test shared User ID
-  const sharedUserId = 'testUserId'
-
-  // Share the Qwest
-  qwestManager.share('mockId1', sharedUserId)
-
-  // Get resulting database
-  const database = firebase.__getMockDatabase()
-
-  // Expect that the correct Qwest data has been created/ updated
-  expect(database['qwests']['mockId1'].sharedWith[sharedUserId]).toBeTruthy()
-
-  // Expect that the correct User Qwest data has been created/ updated
-  expect(userQwests.active).toBeTruthy()
-  expect(userQwests.active['mockId1'].sharedWith[sharedUserId]).toBeTruthy()
-  expect(database['user-qwests'][sharedUserId]['shared']['mockId1'].sharedBy).toBe(qwest.createdBy)
-})
-
 it('successfully drops an assigned Qwest', () => {
   // Create a new Qwest
   createNewQwest()
@@ -283,7 +252,7 @@ it('successfully drops an assigned Qwest', () => {
   qwestManager.accept('mockId1')
 
   // Drop the assigned Qwest
-  qwestManager.dropAssigned('mockId1')
+  qwestManager.drop('mockId1')
 
   // Get resulting database
   const database = firebase.__getMockDatabase()
@@ -296,40 +265,6 @@ it('successfully drops an assigned Qwest', () => {
   expect(userQwests.assigned).toBeFalsy()
   expect(userQwests.active['mockId1'].assignedTo).toBeFalsy()
   expect(database['user-qwests'][assignedUserId]).toBeFalsy()
-})
-
-it('successfully drops a shared Qwest', () => {
-  // Create a new Qwest
-  createNewQwest()
-
-  // Create an initial User Qwests object
-  let userQwests = {}
-
-  // Create a new QwestManager and get all User Qwests
-  const qwestManager = new QwestManager()
-  qwestManager.getAllUserQwests((data) => {
-    userQwests = data
-  })
-
-  // Create test shared User ID
-  const sharedUserId = 'testUserId'
-
-  // Share the Qwest
-  qwestManager.share('mockId1', sharedUserId)
-
-  // Drop the shared Qwest
-  qwestManager.dropShared('mockId1', sharedUserId)
-
-  // Get resulting database
-  const database = firebase.__getMockDatabase()
-
-  // Expect that the correct Qwest data has been created/ updated
-  expect(database['qwests']['mockId1'].sharedWith[sharedUserId]).toBeFalsy()
-
-  // Expect that the correct User Qwest data has been created/ updated
-  expect(userQwests.shared).toBeFalsy()
-  expect(userQwests.active['mockId1'].sharedWith[sharedUserId]).toBeFalsy()
-  expect(database['user-qwests'][sharedUserId]).toBeFalsy()
 })
 
 it('successfully removes a Qwest', () => {

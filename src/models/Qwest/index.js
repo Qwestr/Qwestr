@@ -3,15 +3,7 @@ import firebase from 'firebase'
 export class UserQwest {
   constructor(props) {
     this.assignedTo = props.assignedTo || null
-    this.sharedWith = props.sharedWith || null
     this.title = props.title || null
-  }
-
-  addSharedUser(userId) {
-    if (!this.sharedWith) {
-      this.sharedWith = {}
-    }
-    this.sharedWith[userId] = true
   }
 }
 
@@ -30,17 +22,9 @@ export class AssigningUserQwest {
   }
 }
 
-export class SharedUserQwest {
-  constructor(props) {
-    this.sharedBy = props.createdBy || null
-    this.title = props.title || null
-  }
-}
-
 export default class Qwest {
   constructor(props) {
     this.createdBy = props.createdBy || firebase.auth().currentUser.uid
-    this.sharedWith = props.sharedWith || null
     this.assignedTo = props.assignedTo || null
     this.accepted = props.accepted || null
     this.completed = props.completed || null
@@ -61,12 +45,5 @@ export default class Qwest {
 
     // Update the database
     return firebase.database().ref().update(updates).then(successCallback)
-  }
-
-  addSharedUser(userId) {
-    if (!this.sharedWith) {
-      this.sharedWith = {}
-    }
-    this.sharedWith[userId] = true
   }
 }
