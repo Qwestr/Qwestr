@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import Qwest, {
-  UserQwest, AssignedUserQwest, AssigningUserQwest, SharedUserQwest
+  UserQwest, AssignedUserQwest, AssigningUserQwest
 } from '../../models/Qwest'
 
 export default class QwestManager {

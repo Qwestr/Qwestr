@@ -138,7 +138,7 @@ firebase.__updateMockObject = (object,  value, [firstKey, ...otherKeys]) => {
           if (typeof updatedObject[key] === 'undefined') {
             throw new Error("undefined value found for key: " + key)
           }
-          if(_.isEmpty(updatedObject[key])) {
+          if(!updatedObject[key] || (updatedObject[key] instanceof Object && _.isEmpty(updatedObject[key]))) {
             delete updatedObject[key]
           }
         }
