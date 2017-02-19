@@ -1,5 +1,6 @@
-import gawk from 'gawk'
+import _ from 'lodash'
 import String from 'string'
+import gawk from 'gawk'
 
 // Mock out functions of original module
 const firebase = jest.genMockFromModule('firebase')
@@ -66,7 +67,7 @@ firebase.database = () => {
           })
         },
         update: (updates) => {
-          for (let key in updates) {
+          for (const key in updates) {
             if ({}.hasOwnProperty.call(updates, key)) {
               firebase.__updateMockDatabase(key, updates[key])
             }
@@ -114,7 +115,7 @@ firebase.__getMockObject = (refPath) => {
   let returnedObject = mockDatabase
   const dbObjectNames = String(refPath).stripLeft('/').stripRight('/').splitLeft('/')
 
-  for (let object of dbObjectNames) {
+  for (const object of dbObjectNames) {
     returnedObject = returnedObject[object]
   }
 
@@ -131,7 +132,20 @@ firebase.__updateMockObject = (object,  value, [firstKey, ...otherKeys]) => {
     if (!value) {
       delete object[firstKey]
     } else {
-      object[firstKey] = value
+      if (value instanceof Object) {
+        let updatedObject = value
+        for (const key of Object.keys(value)) {
+          if (typeof updatedObject[key] === 'undefined') {
+            throw new Error("undefined value found for key: " + key)
+          }
+          if(_.isEmpty(updatedObject[key])) {
+            delete updatedObject[key]
+          }
+        }
+        object[firstKey] = updatedObject
+      } else {
+        object[firstKey] = value
+      }
     }
     return object
   } else {
