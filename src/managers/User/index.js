@@ -23,6 +23,8 @@ export default class UserManager {
       user.update(userData)
 
       // Update User credentials
+      console.log('providerData: ' + JSON.stringify(userData.providerData));
+      console.log('credentials: ' + JSON.stringify(credentials));
       user.updateCredentials(userData.providerData, credentials)
 
       // Get SocialUser object data

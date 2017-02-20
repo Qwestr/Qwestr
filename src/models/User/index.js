@@ -12,8 +12,12 @@ export default class User {
   }
 
   update(userData) {
-    this.displayName = userData.displayName || null
-    this.photoURL = userData.photoURL || null
+    if (userData.displayName) {
+      this.displayName = userData.displayName
+    }
+    if (userData.photoURL) {
+      this.photoURL = userData.photoURL
+    }
   }
 
   updateCredentials(providerData, credentials) {
