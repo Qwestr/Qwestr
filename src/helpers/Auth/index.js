@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import firebaseui from 'firebaseui'
 import { browserHistory } from 'react-router'
 
-export function startFirebaseUI(containerID, signInSuccessCallback) {
+export function startFirebaseUI(containerId, signInSuccessCallback) {
   // FirebaseUI config.
   let uiConfig = {
     callbacks: {
@@ -26,7 +26,7 @@ export function startFirebaseUI(containerID, signInSuccessCallback) {
   var ui = new firebaseui.auth.AuthUI(firebase.auth())
 
   // The start method will wait until the DOM is loaded.
-  ui.start(containerID, uiConfig)
+  ui.start(containerId, uiConfig)
 }
 
 export function logout() {

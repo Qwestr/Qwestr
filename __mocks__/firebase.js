@@ -5,17 +5,22 @@ import gawk from 'gawk'
 // Mock out functions of original module
 const firebase = jest.genMockFromModule('firebase')
 
+// Define local variables
 let mockDatabase = gawk({})
-
 let mockAuthUserId = 'mockAuthUserId'
 
 // Mocked Methods
 // ##############
 
-firebase.auth = () => {
-  return {
-    currentUser: {
-      uid: mockAuthUserId
+firebase.auth.prototype = {
+  FacebookAuthProvider: {
+    PROVIDER_ID: 'MockFacebookProviderID'
+  },
+  default: () => {
+    return {
+      currentUser: {
+        uid: mockAuthUserId
+      }
     }
   }
 }
