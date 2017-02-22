@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-// import User from '../../../models/User'
+import User from '../../../models/User'
 import UserManager from '../'
 
 afterEach(() => {
@@ -30,6 +30,7 @@ it('successfully creates a User', () => {
   // Create a UserManager object
   const userManager = new UserManager()
 
+  // Create the User
   userManager.createUser(userData, credentialsData, () => {})
 
   // Get resulting database
@@ -43,4 +44,40 @@ it('successfully creates a User', () => {
   // Expect that the correct Social User data has been created/ updated
   expect(database['users']['social']['Google']).toBeFalsy()
   expect(database['users']['social']['Facebook']['testUserFacebookId'].uid).toBe('testUserId')
+})
+
+it('successfully gets a User', () => {
+  // Create User data object
+  const userData = {
+    uid: 'testUserId',
+    displayName: 'Test User',
+    photoURL: 'http://profileImage.png',
+    providerData: [
+      {
+        uid: 'testUserFacebookId',
+        providerId: 'facebook.com'
+      }
+    ]
+  }
+
+  // Create credentials data
+  const credentialsData = {
+    accessToken: 'testAccessToken',
+    provider: 'facebook.com'
+  }
+
+  // Create a UserManager object
+  const userManager = new UserManager()
+
+  // Create the User
+  userManager.createUser(userData, credentialsData, () => {})
+
+  // Get the User
+  let returnedUserData = null
+  userManager.getUser(userData, (data) => {
+    returnedUserData = data.val()
+  })
+
+  // Expect that valid User data has been returned
+  expect(returnedUserData).toBeTruthy()
 })
