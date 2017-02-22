@@ -2,12 +2,7 @@ import firebase from 'firebase'
 import User, { SocialUser } from '../../models/User'
 
 export default class UserManager {
-  getUser(userData, successCallback) {
-    // Retrieve data from the database
-    firebase.database().ref('/users/general/' + userData.uid).once('value').then(successCallback)
-  }
-
-  updateUser(userData, credentials, successCallback) {
+  createUser(userData, credentials, successCallback) {
     // Get current User
     this.getUser(userData, (data) => {
       let user = null
@@ -40,6 +35,16 @@ export default class UserManager {
     })
   }
 
+  getUser(userData, successCallback) {
+    // Retrieve data from the database
+    firebase.database().ref('/users/general/' + userData.uid).once('value').then(successCallback)
+  }
+
+  getSocialUser(userData, successCallback) {
+    // retrieve date from the database
+    firebase.database().ref('/users/social/Facebook/' + userData.id).once('value').then(successCallback)
+  }
+
   getSocialUserData(userData) {
     let socialUsers = {}
 
@@ -59,10 +64,5 @@ export default class UserManager {
     }
 
     return socialUsers
-  }
-
-  getSocialUser(userData, successCallback) {
-    // retrieve date from the database
-    firebase.database().ref('/users/social/Facebook/' + userData.id).once('value').then(successCallback)
   }
 }

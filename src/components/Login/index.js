@@ -15,20 +15,14 @@ class Login extends Component {
     this.state = {
       userManager: new UserManager()
     }
-
-    // bind functions
-    this.updateUserSuccessCallback = this.updateUserSuccessCallback.bind(this)
-    // this.signInSuccessCallback = this.signInSuccessCallback.bind(this)
-  }
-
-  updateUserSuccessCallback() {
-    // Redirect to home
-    browserHistory.push('/')
   }
 
   signInSuccessCallback(userData, credentials, redirectUrl) {
-    // create or update the User
-    this.state.userManager.updateUser(userData, credentials, this.updateUserSuccessCallback)
+    // Create or update the User
+    this.state.userManager.createUser(userData, credentials, () => {
+      // Redirect to home
+      browserHistory.push('/')
+    })
   }
 
   componentDidMount() {

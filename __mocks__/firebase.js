@@ -121,7 +121,11 @@ firebase.__getMockObject = (refPath) => {
   const dbObjectNames = String(refPath).stripLeft('/').stripRight('/').splitLeft('/')
 
   for (const object of dbObjectNames) {
-    returnedObject = returnedObject[object]
+    if (!returnedObject[object]) {
+      return null
+    } else {
+      returnedObject = returnedObject[object]
+    }
   }
 
   return returnedObject
