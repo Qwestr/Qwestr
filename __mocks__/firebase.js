@@ -12,17 +12,16 @@ let mockAuthUserId = 'mockAuthUserId'
 // Mocked Methods
 // ##############
 
-firebase.auth.prototype = {
-  FacebookAuthProvider: {
-    PROVIDER_ID: 'MockFacebookProviderID'
-  },
-  default: () => {
-    return {
-      currentUser: {
-        uid: mockAuthUserId
-      }
+firebase.auth = () => {
+  return {
+    currentUser: {
+      uid: mockAuthUserId
     }
   }
+}
+
+firebase.auth.FacebookAuthProvider = {
+  PROVIDER_ID: 'MockFacebookProviderID'
 }
 
 firebase.database = () => {
