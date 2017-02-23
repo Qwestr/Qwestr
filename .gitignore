@@ -10,7 +10,6 @@ coverage
 build
 
 # config
-database.rules.json
 firebase.json
 
 # misc

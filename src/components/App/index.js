@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import NavBar from '../NavBar';
-import './style.css';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import NavBar from '../NavBar'
+import './style.css'
 
 class App extends Component {
   render() {
@@ -11,7 +11,7 @@ class App extends Component {
       className,
       location,
       ..._props
-    } = this.props;
+    } = this.props
 
     // render the veiw
     return (
@@ -21,8 +21,8 @@ class App extends Component {
           {children}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

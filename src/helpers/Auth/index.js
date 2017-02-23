@@ -1,8 +1,8 @@
-import firebase from 'firebase';
-import firebaseui from 'firebaseui';
-import { browserHistory } from 'react-router';
+import firebase from 'firebase'
+import firebaseui from 'firebaseui'
+import { browserHistory } from 'react-router'
 
-export function startFirebaseUI(containerID, signInSuccessCallback) {
+export function startFirebaseUI(containerId, signInSuccessCallback) {
   // FirebaseUI config.
   let uiConfig = {
     callbacks: {
@@ -20,21 +20,21 @@ export function startFirebaseUI(containerID, signInSuccessCallback) {
       // },
       // firebase.auth.GoogleAuthProvider.PROVIDER_ID
     ]
-  };
+  }
 
   // Initialize the FirebaseUI Widget using Firebase.
-  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+  var ui = new firebaseui.auth.AuthUI(firebase.auth())
 
   // The start method will wait until the DOM is loaded.
-  ui.start(containerID, uiConfig);
+  ui.start(containerId, uiConfig)
 }
 
 export function logout() {
   firebase.auth().signOut().then(function() {
     // Redirect to login
-    browserHistory.push('/login');
+    browserHistory.push('/login')
   }, function(error) {
     // Present alert
-    alert('Error: ' + error);
-  });
+    alert('Error: ' + error)
+  })
 }

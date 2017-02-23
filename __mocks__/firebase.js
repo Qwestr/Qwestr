@@ -1,10 +1,13 @@
-import String from 'string';
+import _ from 'lodash'
+import String from 'string'
+import gawk from 'gawk'
 
 // Mock out functions of original module
-const firebase = jest.genMockFromModule('firebase');
+const firebase = jest.genMockFromModule('firebase')
 
-let mockDatabase = {};
-let mockAuthUserId = 'mockAuthUserId';
+// Define local variables
+let mockDatabase = gawk({})
+let mockAuthUserId = 'mockAuthUserId'
 
 // Mocked Methods
 // ##############
@@ -14,7 +17,11 @@ firebase.auth = () => {
     currentUser: {
       uid: mockAuthUserId
     }
-  };
+  }
+}
+
+firebase.auth.FacebookAuthProvider = {
+  PROVIDER_ID: 'MockFacebookProviderID'
 }
 
 firebase.database = () => {
@@ -26,96 +33,136 @@ firebase.database = () => {
             push: () => {
               return {
                 key: 'mockId' + (Object.keys(mockDatabase[childPath] || {}).length + 1)
-              };
+              }
             }
-          };
+          }
+        },
+        once: (prop) => {
+          if (prop !== 'value') {
+            throw new Error("'value' must be used as the argument")
+          }
+          return {
+            then: (callback) => {
+              callback({
+                val: () => {
+                  return firebase.__getMockObject(refPath)
+                }
+              })
+            }
+          }
         },
         on: (prop, callback) => {
           if (prop !== 'value') {
             throw new Error("'value' must be used as the first argument")
           }
+          // Watch for changes to the database at the specified path
+          gawk.watch(firebase.__getMockObject(refPath), (obj, source) => {
+            callback({
+              val: () => {
+                return obj
+              }
+            })
+          })
+          // Call the callback once initially
           callback({
             val: () => {
-              return firebase.__getMockObject(refPath);
+              return firebase.__getMockObject(refPath)
             }
-          });
+          })
         },
         update: (updates) => {
-          for (let key in updates) {
+          for (const key in updates) {
             if ({}.hasOwnProperty.call(updates, key)) {
-              firebase.__updateMockDatabase(key, updates[key]);
+              firebase.__updateMockDatabase(key, updates[key])
             }
           }
 
           return {
             then: (callback) => {
-              return;
+              return
             }
           }
         }
-      };
+      }
     }
-  };
+  }
 }
 
 // Custom Methods
 // ##############
 
 firebase.__getAuthUserId = () => {
-  return firebase.auth().currentUser.uid;
+  return firebase.auth().currentUser.uid
 }
 
 firebase.__setAuthUserId = (uid) => {
-  mockAuthUserId = uid;
+  mockAuthUserId = uid
 }
 
 firebase.__resetAuthUserId = (uid) => {
-  mockAuthUserId = 'mockAuthUserId';
+  mockAuthUserId = 'mockAuthUserId'
 }
 
 firebase.__loadMockDatabase = (database) => {
-  mockDatabase = database;
+  mockDatabase = database
 }
 
 firebase.__clearMockDatabase = (database) => {
-  mockDatabase = {};
+  mockDatabase = gawk({})
 }
 
 firebase.__getMockDatabase = () => {
-  return mockDatabase;
+  return mockDatabase
 }
 
 firebase.__getMockObject = (refPath) => {
-  let returnedObject = mockDatabase;
-  const dbObjectNames = String(refPath).stripLeft('/').stripRight('/').splitLeft('/');
+  let returnedObject = mockDatabase
+  const dbObjectNames = String(refPath).stripLeft('/').stripRight('/').splitLeft('/')
 
-  for (let object of dbObjectNames) {
-    returnedObject = returnedObject[object];
+  for (const object of dbObjectNames) {
+    if (!returnedObject[object]) {
+      return null
+    } else {
+      returnedObject = returnedObject[object]
+    }
   }
 
-  return returnedObject;
+  return returnedObject
 }
 
 firebase.__updateMockDatabase = (key, update) => {
-  const dbObjectNames = String(key).stripLeft('/').stripRight('/').splitLeft('/');
-  firebase.__updateMockObject(mockDatabase, update, dbObjectNames);
+  const dbObjectNames = String(key).stripLeft('/').stripRight('/').splitLeft('/')
+  firebase.__updateMockObject(mockDatabase, update, dbObjectNames)
 }
 
 firebase.__updateMockObject = (object,  value, [firstKey, ...otherKeys]) => {
   if (!otherKeys.length) {
     if (!value) {
-      delete object[firstKey];
+      delete object[firstKey]
     } else {
-      object[firstKey] = value;
+      if (value instanceof Object) {
+        let updatedObject = value
+        for (const key of Object.keys(value)) {
+          if (typeof updatedObject[key] === 'undefined') {
+            throw new Error("undefined value found for key: " + key)
+          }
+          if(!updatedObject[key] || (updatedObject[key] instanceof Object && _.isEmpty(updatedObject[key]))) {
+            delete updatedObject[key]
+          }
+        }
+        object[firstKey] = updatedObject
+      } else {
+        object[firstKey] = value
+      }
     }
-    return object;
+    return object
   } else {
-    object[firstKey] = firebase.__updateMockObject(object[firstKey] || {}, value, otherKeys);
+    object[firstKey] = firebase.__updateMockObject(object[firstKey] || {}, value, otherKeys)
     if (!(Object.keys(object[firstKey]).length)) {
-      delete object[firstKey];
+      delete object[firstKey]
     }
-    return object;
+    return object
   }
 }
 
-export default firebase;
+export default firebase
