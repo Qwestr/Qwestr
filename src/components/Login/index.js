@@ -1,45 +1,43 @@
-import React, { Component } from 'react';
-import { Panel } from 'react-bootstrap';
-import classnames from 'classnames';
-import { browserHistory } from 'react-router';
-import { createUser } from '../../lib/user';
-import { startFirebaseUI } from '../../lib/auth';
-import './style.css';
+import React, { Component } from 'react'
+import { Panel } from 'react-bootstrap'
+import classnames from 'classnames'
+import { browserHistory } from 'react-router'
+import UserManager from '../../managers/User'
+import { startFirebaseUI } from '../../helpers/Auth'
+import './style.css'
 
 class Login extends Component {
   constructor(props) {
     // set props
-    super(props);
+    super(props)
 
-    // bind functions
-    this.createUserSuccessCallback = this.createUserSuccessCallback.bind(this);
-    this.signInSuccessCallback = this.signInSuccessCallback.bind(this);
+    // set state
+    this.state = {
+      userManager: new UserManager()
+    }
   }
 
-  createUserSuccessCallback() {
-    // Redirect to home
-    browserHistory.push('/');
-  }
-
-  signInSuccessCallback(currentUser, credential, redirectUrl) {
-    // create the User
-    createUser(currentUser, credential, this.createUserSuccessCallback);
-
-    // do NOT redirect, otherwise createUser() db write will fail
-    return false;
+  signInSuccessCallback(userData, credentials, redirectUrl) {
+    // Create or update the User
+    this.state.userManager.createUser(userData, credentials, () => {
+      // Redirect to home
+      browserHistory.push('/')
+    })
   }
 
   componentDidMount() {
     // start FirebaseUI
-    startFirebaseUI('#firebaseui-auth-container', this.signInSuccessCallback);
+    startFirebaseUI('#firebaseui-auth-container', (userData, credentials, redirectUrl) => {
+      this.signInSuccessCallback(userData, credentials, redirectUrl)
+    })
   }
 
   render() {
     // declare relevant properties as local variables
-    const { className, ..._props } = this.props;
+    const { className, ..._props } = this.props
 
     // declare other local variables
-    const panelHeader = (<h3>Login</h3>);
+    const panelHeader = (<h3>Login</h3>)
 
     // render the veiw
     return (
@@ -50,8 +48,8 @@ class Login extends Component {
           </Panel>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login

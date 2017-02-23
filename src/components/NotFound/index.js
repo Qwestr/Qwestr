@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
+import React, { Component } from 'react'
+import classnames from 'classnames'
 
-import './style.css';
+import './style.css'
 
 export default class NotFound extends Component {
   render() {
     // declare relevant properties as local variables
-    const { className, ..._props } = this.props;
+    const { className, ..._props } = this.props
 
     // render the veiw
     return (
@@ -15,6 +15,6 @@ export default class NotFound extends Component {
           404 <small>Not Found :(</small>
         </h1>
       </div>
-    );
+    )
   }
 }

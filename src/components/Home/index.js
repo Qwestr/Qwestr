@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import './style.css';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import './style.css'
 
 class Home extends Component {
   render() {
     // declare relevant properties as local variables
-    const { className, ..._props } = this.props;
+    const { className, ..._props } = this.props
 
     // render the veiw
     return (
@@ -15,8 +15,8 @@ class Home extends Component {
           <p className="lead">Let the games begin.</p>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home
