@@ -54,8 +54,9 @@ class QwestList extends Component {
   assignQwestToUser(userData) {
     // Get SocialUser data
     this.state.userManager.getSocialUser(userData, (data) => {
+      console.log('data: ' + JSON.stringify(data.val()));
       // Get User ID from the data
-      const assignedUserId = data.val().userId
+      const assignedUserId = data.val().uid
 
       // Assign the Qwest
       this.state.qwestManager.assign(this.state.selectedQwestKey, assignedUserId, (data) => {
