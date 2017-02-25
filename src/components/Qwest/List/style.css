@@ -10,13 +10,8 @@
   padding-top: 10px;
 }
 
-.Qwest-item-content {
-  line-height: 45px;
-}
-
-.Qwest-item-button-group {
-  float: right;
-  padding: 5px;
+.Qwest-item-actions {
+  text-align: center;
 }
 
 .badge {
