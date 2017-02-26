@@ -1,16 +1,16 @@
-.Qwest {
+.QwestList {
   text-align: center;
 }
 
-.Qwest-content {
+.QwestList-content {
   text-align: left;
 }
 
-.Qwest-list {
+.QwestList-list {
   padding-top: 10px;
 }
 
-.Qwest-item-actions {
+.QwestList-item-actions {
   text-align: center;
 }
 

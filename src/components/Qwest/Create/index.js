@@ -63,8 +63,8 @@ class QwestCreate extends Component {
 
     // Render the veiw
     return (
-      <div className={classnames('Qwest', className)}>
-        <div className="Qwest-content">
+      <div className={classnames('QwestCreate', className)}>
+        <div className="QwestCreate-content">
           <Panel header={panelHeader}>
             <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
               <FormGroup controlId="title">

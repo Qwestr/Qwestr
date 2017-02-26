@@ -69,28 +69,28 @@ class QwestList extends Component {
     return (
       <Tabs id='Qwest-tabs' activeKey={this.state.activeTab} onSelect={(value) => this.handleTabSelect(value)}>
         <Tab eventKey='active' title="Active">
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getActiveQwestList()}
             </ListGroup>
           </div>
         </Tab>
         <Tab eventKey='assigned' title="Assigned">
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getAssignedQwestList()}
             </ListGroup>
           </div>
         </Tab>
         <Tab eventKey='completed' title="Completed">
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getCompletedQwestList()}
             </ListGroup>
           </div>
         </Tab>
         <Tab eventKey='pending' title={this.getPendingTabTitle()}>
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getPendingQwestList()}
             </ListGroup>
@@ -167,7 +167,7 @@ class QwestList extends Component {
   getActiveQwestButtonGroup(qwest, key) {
     if (qwest.assignedBy) {
       return (
-        <div className="Qwest-item-actions">
+        <div className="QwestList-item-actions">
           <Col sm={4} xsHidden>
             <ButtonGroup>
               <Button
@@ -204,7 +204,7 @@ class QwestList extends Component {
       )
     } else {
       return (
-        <div className="Qwest-item-actions">
+        <div className="QwestList-item-actions">
           <Col sm={4} xsHidden>
             <ButtonGroup>
               <Button
@@ -278,7 +278,7 @@ class QwestList extends Component {
   getCompletedQwestButtonGroup(qwest, key) {
     if (qwest.assignedBy) {
       return (
-        <div className="Qwest-item-actions">
+        <div className="QwestList-item-actions">
           <Col sm={4} xsHidden>
             <ButtonGroup>
               <Button
@@ -303,7 +303,7 @@ class QwestList extends Component {
       )
     } else {
       return (
-        <div className="Qwest-item-actions">
+        <div className="QwestList-item-actions">
           <Col sm={4} xsHidden>
             <ButtonGroup>
               <Button
@@ -364,7 +364,7 @@ class QwestList extends Component {
 
   getAssignedQwestButtonGroup(key) {
     return (
-      <div className="Qwest-item-actions">
+      <div className="QwestList-item-actions">
         <Col sm={4} xsHidden>
           <ButtonGroup>
             <Button
@@ -436,7 +436,7 @@ class QwestList extends Component {
 
   getPendingQwestButtonGroup(key) {
     return (
-      <div className="Qwest-item-actions">
+      <div className="QwestList-item-actions">
         <Col sm={4} xsHidden>
           <ButtonGroup>
             <Button
@@ -525,8 +525,8 @@ class QwestList extends Component {
 
     // render the veiw
     return (
-      <div className={classnames('Qwest', className)}>
-        <div className="Qwest-content">
+      <div className={classnames('QwestList', className)}>
+        <div className="QwestList-content">
           <Panel header={panelHeader}>
             {this.getQwestListNavigation()}
           </Panel>
