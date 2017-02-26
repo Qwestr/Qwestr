@@ -1,44 +1,81 @@
-import classnames from 'classnames'
+// import classnames from 'classnames'
 import React, { Component } from 'react'
+import { Button, ButtonGroup } from 'react-bootstrap'
+
+class ActionButton extends Component {
+  render() {
+    return (
+      <Button>
+        {this.props.title}
+      </Button>
+    )
+  }
+}
+
+class ActionButtonGroup extends Component {
+  render() {
+    // Setup ActionButtons
+    let actionButtons = []
+    for (const action of this.props.actions) {
+      actionButtons.push(<ActionButton title={action.title} />)
+    }
+
+    return (
+      <ButtonGroup>
+        {actionButtons}
+      </ButtonGroup>
+    )
+  }
+}
 
 class QwestItem extends Component {
-  constructor(props) {
-    // set props
-    super(props)
-
-    // set state
-    this.state = {
-      // activeTab: 'active',
-      // selectedQwestKey: null,
-      // showAssignQwestModal: false,
-      // qwestManager: new QwestManager(),
-      // userQwests: {},
-      // userManager: new UserManager(),
-      // user: {},
-      // friends: []
-    }
-  }
-
   render() {
-    // declare relevant properties as local variables
-    const { className, ..._props } = this.props
-
-    // declare other local variables
-    // const panelHeader = (<h3>Qwests</h3>)
-
-    // render the veiw
     return (
-      <div className={classnames('QwestItem', className)}>
-        <div className="QwestItem-content">
-
-        </div>
-      </div>
+      <ActionButtonGroup actions={this.props.actions}/>
     )
   }
 }
 
 export default QwestItem
 
+
+// class QwestItem extends Component {
+//   constructor(props) {
+//     // set props
+//     super(props)
+//
+//     // set state
+//     this.state = {
+//       activeTab: 'active',
+//       selectedQwestKey: null,
+//       showAssignQwestModal: false,
+//       qwestManager: new QwestManager(),
+//       userQwests: {},
+//       userManager: new UserManager(),
+//       user: {},
+//       friends: []
+//     }
+//   }
+//
+//   render() {
+//     // declare relevant properties as local variables
+//     const { className, ..._props } = this.props
+//
+//     // declare other local variables
+//     // const panelHeader = (<h3>Qwests</h3>)
+//
+//     // render the veiw
+//     return (
+//       <div className={classnames('QwestItem', className)}>
+//         <div className="QwestItem-content">
+//
+//         </div>
+//       </div>
+//     )
+//   }
+// }
+//
+// export default QwestItem
 
 
 // getActiveQwestList() {
