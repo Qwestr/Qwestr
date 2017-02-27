@@ -12,7 +12,7 @@ import { browserHistory } from 'react-router'
 import Linkify from 'react-linkify'
 import QwestManager from '../../../managers/Qwest'
 import UserManager from '../../../managers/User'
-// import QwestItem from '../Item'
+import QwestItem from '../Item'
 import './style.css'
 
 class QwestList extends Component {
@@ -147,18 +147,14 @@ class QwestList extends Component {
   getActiveQwestList() {
     if (this.state.userQwests.active) {
       return Object.keys(this.state.userQwests.active).map((key) =>
-        <ListGroupItem key={key}>
-          <Grid>
-            <Row>
-              <Col xs={10} sm={8}>
-                <Linkify>
-                  {this.state.userQwests.active[key].title}
-                </Linkify>
-              </Col>
-              {this.getActiveQwestButtonGroup(this.state.userQwests.active[key], key)}
-            </Row>
-          </Grid>
-        </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.active[key]}
+          manager={this.state.qwestManager}
+          assignFunction={() => this.showAssignQwestModal(key)}
+          active
+        />
       )
     } else {
       return
