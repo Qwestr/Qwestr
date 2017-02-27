@@ -12,6 +12,7 @@ import { browserHistory } from 'react-router'
 import Linkify from 'react-linkify'
 import QwestManager from '../../../managers/Qwest'
 import UserManager from '../../../managers/User'
+// import QwestItem from '../Item'
 import './style.css'
 
 class QwestList extends Component {

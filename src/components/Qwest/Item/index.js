@@ -1,8 +1,19 @@
 // import classnames from 'classnames'
 import React, { Component } from 'react'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import {
+  Button, ButtonGroup, Col, DropdownButton,
+  Grid, ListGroupItem, MenuItem, Row
+} from 'react-bootstrap'
 
 class ActionButton extends Component {
+  static propTypes = {
+    title: React.PropTypes.string
+  }
+
+  static defaultProps = {
+    title: 'Action Title'
+  }
+
   render() {
     return (
       <Button>
@@ -13,12 +24,23 @@ class ActionButton extends Component {
 }
 
 class ActionButtonGroup extends Component {
+  static propTypes = {
+    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
+      title: React.PropTypes.string
+    }))
+  }
+
+  static defaultProps = {
+    actions: [{
+      title: 'Action Name'
+    }]
+  }
+
   render() {
-    // Setup ActionButtons
-    let actionButtons = []
-    for (const action of this.props.actions) {
-      actionButtons.push(<ActionButton title={action.title} />)
-    }
+    // Setup action buttons
+    const actionButtons = this.props.actions.map((action, index) =>
+      <ActionButton key={index} title={action.title} />
+    )
 
     return (
       <ButtonGroup>
@@ -28,16 +50,70 @@ class ActionButtonGroup extends Component {
   }
 }
 
+class ActionButtonDropdown extends Component {
+  static propTypes = {
+    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
+      title: React.PropTypes.string
+    }))
+  }
+
+  static defaultProps = {
+    actions: [{
+      title: 'Action Name'
+    }]
+  }
+
+  render() {
+    // Setup action items
+    const actionItems = this.props.actions.map((action, index) =>
+      <MenuItem key={index} eventKey={index} title={action.title} />
+    )
+
+    return (
+      <DropdownButton id="actionButtonDropdown" title="Actions">
+        {actionItems}
+      </DropdownButton>
+    )
+  }
+}
+
 class QwestItem extends Component {
+  static propTypes = {
+    title: React.PropTypes.string,
+    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
+      title: React.PropTypes.string
+    }))
+  }
+
+  static defaultProps = {
+    title: 'Qwest Title',
+    actions: [{
+      title: 'Action Name'
+    }]
+  }
+
   render() {
     return (
-      <ActionButtonGroup actions={this.props.actions}/>
+      <ListGroupItem>
+        <Grid>
+          <Row>
+            <Col xs={10} sm={8}>
+              {this.props.title}
+            </Col>
+            <Col sm={4} xsHidden>
+              <ActionButtonGroup actions={this.props.actions}/>
+            </Col>
+            <Col xs={2} smHidden mdHidden lgHidden>
+              <ActionButtonDropdown actions={this.props.actions}/>
+            </Col>
+          </Row>
+        </Grid>
+      </ListGroupItem>
     )
   }
 }
 
 export default QwestItem
-
 
 // class QwestItem extends Component {
 //   constructor(props) {
