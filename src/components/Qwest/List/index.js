@@ -3,13 +3,10 @@ import classnames from 'classnames'
 import graph from 'fbgraph'
 import React, { Component } from 'react'
 import {
-  Badge, Button, ButtonGroup, ListGroup, ListGroupItem,
-  Modal, Panel, Tab, Tabs,
-  Grid, Col, Row,
-  DropdownButton, MenuItem
+  Badge, Button, ListGroup, ListGroupItem,
+  Modal, Panel, Tab, Tabs
 } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-import Linkify from 'react-linkify'
 import QwestManager from '../../../managers/Qwest'
 import UserManager from '../../../managers/User'
 import QwestItem from '../Item'
@@ -119,16 +116,16 @@ class QwestList extends Component {
   getAssignQwestModal() {
     return (
       <Modal show={this.state.showAssignQwestModal} onHide={() => this.closeAssignQwestModal()}>
-          <Modal.Header closeButton>
-            <Modal.Title>Assign a Qwest</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {this.getFriendsAssignList()}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => this.closeAssignQwestModal()}>Close</Button>
-          </Modal.Footer>
-        </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign a Qwest</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {this.getFriendsAssignList()}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => this.closeAssignQwestModal()}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     )
   }
 
@@ -152,7 +149,7 @@ class QwestList extends Component {
           id={key}
           qwest={this.state.userQwests.active[key]}
           manager={this.state.qwestManager}
-          assignFunction={() => this.showAssignQwestModal(key)}
+          assignQwest={() => this.showAssignQwestModal(key)}
           active
         />
       )
@@ -161,313 +158,53 @@ class QwestList extends Component {
     }
   }
 
-  getActiveQwestButtonGroup(qwest, key) {
-    if (qwest.assignedBy) {
-      return (
-        <div className="QwestList-item-actions">
-          <Col sm={4} xsHidden>
-            <ButtonGroup>
-              <Button
-                bsStyle="primary"
-                onClick={() => this.state.qwestManager.complete(key)}
-              >
-                Complete
-              </Button>
-              <Button
-                bsStyle="danger"
-                onClick={() => this.state.qwestManager.drop(key)}
-              >
-                Drop
-              </Button>
-            </ButtonGroup>
-          </Col>
-          <Col xs={2} smHidden mdHidden lgHidden>
-            <DropdownButton id="actions-dropdown" title="Actions">
-              <MenuItem
-                eventKey="1"
-                onClick={() => this.state.qwestManager.complete(key)}
-              >
-                Complete
-              </MenuItem>
-              <MenuItem
-                eventKey="2"
-                onClick={() => this.state.qwestManager.drop(key)}
-              >
-                Drop
-              </MenuItem>
-            </DropdownButton>
-          </Col>
-        </div>
-      )
-    } else {
-      return (
-        <div className="QwestList-item-actions">
-          <Col sm={4} xsHidden>
-            <ButtonGroup>
-              <Button
-                bsStyle="primary"
-                onClick={() => this.state.qwestManager.complete(key)}
-              >
-                Complete
-              </Button>
-              <Button
-                bsStyle="success"
-                onClick={() => this.showAssignQwestModal(key)}
-              >
-                Assign
-              </Button>
-              <Button
-                bsStyle="danger"
-                onClick={() => this.state.qwestManager.delete(key)}
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          </Col>
-          <Col xs={2} smHidden mdHidden lgHidden>
-            <DropdownButton id="actions-dropdown" title="Actions">
-              <MenuItem
-                eventKey="1"
-                onClick={() => this.state.qwestManager.complete(key)}
-              >
-                Complete
-              </MenuItem>
-              <MenuItem
-                eventKey="2"
-                onClick={() => this.showAssignQwestModal(key)}
-              >
-                Assign
-              </MenuItem>
-              <MenuItem
-                eventKey="3"
-                onClick={() => this.state.qwestManager.delete(key)}
-              >
-                Delete
-              </MenuItem>
-            </DropdownButton>
-          </Col>
-        </div>
-      )
-    }
-  }
-
   getCompletedQwestList() {
     if (this.state.userQwests.completed) {
       return Object.keys(this.state.userQwests.completed).map((key) =>
-        <ListGroupItem key={key}>
-          <Grid>
-            <Row>
-              <Col xs={10} sm={8}>
-                <Linkify>
-                  {this.state.userQwests.completed[key].title}
-                </Linkify>
-              </Col>
-              {this.getCompletedQwestButtonGroup(this.state.userQwests.completed[key], key)}
-            </Row>
-          </Grid>
-        </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.completed[key]}
+          manager={this.state.qwestManager}
+          completed
+        />
       )
     } else {
       return
-    }
-  }
-
-  getCompletedQwestButtonGroup(qwest, key) {
-    if (qwest.assignedBy) {
-      return (
-        <div className="QwestList-item-actions">
-          <Col sm={4} xsHidden>
-            <ButtonGroup>
-              <Button
-                bsStyle="danger"
-                onClick={() => this.state.qwestManager.remove(key)}
-              >
-                Remove
-              </Button>
-            </ButtonGroup>
-          </Col>
-          <Col xs={2} smHidden mdHidden lgHidden>
-            <DropdownButton id="actions-dropdown" title="Actions">
-              <MenuItem
-                eventKey="1"
-                onClick={() => this.state.qwestManager.remove(key)}
-              >
-                Remove
-              </MenuItem>
-            </DropdownButton>
-          </Col>
-        </div>
-      )
-    } else {
-      return (
-        <div className="QwestList-item-actions">
-          <Col sm={4} xsHidden>
-            <ButtonGroup>
-              <Button
-                bsStyle="primary"
-                onClick={() => this.state.qwestManager.restart(key)}
-              >
-                Restart
-              </Button>
-              <Button
-                bsStyle="danger"
-                onClick={() => this.state.qwestManager.delete(key)}
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          </Col>
-          <Col xs={2} smHidden mdHidden lgHidden>
-            <DropdownButton id="actions-dropdown" title="Actions">
-              <MenuItem
-                eventKey="1"
-                onClick={() => this.state.qwestManager.restart(key)}
-              >
-                Restart
-              </MenuItem>
-              <MenuItem
-                eventKey="2"
-                onClick={() => this.state.qwestManager.delete(key)}
-              >
-                Delete
-              </MenuItem>
-            </DropdownButton>
-          </Col>
-        </div>
-      )
     }
   }
 
   getAssignedQwestList() {
     if (this.state.userQwests.assigned) {
       return Object.keys(this.state.userQwests.assigned).map((key) =>
-      <ListGroupItem key={key}>
-        <Grid>
-          <Row>
-            <Col xs={10} sm={8}>
-              <Linkify>
-                {this.state.userQwests.assigned[key].title}
-              </Linkify>
-            </Col>
-            {this.getAssignedQwestButtonGroup(key)}
-          </Row>
-        </Grid>
-      </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.active[key]}
+          manager={this.state.qwestManager}
+          assignQwest={() => this.showAssignQwestModal(key)}
+          assigned
+        />
       )
     } else {
       return
     }
-  }
-
-  getAssignedQwestButtonGroup(key) {
-    return (
-      <div className="QwestList-item-actions">
-        <Col sm={4} xsHidden>
-          <ButtonGroup>
-            <Button
-              bsStyle="primary"
-              onClick={() => this.showAssignQwestModal(key)}
-            >
-              Reassign
-            </Button>
-            <Button
-              bsStyle="warning"
-              onClick={() => this.state.qwestManager.revoke(key)}
-            >
-              Revoke
-            </Button>
-            <Button
-              bsStyle="danger"
-              onClick={() => this.state.qwestManager.delete(key)}
-            >
-              Delete
-            </Button>
-          </ButtonGroup>
-        </Col>
-        <Col xs={2} smHidden mdHidden lgHidden>
-          <DropdownButton id="actions-dropdown" title="Actions">
-            <MenuItem
-              eventKey="1"
-              onClick={() => this.showAssignQwestModal(key)}
-            >
-              Reassign
-            </MenuItem>
-            <MenuItem
-              eventKey="2"
-              onClick={() => this.state.qwestManager.revoke(key)}
-            >
-              Revoke
-            </MenuItem>
-            <MenuItem
-              eventKey="3"
-              onClick={() => this.state.qwestManager.delete(key)}
-            >
-              Delete
-            </MenuItem>
-          </DropdownButton>
-        </Col>
-      </div>
-    )
   }
 
   getPendingQwestList() {
     if (this.state.userQwests.pending) {
       return Object.keys(this.state.userQwests.pending).map((key) =>
-        <ListGroupItem key={key}>
-          <Grid>
-            <Row>
-              <Col xs={10} sm={8}>
-                <Linkify>
-                  {this.state.userQwests.pending[key].title}
-                </Linkify>
-              </Col>
-              {this.getPendingQwestButtonGroup(key)}
-            </Row>
-          </Grid>
-        </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.active[key]}
+          manager={this.state.qwestManager}
+          pending
+        />
       )
     } else {
       return
     }
-  }
-
-  getPendingQwestButtonGroup(key) {
-    return (
-      <div className="QwestList-item-actions">
-        <Col sm={4} xsHidden>
-          <ButtonGroup>
-            <Button
-              bsStyle="primary"
-              onClick={() => this.state.qwestManager.accept(key)}
-            >
-              Accept
-            </Button>
-            <Button
-              bsStyle="danger"
-              onClick={() => this.state.qwestManager.reject(key)}
-            >
-              Reject
-            </Button>
-          </ButtonGroup>
-        </Col>
-        <Col xs={2} smHidden mdHidden lgHidden>
-          <DropdownButton id="actions-dropdown" title="Actions">
-            <MenuItem
-              eventKey="1"
-              onClick={() => this.state.qwestManager.accept(key)}
-            >
-              Accept
-            </MenuItem>
-            <MenuItem
-              eventKey="2"
-              onClick={() => this.state.qwestManager.reject(key)}
-            >
-              Reject
-            </MenuItem>
-          </DropdownButton>
-        </Col>
-      </div>
-    )
   }
 
   showAssignQwestModal(key) {
