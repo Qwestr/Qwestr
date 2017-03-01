@@ -14,6 +14,21 @@ describe('<ActionButton />', () => {
     expect(wrapper.find(Button).prop('onClick')).toBe(ActionButton.defaultProps.action.event)
   })
 
+  it('successfully renders the component using passed-in properties', () => {
+    // Mount the component
+    const action = {
+      title: 'Test Title',
+      style: 'success',
+      event: jest.fn()
+    }
+    const wrapper = mount(<ActionButton action={action}/>)
+
+    // Expect that the passed-in values exist
+    expect(wrapper.text()).toBe(action.title)
+    expect(wrapper.find(Button).prop('bsStyle')).toBe(action.style)
+    expect(wrapper.find(Button).prop('onClick')).toBe(action.event)
+  })
+
   it('successfully calls the event function when clicked', () => {
     // Mount the component
     const action = {
@@ -29,30 +44,27 @@ describe('<ActionButton />', () => {
   })
 })
 
-// it('successfully calls the passed in function when clicked', () => {
-//   // Mount the component
-//   const action = {
-//     event: jest.fn()
-//   }
-//   const wrapper = mount(<ActionButton action={action}/>)
-//   console.log('ActionButton: ' + wrapper.html());
-//   console.log('ActionButton.defaultProps: ' + JSON.stringify(ActionButton.defaultProps));
-//   console.log('ActionButton -> Button: ' + wrapper.find(Button).prop('bsStyle'));
-//
-//   expect(wrapper.text()).toBe(ActionButton.defaultProps.action.title)
-//   expect(wrapper.find(Button).prop('bsStyle')).toBe(ActionButton.defaultProps.action.style)
-// })
+describe('<ActionButtonGroup />', () => {
+  it('successfully renders the component using default properties', () => {
+    // Mount the component
+    const wrapper = mount(<ActionButtonGroup />)
 
-// it('renders without crashing', () => {
-//   const wrapper = mount(<QwestItem />)
-//   console.log('QwestItem: ' + wrapper.text());
-//   console.log('QwestItem -> .qwest-item-title: ' + wrapper.find('.qwest-item-title').exists());
-//   console.log('QwestItem -> ActionButtonGroup: ' + wrapper.find(ActionButton).exists());
-// })
+    // Expect that the default values exist
+    expect(wrapper.find(ActionButton)).toHaveLength(1)
+    expect(wrapper.find(ActionButton).prop('action')).toBe(ActionButtonGroup.defaultProps.actions[0])
+  })
 
-// it('renders the proper action buttons for an active Qwest', () => {
-//   const actions = [{title: 'Title1'}, {title: 'Title2'}]
-//   const wrapper = shallow(<QwestItem />)
-//
-//   console.log('QwestItem: ' + wrapper.text());
-// })
+  it('successfully renders the component using passed-in properties', () => {
+    // Mount the component
+    const actions = [{
+      title: 'Test Title',
+      style: 'success',
+      event: jest.fn()
+    }]
+    const wrapper = mount(<ActionButtonGroup actions={actions}/>)
+
+    // Expect that the passed-in values exist
+    expect(wrapper.find(ActionButton)).toHaveLength(1)
+    expect(wrapper.find(ActionButton).prop('action')).toBe(actions[0])
+  })
+})
