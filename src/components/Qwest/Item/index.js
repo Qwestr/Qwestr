@@ -6,7 +6,7 @@ import {
 import QwestManager from '../../../managers/Qwest'
 import './style.css'
 
-class ActionButton extends Component {
+export class ActionButton extends Component {
   static propTypes = {
     action: React.PropTypes.shape({
       title: React.PropTypes.string,
@@ -32,7 +32,7 @@ class ActionButton extends Component {
   }
 }
 
-class ActionButtonGroup extends Component {
+export class ActionButtonGroup extends Component {
   static propTypes = {
     actions: React.PropTypes.arrayOf(React.PropTypes.shape({
       title: React.PropTypes.string,
@@ -63,7 +63,7 @@ class ActionButtonGroup extends Component {
   }
 }
 
-class ActionButtonDropdown extends Component {
+export class ActionButtonDropdown extends Component {
   static propTypes = {
     actions: React.PropTypes.arrayOf(React.PropTypes.shape({
       title: React.PropTypes.string,
