@@ -81,7 +81,9 @@ export class ActionButtonDropdown extends Component {
   render() {
     // Setup action items
     const actionItems = this.props.actions.map((action, index) =>
-      <MenuItem key={index} eventKey={index} title={action.title} />
+      <MenuItem key={index} eventKey={index} onClick={action.event}>
+        {action.title}
+      </MenuItem>
     )
 
     return (
