@@ -88,7 +88,7 @@ export class ActionButtonDropdown extends Component {
     )
 
     return (
-      <DropdownButton id="actionButtonDropdown" title="Actions">
+      <DropdownButton id="actionButtonDropdown" title="Actions" pullRight>
         {actionItems}
       </DropdownButton>
     )
