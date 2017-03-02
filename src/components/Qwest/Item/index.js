@@ -4,6 +4,7 @@ import {
   Grid, ListGroupItem, MenuItem, Row
 } from 'react-bootstrap'
 import QwestManager from '../../../managers/Qwest'
+import { AssignedUserQwest, AssigningUserQwest, UserQwest } from '../../../models/Qwest'
 import './style.css'
 
 export class ActionButton extends Component {
@@ -94,13 +95,14 @@ export class ActionButtonDropdown extends Component {
   }
 }
 
-class QwestItem extends Component {
+export default class QwestItem extends Component {
   static propTypes = {
     id: React.PropTypes.string,
-    qwest: React.PropTypes.shape({
-      assignedBy: React.PropTypes.string,
-      title: React.PropTypes.string
-    }),
+    qwest: React.PropTypes.oneOfType([
+      React.PropTypes.instanceOf(AssignedUserQwest),
+      React.PropTypes.instanceOf(AssigningUserQwest),
+      React.PropTypes.instanceOf(UserQwest)
+    ]),
     manager: React.PropTypes.instanceOf(QwestManager),
     assignQwest: React.PropTypes.func,
     active: React.PropTypes.bool,
@@ -111,10 +113,9 @@ class QwestItem extends Component {
 
   static defaultProps = {
     id: 'defaultQwestId',
-    qwest: {
-      assignedBy: 'defaultAssignedUserId',
+    qwest: new UserQwest({
       title: 'Qwest Title'
-    },
+    }),
     manager: new QwestManager(),
     assignQwest: () => {},
     active: false,
@@ -176,7 +177,7 @@ class QwestItem extends Component {
       }, {
         title: 'Revoke',
         style: 'warning',
-        event: this.props.manager.revoke(this.props.id)
+        event: () => this.props.manager.revoke(this.props.id)
       }, {
         title: 'Delete',
         style: 'danger',
@@ -193,7 +194,7 @@ class QwestItem extends Component {
         event: () => this.props.manager.reject(this.props.id)
       }]
     } else {
-      return null
+      return []
     }
   }
 
@@ -217,5 +218,3 @@ class QwestItem extends Component {
     )
   }
 }
-
-export default QwestItem

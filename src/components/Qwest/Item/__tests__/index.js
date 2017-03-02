@@ -4,6 +4,7 @@ import { Button, MenuItem } from 'react-bootstrap'
 import QwestItem, {
   ActionButton, ActionButtonDropdown, ActionButtonGroup
 } from '../'
+import { AssignedUserQwest, AssigningUserQwest, UserQwest } from '../../../../models/Qwest'
 
 describe('<ActionButton />', () => {
   it('successfully renders the component using default properties', () => {
@@ -109,5 +110,131 @@ describe('<ActionButtonDropdown />', () => {
     // Expect that the event function has been called
     expect(wrapper.find(MenuItem)).toHaveLength(1)
     expect(actions[0].event).toHaveBeenCalled()
+  })
+})
+
+describe('<QwestItem />', () => {
+  it('successfully renders the component using default properties', () => {
+    // Mount the component
+    const wrapper = mount(<QwestItem />)
+
+    // Expect that the default values exist
+    expect(wrapper.text()).toContain(QwestItem.defaultProps.qwest.title)
+    expect(wrapper.find(ActionButtonGroup).exists()).toBeTruthy()
+    expect(wrapper.find(ActionButton).exists()).toBeFalsy()
+    expect(wrapper.find(ActionButtonDropdown).exists()).toBeTruthy()
+    expect(wrapper.find(MenuItem).exists()).toBeFalsy()
+  })
+
+  it('successfully renders the component for an active Qwest', () => {
+    // Mount the component
+    const activeQwest = new UserQwest({
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={activeQwest} active/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(activeQwest.title)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Assign')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Delete')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Assign')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Delete')
+  })
+
+  it('successfully renders the component for an active assigned Qwest', () => {
+    // Mount the component
+    const assignedActiveQwest = new AssignedUserQwest({
+      createdBy: 'assigningUserId',
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={assignedActiveQwest} active/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(assignedActiveQwest.title)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Drop')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Drop')
+  })
+
+  it('successfully renders the component for an assigned active Qwest', () => {
+    // Mount the component
+    const assignedActiveQwest = new AssignedUserQwest({
+      createdBy: 'assigningUserId',
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={assignedActiveQwest} active/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(assignedActiveQwest.title)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Drop')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Drop')
+  })
+
+  it('successfully renders the component for a completed Qwest', () => {
+    // Mount the component
+    const completedQwest = new UserQwest({
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={completedQwest} completed/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(completedQwest.title)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Restart')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Delete')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Restart')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Delete')
+  })
+
+  it('successfully renders the component for an assigned completed Qwest', () => {
+    // Mount the component
+    const assignedCompletedQwest = new AssignedUserQwest({
+      createdBy: 'assigningUserId',
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={assignedCompletedQwest} completed/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(assignedCompletedQwest.title)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Remove')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Remove')
+  })
+
+  it('successfully renders the component for an assigned Qwest', () => {
+    // Mount the component
+    const assigningQwest = new AssigningUserQwest({
+      assignedTo: 'assignedUserId',
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={assigningQwest} assigned/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(assigningQwest.title)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Reassign')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Revoke')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Delete')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Reassign')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Revoke')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Delete')
+  })
+
+  it('successfully renders the component for a pending Qwest', () => {
+    // Mount the component
+    const pendingQwest = new AssignedUserQwest({
+      createdBy: 'assigningUserId',
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={pendingQwest} pending/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(pendingQwest.title)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Accept')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Reject')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Accept')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Reject')
   })
 })
