@@ -31,23 +31,27 @@ class NavBar extends Component {
     if (this.state.user) {
       return (
         <div className="App-navbar-items">
-          <Nav activeHref={activePath}>
-            <NavItem href="/qwest/list">Qwests</NavItem>
-            <NavItem href="/qwest/new">New Qwest</NavItem>
-          </Nav>
-          <Nav pullRight>
-            {this.getUserProfileNavItem(this.state.user)}
-            <NavItem onClick={logout}>Logout</NavItem>
-          </Nav>
+          <Navbar.Collapse>
+            <Nav activeHref={activePath}>
+              <NavItem href="/qwest/list">Qwests</NavItem>
+              <NavItem href="/qwest/new">New Qwest</NavItem>
+            </Nav>
+            <Nav pullRight>
+              {this.getUserProfileNavItem(this.state.user)}
+              <NavItem onClick={logout}>Logout</NavItem>
+            </Nav>
+          </Navbar.Collapse>
       </div>
       )
     } else {
       if (this.state.isAuthLoaded) {
         return (
           <div className="App-navbar-items">
-            <Nav activeHref={activePath} pullRight>
-              <NavItem href="/login">Login</NavItem>
-            </Nav>
+            <Navbar.Collapse>
+              <Nav activeHref={activePath} pullRight>
+                <NavItem href="/login">Login</NavItem>
+              </Nav>
+            </Navbar.Collapse>
           </div>
         )
       } else {
@@ -87,6 +91,7 @@ class NavBar extends Component {
             <Navbar.Brand>
               <a href="/">Qwestr</a>
             </Navbar.Brand>
+            <Navbar.Toggle />
           </Navbar.Header>
           {this.getNavbarItems(activePath)}
         </Navbar>

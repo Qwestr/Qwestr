@@ -3,13 +3,13 @@ import classnames from 'classnames'
 import graph from 'fbgraph'
 import React, { Component } from 'react'
 import {
-  Badge, Button, ButtonGroup, ListGroup, ListGroupItem,
+  Badge, Button, ListGroup, ListGroupItem,
   Modal, Panel, Tab, Tabs
 } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-import Linkify from 'react-linkify'
 import QwestManager from '../../../managers/Qwest'
 import UserManager from '../../../managers/User'
+import QwestItem from '../Item'
 import './style.css'
 
 class QwestList extends Component {
@@ -28,9 +28,6 @@ class QwestList extends Component {
       user: {},
       friends: []
     }
-
-    // bind functions
-    // this.getFacebookFriends = this.getFacebookFriends.bind(this)
   }
 
   handleTabSelect(value) {
@@ -56,7 +53,7 @@ class QwestList extends Component {
     // Get SocialUser data
     this.state.userManager.getSocialUser(userData, (data) => {
       // Get User ID from the data
-      const assignedUserId = data.val().userId
+      const assignedUserId = data.val().uid
 
       // Assign the Qwest
       this.state.qwestManager.assign(this.state.selectedQwestKey, assignedUserId, (data) => {
@@ -70,28 +67,28 @@ class QwestList extends Component {
     return (
       <Tabs id='Qwest-tabs' activeKey={this.state.activeTab} onSelect={(value) => this.handleTabSelect(value)}>
         <Tab eventKey='active' title="Active">
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getActiveQwestList()}
             </ListGroup>
           </div>
         </Tab>
         <Tab eventKey='assigned' title="Assigned">
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getAssignedQwestList()}
             </ListGroup>
           </div>
         </Tab>
         <Tab eventKey='completed' title="Completed">
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getCompletedQwestList()}
             </ListGroup>
           </div>
         </Tab>
         <Tab eventKey='pending' title={this.getPendingTabTitle()}>
-          <div className="Qwest-list">
+          <div className="QwestList-list">
             <ListGroup>
               {this.getPendingQwestList()}
             </ListGroup>
@@ -119,16 +116,16 @@ class QwestList extends Component {
   getAssignQwestModal() {
     return (
       <Modal show={this.state.showAssignQwestModal} onHide={() => this.closeAssignQwestModal()}>
-          <Modal.Header closeButton>
-            <Modal.Title>Assign a Qwest</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {this.getFriendsAssignList()}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => this.closeAssignQwestModal()}>Close</Button>
-          </Modal.Footer>
-        </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign a Qwest</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {this.getFriendsAssignList()}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => this.closeAssignQwestModal()}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     )
   }
 
@@ -147,189 +144,67 @@ class QwestList extends Component {
   getActiveQwestList() {
     if (this.state.userQwests.active) {
       return Object.keys(this.state.userQwests.active).map((key) =>
-        <ListGroupItem key={key}>
-          <div className="Qwest-item-content">
-            <Linkify>
-              {this.state.userQwests.active[key].title}
-            </Linkify>
-            {this.getActiveQwestButtonGroup(this.state.userQwests.active[key], key)}
-          </div>
-        </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.active[key]}
+          manager={this.state.qwestManager}
+          assignQwest={() => this.showAssignQwestModal(key)}
+          active
+        />
       )
     } else {
       return
-    }
-  }
-
-  getActiveQwestButtonGroup(qwest, key) {
-    if (qwest.assignedBy) {
-      return (
-        <ButtonGroup className="Qwest-item-button-group">
-          <Button
-            bsStyle="primary"
-            onClick={() => this.state.qwestManager.complete(key)}
-          >
-            Complete
-          </Button>
-          <Button
-            bsStyle="danger"
-            onClick={() => this.state.qwestManager.drop(key)}
-          >
-            Drop
-          </Button>
-        </ButtonGroup>
-      )
-    } else {
-      return (
-        <ButtonGroup className="Qwest-item-button-group">
-          <Button
-            bsStyle="primary"
-            onClick={() => this.state.qwestManager.complete(key)}
-          >
-            Complete
-          </Button>
-          <Button
-            bsStyle="success"
-            onClick={() => this.showAssignQwestModal(key)}
-          >
-            Assign
-          </Button>
-          <Button
-            bsStyle="danger"
-            onClick={() => this.state.qwestManager.delete(key)}
-          >
-            Delete
-          </Button>
-        </ButtonGroup>
-      )
     }
   }
 
   getCompletedQwestList() {
     if (this.state.userQwests.completed) {
       return Object.keys(this.state.userQwests.completed).map((key) =>
-        <ListGroupItem key={key}>
-          <div className="Qwest-item-content">
-            <Linkify>
-              {this.state.userQwests.completed[key].title}
-            </Linkify>
-            {this.getCompletedQwestButtonGroup(this.state.userQwests.completed[key], key)}
-          </div>
-        </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.completed[key]}
+          manager={this.state.qwestManager}
+          completed
+        />
       )
     } else {
       return
-    }
-  }
-
-  getCompletedQwestButtonGroup(qwest, key) {
-    if (qwest.assignedBy) {
-      return (
-        <ButtonGroup className="Qwest-item-button-group">
-          <Button
-            bsStyle="primary"
-            onClick={() => this.state.qwestManager.remove(key)}
-          >
-            Remove
-          </Button>
-        </ButtonGroup>
-      )
-    } else {
-      return (
-        <ButtonGroup className="Qwest-item-button-group">
-          <Button
-            bsStyle="primary"
-            onClick={() => this.state.qwestManager.restart(key)}
-          >
-            Restart
-          </Button>
-          <Button
-            bsStyle="danger"
-            onClick={() => this.state.qwestManager.delete(key)}
-          >
-            Delete
-          </Button>
-        </ButtonGroup>
-      )
     }
   }
 
   getAssignedQwestList() {
     if (this.state.userQwests.assigned) {
       return Object.keys(this.state.userQwests.assigned).map((key) =>
-        <ListGroupItem key={key}>
-          <div className="Qwest-item-content">
-            <Linkify>
-              {this.state.userQwests.assigned[key].title}
-            </Linkify>
-            {this.getAssignedQwestButtonGroup(key)}
-          </div>
-        </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.active[key]}
+          manager={this.state.qwestManager}
+          assignQwest={() => this.showAssignQwestModal(key)}
+          assigned
+        />
       )
     } else {
       return
     }
-  }
-
-  getAssignedQwestButtonGroup(key) {
-    return (
-      <ButtonGroup className="Qwest-item-button-group">
-        <Button
-          bsStyle="success"
-          onClick={() => this.showAssignQwestModal(key)}
-        >
-          Reassign
-        </Button>
-        <Button
-          bsStyle="warning"
-          onClick={() => this.state.qwestManager.revoke(key)}
-        >
-          Revoke
-        </Button>
-        <Button
-          bsStyle="danger"
-          onClick={() => this.state.qwestManager.delete(key)}
-        >
-          Delete
-        </Button>
-      </ButtonGroup>
-    )
   }
 
   getPendingQwestList() {
     if (this.state.userQwests.pending) {
       return Object.keys(this.state.userQwests.pending).map((key) =>
-        <ListGroupItem key={key}>
-          <div className="Qwest-item-content">
-            <Linkify>
-              {this.state.userQwests.pending[key].title}
-            </Linkify>
-            {this.getPendingQwestButtonGroup(key)}
-          </div>
-        </ListGroupItem>
+        <QwestItem
+          key={key}
+          id={key}
+          qwest={this.state.userQwests.active[key]}
+          manager={this.state.qwestManager}
+          pending
+        />
       )
     } else {
       return
     }
-  }
-
-  getPendingQwestButtonGroup(key) {
-    return (
-      <ButtonGroup className="Qwest-item-button-group">
-        <Button
-          bsStyle="primary"
-          onClick={() => this.state.qwestManager.accept(key)}
-        >
-          Accept
-        </Button>
-        <Button
-          bsStyle="danger"
-          onClick={() => this.state.qwestManager.reject(key)}
-        >
-          Reject
-        </Button>
-      </ButtonGroup>
-    )
   }
 
   showAssignQwestModal(key) {
@@ -384,8 +259,8 @@ class QwestList extends Component {
 
     // render the veiw
     return (
-      <div className={classnames('Qwest', className)}>
-        <div className="Qwest-content">
+      <div className={classnames('QwestList', className)}>
+        <div className="QwestList-content">
           <Panel header={panelHeader}>
             {this.getQwestListNavigation()}
           </Panel>

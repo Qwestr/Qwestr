@@ -1,22 +1,17 @@
-.Qwest {
+.QwestList {
   text-align: center;
 }
 
-.Qwest-content {
+.QwestList-content {
   text-align: left;
 }
 
-.Qwest-list {
+.QwestList-list {
   padding-top: 10px;
 }
 
-.Qwest-item-content {
-  line-height: 45px;
-}
-
-.Qwest-item-button-group {
-  float: right;
-  padding: 5px;
+.QwestList-item-actions {
+  text-align: center;
 }
 
 .badge {
