@@ -4,7 +4,6 @@ import {
   Grid, ListGroupItem, MenuItem, Row
 } from 'react-bootstrap'
 import QwestManager from '../../../managers/Qwest'
-import { AssignedUserQwest, AssigningUserQwest, UserQwest } from '../../../models/Qwest'
 import './style.css'
 
 export class ActionButton extends Component {
@@ -98,11 +97,10 @@ export class ActionButtonDropdown extends Component {
 export default class QwestItem extends Component {
   static propTypes = {
     id: React.PropTypes.string,
-    qwest: React.PropTypes.oneOfType([
-      React.PropTypes.instanceOf(AssignedUserQwest),
-      React.PropTypes.instanceOf(AssigningUserQwest),
-      React.PropTypes.instanceOf(UserQwest)
-    ]),
+    qwest: React.PropTypes.shape({
+      assignedBy: React.PropTypes.string,
+      title: React.PropTypes.string,
+    }),
     manager: React.PropTypes.instanceOf(QwestManager),
     assignQwest: React.PropTypes.func,
     active: React.PropTypes.bool,
@@ -113,9 +111,9 @@ export default class QwestItem extends Component {
 
   static defaultProps = {
     id: 'defaultQwestId',
-    qwest: new UserQwest({
+    qwest: {
       title: 'Qwest Title'
-    }),
+    },
     manager: new QwestManager(),
     assignQwest: () => {},
     active: false,
