@@ -5,6 +5,7 @@ import Home from '../components/Home'
 import Login from '../components/Login'
 import QwestCreate from '../components/Qwest/Create'
 import QwestList from '../components/Qwest/List'
+import UserProfile from '../components/User/Profile'
 import NotFound from '../components/NotFound'
 
 const Routes = (props) => (
@@ -12,6 +13,7 @@ const Routes = (props) => (
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
       <Route path="login" component={Login} />
+      <Route path="profile" component={UserProfile} />
       <Route path="qwest">
         <IndexRoute component={NotFound} />
         <Route path="new" component={QwestCreate} />
