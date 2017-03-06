@@ -1,11 +1,11 @@
 import React from 'react'
 import { Router, Route, IndexRoute } from 'react-router'
-import App from './components/App'
-import Home from './components/Home'
-import Login from './components/Login'
-import QwestCreate from './components/Qwest/Create'
-import QwestList from './components/Qwest/List'
-import NotFound from './components/NotFound'
+import App from '../components/App'
+import Home from '../components/Home'
+import Login from '../components/Login'
+import QwestCreate from '../components/Qwest/Create'
+import QwestList from '../components/Qwest/List'
+import NotFound from '../components/NotFound'
 
 const Routes = (props) => (
   <Router {...props}>
