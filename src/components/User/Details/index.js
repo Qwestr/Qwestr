@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Col, Grid, Image, Panel, Row } from 'react-bootstrap'
 import './style.css'
 
-export default class UserProfile extends Component {
+export default class UserDetails extends Component {
   constructor(props) {
     // set props
     super(props)
@@ -29,19 +29,19 @@ export default class UserProfile extends Component {
 
   render() {
     // declare local variables
-    const panelHeader = (<h3>User Profile</h3>)
+    const panelHeader = (<h3>User Details</h3>)
 
     // render the veiw
     return (
-      <div className="UserProfile">
+      <div className="UserDetails">
         <Panel header={panelHeader}>
           <Grid>
             <Row>
               <Col xs={3}>
-                <Image className="user-profile-image" src={this.state.user.photoURL} responsive circle />
+                <Image className="user-details-image" src={this.state.user.photoURL} responsive circle />
               </Col>
               <Col xs={9}>
-                <div className="user-profile-name">
+                <div className="user-details-name">
                   {this.state.user.displayName}
                 </div>
               </Col>
