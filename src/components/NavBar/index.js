@@ -19,7 +19,7 @@ class NavBar extends Component {
 
   getUserProfileNavItem(user) {
     return (
-      <NavItem className="Navbar-profile-item" href="/profile">
+      <NavItem className="Navbar-profile-item" href="/user/profile">
         {user.displayName}
         <Image className="Navbar-profile-item-image" src={user.photoURL} circle />
       </NavItem>

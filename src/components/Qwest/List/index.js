@@ -36,7 +36,7 @@ class QwestList extends Component {
   }
 
   getFacebookFriends() {
-    // Get general User data
+    // Get User data
     this.state.userManager.getUser(this.state.user, (data) => {
       // Set Facebook Graph access token
       let accessToken = data.val().credentials.Facebook.accessToken

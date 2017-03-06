@@ -2,6 +2,10 @@
   text-align: left;
 }
 
+.user-not-found {
+  text-align: center;
+}
+
 .user-details-image {
   border-style: solid;
   border-width: 5px;

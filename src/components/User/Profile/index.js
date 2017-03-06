@@ -27,6 +27,16 @@ export default class UserProfile extends Component {
     this.watchAuthState()
   }
 
+  getUserImage(user) {
+    if (user.photoURL) {
+      return (
+        <Image className="user-profile-image" src={user.photoURL} responsive circle />
+      )
+    } else {
+      return null
+    }
+  }
+
   render() {
     // declare local variables
     const panelHeader = (<h3>User Profile</h3>)
@@ -38,7 +48,7 @@ export default class UserProfile extends Component {
           <Grid>
             <Row>
               <Col xs={3}>
-                <Image className="user-profile-image" src={this.state.user.photoURL} responsive circle />
+                {this.getUserImage(this.state.user)}
               </Col>
               <Col xs={9}>
                 <div className="user-profile-name">
