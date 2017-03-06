@@ -1,7 +1,7 @@
+import classnames from 'classnames'
+import firebase from 'firebase'
 import React, { Component } from 'react'
 import { Image, Nav, Navbar, NavItem } from 'react-bootstrap'
-import firebase from 'firebase'
-import classnames from 'classnames'
 import { logout } from '../../helpers/Auth'
 import './style.css'
 
@@ -19,7 +19,7 @@ class NavBar extends Component {
 
   getUserProfileNavItem(user) {
     return (
-      <NavItem className="Navbar-profile-item">
+      <NavItem className="Navbar-profile-item" href="/profile">
         {user.displayName}
         <Image className="Navbar-profile-item-image" src={user.photoURL} circle />
       </NavItem>
