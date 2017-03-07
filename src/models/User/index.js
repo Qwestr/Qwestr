@@ -1,5 +1,6 @@
 export class BasicUser {
   constructor(props) {
+    this.uid = props.uid || null
     this.displayName = props.displayName || null
     this.photoURL = props.photoURL || null
   }

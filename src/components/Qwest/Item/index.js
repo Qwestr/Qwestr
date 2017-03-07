@@ -3,7 +3,9 @@ import {
   Button, ButtonGroup, Col, DropdownButton,
   Grid, ListGroupItem, MenuItem, Row
 } from 'react-bootstrap'
+import { BasicUser } from '../../../models/User'
 import QwestManager from '../../../managers/Qwest'
+import UserManager from '../../../managers/User'
 import './style.css'
 
 export class ActionButton extends Component {
@@ -99,9 +101,11 @@ export default class QwestItem extends Component {
     id: React.PropTypes.string,
     qwest: React.PropTypes.shape({
       assignedBy: React.PropTypes.string,
+      assignedTo: React.PropTypes.string,
       title: React.PropTypes.string,
     }),
-    manager: React.PropTypes.instanceOf(QwestManager),
+    qwestManager: React.PropTypes.instanceOf(QwestManager),
+    userManager: React.PropTypes.instanceOf(UserManager),
     assignQwest: React.PropTypes.func,
     active: React.PropTypes.bool,
     completed: React.PropTypes.bool,
@@ -114,12 +118,23 @@ export default class QwestItem extends Component {
     qwest: {
       title: 'Qwest Title'
     },
-    manager: new QwestManager(),
+    qwestManager: new QwestManager(),
+    userManager: new UserManager(),
     assignQwest: () => {},
     active: false,
     completed: false,
     assigned: false,
     pending: false
+  }
+
+  constructor(props) {
+    // set props
+    super(props)
+
+    // set state
+    this.state = {
+      userDetails: null
+    }
   }
 
   getActions() {
@@ -196,13 +211,69 @@ export default class QwestItem extends Component {
     }
   }
 
+  getBasicUserInfo(qwest) {
+    let userId = null
+
+    if (qwest.assignedTo) {
+      userId = qwest.assignedTo
+    } else if (qwest.assignedBy) {
+      userId = qwest.assignedBy
+    }
+
+    if (userId) {
+      const userData = {
+        uid: userId
+      }
+
+      this.props.userManager.getUser(userData, (data) => {
+        // create BasicUser object from returned data
+        const userDetails = new BasicUser(data.val())
+        userDetails.uid = userId
+
+        // Update the state
+        this.setState({userDetails: userDetails})
+      })
+    }
+  }
+
+  getUserDetails() {
+    if (this.state.userDetails) {
+      // Setup User label
+      let userLabel = null
+      if (this.props.qwest.assignedTo) {
+        userLabel = 'Assigned To: '
+      } else {
+        userLabel = 'Assigned By: '
+      }
+
+      // Setup User link
+      const userLink = '/user/' + this.state.userDetails.uid + '/details'
+
+      return (
+        <div className='qwest-item-user-details'>
+          {userLabel} <a href={userLink}>{this.state.userDetails.displayName}</a>
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+
+  componentDidMount() {
+    // Get basic User assigned/ assigning information
+    this.getBasicUserInfo(this.props.qwest)
+  }
+
   render() {
     return (
       <ListGroupItem>
         <Grid>
           <Row>
-            <Col className='qwest-item-title' xs={9} sm={8}>
-              {this.props.qwest.title}
+            <Col className='qwest-item-info' xs={9} sm={8}>
+              <div className='qwest-item-title'>
+                {this.props.qwest.title}
+              </div>
+              {this.getUserDetails()}
             </Col>
             <Col className='action-button-group' sm={4} xsHidden>
               <ActionButtonGroup actions={this.getActions()}/>

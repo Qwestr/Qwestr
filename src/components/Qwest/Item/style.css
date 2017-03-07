@@ -1,5 +1,13 @@
-.qwest-item-title {
+.qwest-item-info {
   text-align: left;
+}
+
+.qwest-item-title {
+  font-size: 16px;
+}
+
+.qwest-item-user-details {
+  font-size: 12px;
 }
 
 .action-button-group {
