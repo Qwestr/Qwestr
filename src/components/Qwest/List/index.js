@@ -142,6 +142,8 @@ class QwestList extends Component {
   }
 
   getActiveQwestList() {
+    // console.log('this.state.userQwests: ' + this.state.userQwests);
+    // console.log('this.state.userQwests.active: ' + this.state.userQwests.active);
     if (this.state.userQwests.active) {
       return Object.keys(this.state.userQwests.active).map((key) =>
         <QwestItem
@@ -154,7 +156,7 @@ class QwestList extends Component {
         />
       )
     } else {
-      return
+      return null
     }
   }
 
@@ -170,7 +172,7 @@ class QwestList extends Component {
         />
       )
     } else {
-      return
+      return null
     }
   }
 
@@ -187,7 +189,7 @@ class QwestList extends Component {
         />
       )
     } else {
-      return
+      return null
     }
   }
 
@@ -203,7 +205,7 @@ class QwestList extends Component {
         />
       )
     } else {
-      return
+      return null
     }
   }
 
@@ -224,6 +226,7 @@ class QwestList extends Component {
   }
 
   getAllUserQwestsCallback(data) {
+    // console.log('user qwests: ' + JSON.stringify(data));
     // set the state
     this.setState({userQwests: data})
   }
@@ -238,6 +241,7 @@ class QwestList extends Component {
         // set the state
         this.setState({user: user})
         // Get User's list of Qwests
+        // console.log('getting user qwests...');
         this.state.qwestManager.getAllUserQwests((data) => {
           this.getAllUserQwestsCallback(data)
         })

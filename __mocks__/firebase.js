@@ -55,8 +55,15 @@ firebase.database = () => {
           if (prop !== 'value') {
             throw new Error("'value' must be used as the first argument")
           }
+
+          // gawk can't watch null values, so ensure that the mockObject is an object
+          let mockObject = firebase.__getMockObject(refPath)
+          if (!mockObject) {
+            mockObject = {}
+          }
+
           // Watch for changes to the database at the specified path
-          gawk.watch(firebase.__getMockObject(refPath), (obj, source) => {
+          gawk.watch(mockObject, (obj, source) => {
             callback({
               val: () => {
                 return obj
