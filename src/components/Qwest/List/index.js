@@ -180,7 +180,7 @@ class QwestList extends Component {
         <QwestItem
           key={key}
           id={key}
-          qwest={this.state.userQwests.active[key]}
+          qwest={this.state.userQwests.assigned[key]}
           manager={this.state.qwestManager}
           assignQwest={() => this.showAssignQwestModal(key)}
           assigned
@@ -197,7 +197,7 @@ class QwestList extends Component {
         <QwestItem
           key={key}
           id={key}
-          qwest={this.state.userQwests.active[key]}
+          qwest={this.state.userQwests.pending[key]}
           manager={this.state.qwestManager}
           pending
         />
