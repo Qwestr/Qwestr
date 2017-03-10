@@ -17,7 +17,6 @@ export default class QwestManager {
 
     // Setup a listener for data changes at the reference path
     ref.on('value', (data) => {
-      // console.log('data: ' + JSON.stringify(data.val()));
       this.getAllUserQwestsCallback(data, updateCallback)
     })
   }
