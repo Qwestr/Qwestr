@@ -249,9 +249,15 @@ export default class QwestItem extends Component {
       // Setup User link
       const userLink = '/user/' + this.state.userDetails.uid + '/details'
 
+      // Setup User Name
+      let userName = 'Qwestr User'
+      if (this.state.userDetails.displayName) {
+        userName = this.state.userDetails.displayName
+      }
+
       return (
         <div className='qwest-item-user-details'>
-          {userLabel} <a href={userLink}>{this.state.userDetails.displayName}</a>
+          {userLabel} <a href={userLink}>{userName}</a>
         </div>
       )
     } else {
