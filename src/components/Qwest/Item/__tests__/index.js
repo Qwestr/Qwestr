@@ -1,3 +1,4 @@
+import firebase from 'firebase'
 import React from 'react'
 import { mount } from 'enzyme'
 import { Button, MenuItem } from 'react-bootstrap'
@@ -5,6 +6,38 @@ import QwestItem, {
   ActionButton, ActionButtonDropdown, ActionButtonGroup
 } from '../'
 import { AssignedUserQwest, AssigningUserQwest, UserQwest } from '../../../../models/Qwest'
+import UserManager from '../../../../managers/User'
+
+function createNewUser(userId, displayName) {
+  // Create User data object
+  const userData = {
+    uid: userId,
+    displayName: displayName,
+    photoURL: 'http://profileImage.png',
+    providerData: [
+      {
+        uid: 'testUserFacebookId',
+        providerId: 'facebook.com'
+      }
+    ]
+  }
+
+  // Create credentials data
+  const credentialsData = {
+    accessToken: 'testAccessToken',
+    provider: 'facebook.com'
+  }
+
+  // Create a UserManager object
+  const userManager = new UserManager()
+
+  // Create the User
+  userManager.createUser(userData, credentialsData, () => {})
+}
+
+afterEach(() => {
+  firebase.__clearMockDatabase()
+})
 
 describe('<ActionButton />', () => {
   it('successfully renders the component using default properties', () => {
@@ -144,31 +177,71 @@ describe('<QwestItem />', () => {
   })
 
   it('successfully renders the component for an active assigned Qwest', () => {
+    // Create a new User
+    const assigningUserId = 'assigningUserId'
+    const assigningUserName = 'Assigning User'
+    createNewUser(assigningUserId, assigningUserName)
+
     // Mount the component
     const assignedActiveQwest = new AssignedUserQwest({
-      createdBy: 'assigningUserId',
+      createdBy: assigningUserId,
       title: 'Qwest Name'
     })
     const wrapper = mount(<QwestItem qwest={assignedActiveQwest} active/>)
 
     // Expect that the correct components have been created
     expect(wrapper.text()).toContain(assignedActiveQwest.title)
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain('Assigned By:')
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain(assigningUserName)
+    expect(wrapper.find('.qwest-item-user-details a').prop('href')).toContain(assigningUserId)
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Complete')
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Drop')
     expect(wrapper.find(ActionButtonDropdown).text()).toContain('Complete')
     expect(wrapper.find(ActionButtonDropdown).text()).toContain('Drop')
   })
 
-  it('successfully renders the component for an assigned active Qwest', () => {
+  it('successfully renders the component for an assigned Qwest', () => {
+    // Create a new User
+    const assigningUserId = 'assigningUserId'
+    const assigningUserName = 'Assigning User'
+    createNewUser(assigningUserId, assigningUserName)
+
     // Mount the component
     const assignedActiveQwest = new AssignedUserQwest({
-      createdBy: 'assigningUserId',
+      createdBy: assigningUserId,
       title: 'Qwest Name'
     })
     const wrapper = mount(<QwestItem qwest={assignedActiveQwest} active/>)
 
     // Expect that the correct components have been created
     expect(wrapper.text()).toContain(assignedActiveQwest.title)
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain('Assigned By:')
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain(assigningUserName)
+    expect(wrapper.find('.qwest-item-user-details a').prop('href')).toContain(assigningUserId)
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonGroup).text()).toContain('Drop')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Complete')
+    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Drop')
+  })
+
+  it('successfully renders the component for an assigned Qwest', () => {
+    // Create a new User
+    const assigningUserId = 'assigningUserId'
+    const assigningUserName = 'Assigning User'
+    createNewUser(assigningUserId, assigningUserName)
+
+    // Mount the component
+    const assignedActiveQwest = new AssignedUserQwest({
+      createdBy: assigningUserId,
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={assignedActiveQwest} active/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.text()).toContain(assignedActiveQwest.title)
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain('Assigned By:')
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain(assigningUserName)
+    expect(wrapper.find('.qwest-item-user-details a').prop('href')).toContain(assigningUserId)
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Complete')
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Drop')
     expect(wrapper.find(ActionButtonDropdown).text()).toContain('Complete')
@@ -191,29 +264,45 @@ describe('<QwestItem />', () => {
   })
 
   it('successfully renders the component for an assigned completed Qwest', () => {
+    // Create a new User
+    const assigningUserId = 'assigningUserId'
+    const assigningUserName = 'Assigning User'
+    createNewUser(assigningUserId, assigningUserName)
+
     // Mount the component
     const assignedCompletedQwest = new AssignedUserQwest({
-      createdBy: 'assigningUserId',
+      createdBy: assigningUserId,
       title: 'Qwest Name'
     })
     const wrapper = mount(<QwestItem qwest={assignedCompletedQwest} completed/>)
 
     // Expect that the correct components have been created
     expect(wrapper.text()).toContain(assignedCompletedQwest.title)
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain('Assigned By:')
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain(assigningUserName)
+    expect(wrapper.find('.qwest-item-user-details a').prop('href')).toContain(assigningUserId)
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Remove')
     expect(wrapper.find(ActionButtonDropdown).text()).toContain('Remove')
   })
 
   it('successfully renders the component for an assigned Qwest', () => {
+    // Create a new User
+    const assignedUserId = 'assignedUserId'
+    const assignedUserName = 'Assigned User'
+    createNewUser(assignedUserId, assignedUserName)
+
     // Mount the component
     const assigningQwest = new AssigningUserQwest({
-      assignedTo: 'assignedUserId',
+      assignedTo: assignedUserId,
       title: 'Qwest Name'
     })
     const wrapper = mount(<QwestItem qwest={assigningQwest} assigned/>)
 
     // Expect that the correct components have been created
     expect(wrapper.text()).toContain(assigningQwest.title)
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain('Assigned To:')
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain(assignedUserName)
+    expect(wrapper.find('.qwest-item-user-details a').prop('href')).toContain(assignedUserId)
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Reassign')
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Revoke')
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Delete')
@@ -223,18 +312,42 @@ describe('<QwestItem />', () => {
   })
 
   it('successfully renders the component for a pending Qwest', () => {
+    // Create a new User
+    const assigningUserId = 'assigningUserId'
+    const assigningUserName = 'Assigning User'
+    createNewUser(assigningUserId, assigningUserName)
+
     // Mount the component
     const pendingQwest = new AssignedUserQwest({
-      createdBy: 'assigningUserId',
+      createdBy: assigningUserId,
       title: 'Qwest Name'
     })
     const wrapper = mount(<QwestItem qwest={pendingQwest} pending/>)
 
     // Expect that the correct components have been created
     expect(wrapper.text()).toContain(pendingQwest.title)
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain('Assigned By:')
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain(assigningUserName)
+    expect(wrapper.find('.qwest-item-user-details a').prop('href')).toContain(assigningUserId)
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Accept')
     expect(wrapper.find(ActionButtonGroup).text()).toContain('Reject')
     expect(wrapper.find(ActionButtonDropdown).text()).toContain('Accept')
     expect(wrapper.find(ActionButtonDropdown).text()).toContain('Reject')
+  })
+
+  it('successfully renders the component with missing User information', () => {
+    // Create a new User
+    const assigningUserId = 'assigningUserId'
+    createNewUser(assigningUserId)
+
+    // Mount the component
+    const assignedActiveQwest = new AssignedUserQwest({
+      createdBy: assigningUserId,
+      title: 'Qwest Name'
+    })
+    const wrapper = mount(<QwestItem qwest={assignedActiveQwest} active/>)
+
+    // Expect that the correct components have been created
+    expect(wrapper.find('.qwest-item-user-details').text()).toContain('Qwestr User')
   })
 })

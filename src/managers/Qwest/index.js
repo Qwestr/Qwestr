@@ -23,11 +23,11 @@ export default class QwestManager {
 
   getAllUserQwestsCallback(data, updateCallback) {
     // Update data
-    this.userQwests.active = data.val().active
-    this.userQwests.assigned = data.val().assigned
-    this.userQwests.shared = data.val().shared
-    this.userQwests.completed = data.val().completed
-    this.userQwests.pending = data.val().pending
+    this.userQwests.active = data.val() ? data.val().active : null
+    this.userQwests.assigned = data.val() ? data.val().assigned : null
+    this.userQwests.shared = data.val() ? data.val().shared : null
+    this.userQwests.completed = data.val() ? data.val().completed : null
+    this.userQwests.pending = data.val() ? data.val().pending : null
 
     // Call the update callback method
     updateCallback(this.userQwests)

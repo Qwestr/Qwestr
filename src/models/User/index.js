@@ -1,3 +1,11 @@
+export class BasicUser {
+  constructor(props) {
+    this.uid = props.uid || null
+    this.displayName = props.displayName || null
+    this.photoURL = props.photoURL || null
+  }
+}
+
 export class SocialUser {
   constructor(props) {
     this.uid = props.uid || null

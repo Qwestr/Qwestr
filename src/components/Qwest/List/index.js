@@ -36,7 +36,7 @@ class QwestList extends Component {
   }
 
   getFacebookFriends() {
-    // Get general User data
+    // Get User data
     this.state.userManager.getUser(this.state.user, (data) => {
       // Set Facebook Graph access token
       let accessToken = data.val().credentials.Facebook.accessToken
@@ -154,7 +154,7 @@ class QwestList extends Component {
         />
       )
     } else {
-      return
+      return null
     }
   }
 
@@ -170,7 +170,7 @@ class QwestList extends Component {
         />
       )
     } else {
-      return
+      return null
     }
   }
 
@@ -180,14 +180,14 @@ class QwestList extends Component {
         <QwestItem
           key={key}
           id={key}
-          qwest={this.state.userQwests.active[key]}
+          qwest={this.state.userQwests.assigned[key]}
           manager={this.state.qwestManager}
           assignQwest={() => this.showAssignQwestModal(key)}
           assigned
         />
       )
     } else {
-      return
+      return null
     }
   }
 
@@ -197,13 +197,13 @@ class QwestList extends Component {
         <QwestItem
           key={key}
           id={key}
-          qwest={this.state.userQwests.active[key]}
+          qwest={this.state.userQwests.pending[key]}
           manager={this.state.qwestManager}
           pending
         />
       )
     } else {
-      return
+      return null
     }
   }
 
