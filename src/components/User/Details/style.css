@@ -14,6 +14,10 @@
   object-fit: cover;
 }
 
+.user-details-default-image {
+  font-size: 40px;
+}
+
 .user-details-name {
   font-size: 20px;
 }

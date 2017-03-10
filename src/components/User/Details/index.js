@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Col, Grid, Image, Panel, Row } from 'react-bootstrap'
+import { Col, Grid, Glyphicon, Image, Panel, Row } from 'react-bootstrap'
 import UserManager from '../../../managers/User'
 import './style.css'
 
@@ -52,7 +52,17 @@ export default class UserDetails extends Component {
         <Image className="user-details-image" src={user.photoURL} responsive circle />
       )
     } else {
-      return null
+      return (
+        <Glyphicon className="user-details-default-image" glyph="user" />
+      )
+    }
+  }
+
+  getDisplayName(user) {
+    if (user.displayName) {
+      return user.displayName
+    } else {
+      return 'Qwestr User'
     }
   }
 
@@ -67,7 +77,7 @@ export default class UserDetails extends Component {
               </Col>
               <Col xs={9}>
                 <div className="user-details-name">
-                  {this.state.user.displayName}
+                  {this.getDisplayName(this.state.user)}
                 </div>
               </Col>
             </Row>

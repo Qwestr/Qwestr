@@ -10,6 +10,10 @@
   object-fit: cover;
 }
 
+.user-profile-default-image {
+  font-size: 40px;
+}
+
 .user-profile-name {
   font-size: 20px;
 }
