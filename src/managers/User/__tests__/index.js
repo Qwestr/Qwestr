@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-// import User from '../../../models/User'
 import UserManager from '../'
 
 function createNewUser() {

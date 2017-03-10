@@ -6,6 +6,7 @@ export default class UserManager {
     // Get current User
     this.getUser(userData, (data) => {
       let user = null
+
       // If User does not yet exist, create it
       // Otherwise, create User from returned data
       if (!data.val()) {
@@ -46,23 +47,23 @@ export default class UserManager {
   }
 
   getSocialUserData(userData) {
-    let socialUsers = {}
+    let socialUserData = {}
 
     // Get data for each Social provider
     for (const provider of userData.providerData) {
       if (provider.providerId==='facebook.com') {
-        socialUsers['Facebook'] = {
+        socialUserData['Facebook'] = {
           uid: provider.uid,
           data: new SocialUser(userData)
         }
       } else if (provider.providerId==='google.com') {
-        socialUsers['Google'] = {
+        socialUserData['Google'] = {
           uid: provider.uid,
           data: new SocialUser(userData)
         }
       }
     }
 
-    return socialUsers
+    return socialUserData
   }
 }

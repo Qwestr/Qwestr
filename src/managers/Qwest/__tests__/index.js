@@ -17,6 +17,20 @@ afterEach(() => {
   firebase.__clearMockDatabase()
 })
 
+it('successfully returns an empty list of User Qwests', () => {
+  // Create an initial User Qwests object
+  let userQwests = {}
+
+  // Create a new QwestManager and get all User Qwests
+  const qwestManager = new QwestManager()
+  qwestManager.getAllUserQwests((data) => {
+    userQwests = data
+  })
+
+  // Expect that the correct User Qwest data has been created/ updated
+  expect(qwestManager.userQwests).toBe(userQwests)
+})
+
 it('successfully returns a list of User Qwests', () => {
   // Create a new Qwest
   const qwest = createNewQwest()
