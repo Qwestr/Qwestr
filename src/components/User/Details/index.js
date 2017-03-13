@@ -1,5 +1,7 @@
+import firebase from 'firebase'
 import React, { Component } from 'react'
 import { Col, Grid, Glyphicon, Image, Panel, Row } from 'react-bootstrap'
+import { browserHistory } from 'react-router'
 import UserManager from '../../../managers/User'
 import './style.css'
 
@@ -27,23 +29,6 @@ export default class UserDetails extends Component {
       noUserFound: false,
       user: {}
     }
-  }
-
-  componentDidMount() {
-    // Get User data
-    const userData = {
-      uid: this.props.params.userId
-    }
-
-    this.props.manager.getUser(userData, (data) => {
-      if (!data.val()) {
-        // Update state
-        this.setState({noUserFound: true})
-      } else {
-        // Update state
-        this.setState({user: data.val()})
-      }
-    })
   }
 
   getUserImage(user) {
@@ -93,6 +78,41 @@ export default class UserDetails extends Component {
         </div>
       )
     }
+  }
+
+  getUserData() {
+    // Get User data
+    const userData = {
+      uid: this.props.params.userId
+    }
+
+    this.props.manager.getUser(userData, (data) => {
+      if (!data.val()) {
+        // Update state
+        this.setState({noUserFound: true})
+      } else {
+        // Update state
+        this.setState({user: data.val()})
+      }
+    })
+  }
+
+  watchAuthState() {
+    // Setup auth change listener
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        // If User has not been authenticated, redirect to home
+        browserHistory.push('/')
+      } else {
+        // Get User data
+        this.getUserData()
+      }
+    })
+  }
+
+  componentDidMount() {
+    // Setup listeners
+    this.watchAuthState()
   }
 
   render() {
