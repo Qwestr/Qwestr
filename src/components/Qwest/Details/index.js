@@ -7,15 +7,17 @@ import { browserHistory } from 'react-router'
 import './style.css'
 
 class QwestDetails extends Component {
-  // constructor(props) {
-  //   // Set props
-  //   super(props)
-  //
-  //   // Set state
-  //   this.state = {
-  //     title: ''
-  //   }
-  // }
+  static propTypes = {
+    params: React.PropTypes.shape({
+      qwestId: React.PropTypes.string
+    })
+  }
+
+  static defaultProps = {
+    params: {
+      qwestId: 'defaultQwestId'
+    }
+  }
 
   watchAuthState() {
     // Setup auth change listener

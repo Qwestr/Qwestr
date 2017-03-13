@@ -19,10 +19,10 @@ export default class UserDetails extends Component {
   }
 
   constructor(props) {
-    // set props
+    // Set props
     super(props)
 
-    // set state
+    // Set state
     this.state = {
       noUserFound: false,
       user: {}
