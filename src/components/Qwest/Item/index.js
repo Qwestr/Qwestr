@@ -271,14 +271,17 @@ export default class QwestItem extends Component {
   }
 
   render() {
+    // create link for qwest
+    const qwestLink = '/qwest/' + this.props.id + '/details'
+
     return (
       <ListGroupItem>
         <Grid>
           <Row>
             <Col className='qwest-item-info' xs={9} sm={8}>
-              <div className='qwest-item-title'>
+              <a className='qwest-item-title' href={qwestLink}>
                 {this.props.qwest.title}
-              </div>
+              </a>
               {this.getUserDetails()}
             </Col>
             <Col className='action-button-group' sm={4} xsHidden>
