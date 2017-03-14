@@ -1,22 +1,89 @@
 import firebase from 'firebase'
-import classnames from 'classnames'
 import React, { Component } from 'react'
-import { Panel } from 'react-bootstrap'
+import { Col, ControlLabel, Grid, Row, Panel } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-// import Qwest from '../../../models/Qwest'
+import QwestManager from '../../../managers/Qwest'
 import './style.css'
 
 class QwestDetails extends Component {
   static propTypes = {
     params: React.PropTypes.shape({
       qwestId: React.PropTypes.string
-    })
+    }),
+    manager: React.PropTypes.instanceOf(QwestManager)
   }
 
   static defaultProps = {
     params: {
       qwestId: 'defaultQwestId'
+    },
+    manager: new QwestManager()
+  }
+
+  constructor(props) {
+    // Set props
+    super(props)
+
+    // Set state
+    this.state = {
+      noQwestFound: false,
+      qwest: {}
     }
+  }
+
+  getQwestDetails() {
+    // Create paner header
+    const panelHeader = (<h3>Qwest Details</h3>)
+
+    if (!this.state.noQwestFound) {
+      return (
+        <Panel className="qwest-details-content" header={panelHeader}>
+          <Grid>
+            {this.getQwestTitle(this.state.qwest)}
+          </Grid>
+        </Panel>
+      )
+    } else {
+      return (
+        <div className="qwest-not-found">
+          <h1>
+            <small>Qwest Not Found :(</small>
+          </h1>
+        </div>
+      )
+    }
+  }
+
+  getQwestTitle(qwest) {
+    if (qwest.title) {
+      return (
+        <Row>
+          <Col componentClass={ControlLabel} sm={2}>
+            Title
+          </Col>
+          <Col sm={10}>
+            <div className="qwest-details-title">
+              {qwest.title}
+            </div>
+          </Col>
+        </Row>
+      )
+    } else {
+      return null
+    }
+  }
+
+  getQwestData(qwestId) {
+    // get Qwest data
+    this.props.manager.getQwest(qwestId, (data) => {
+      if (!data.val()) {
+        // Update state
+        this.setState({noQwestFound: true})
+      } else {
+        // Update state
+        this.setState({qwest: data.val()})
+      }
+    })
   }
 
   watchAuthState() {
@@ -25,6 +92,9 @@ class QwestDetails extends Component {
       if (!user) {
         // If User has not been authenticated, redirect to home
         browserHistory.push('/')
+      } else {
+        // Get Qwest data
+        this.getQwestData(this.props.params.qwestId)
       }
     })
   }
@@ -35,19 +105,9 @@ class QwestDetails extends Component {
   }
 
   render() {
-    // Declare relevant properties as local variables
-    const { className, ..._props } = this.props
-
-    // Declare other local variables
-    const panelHeader = (<h3>Qwest Details</h3>)
-
-    // Render the veiw
     return (
-      <div className={classnames('QwestDetails', className)}>
-        <div className="QwestDetails-content">
-          <Panel header={panelHeader}>
-          </Panel>
-        </div>
+      <div className="QwestDetails">
+        {this.getQwestDetails()}
       </div>
     )
   }

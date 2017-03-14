@@ -10,7 +10,7 @@ export default class UserDetails extends Component {
     params: React.PropTypes.shape({
       userId: React.PropTypes.string
     }),
-    manager: React.PropTypes.instanceOf(UserManager),
+    manager: React.PropTypes.instanceOf(UserManager)
   }
 
   static defaultProps = {
@@ -51,10 +51,13 @@ export default class UserDetails extends Component {
     }
   }
 
-  getUserDetails(header) {
+  getUserDetails() {
+    // Create paner header
+    const panelHeader = (<h3>User Details</h3>)
+
     if (!this.state.noUserFound) {
       return (
-        <Panel header={header}>
+        <Panel header={panelHeader}>
           <Grid>
             <Row>
               <Col xs={3}>
@@ -80,12 +83,13 @@ export default class UserDetails extends Component {
     }
   }
 
-  getUserData() {
-    // Get User data
+  getUserData(userId) {
+    // Create userData object
     const userData = {
-      uid: this.props.params.userId
+      uid: userId
     }
 
+    // Get User data
     this.props.manager.getUser(userData, (data) => {
       if (!data.val()) {
         // Update state
@@ -105,7 +109,7 @@ export default class UserDetails extends Component {
         browserHistory.push('/')
       } else {
         // Get User data
-        this.getUserData()
+        this.getUserData(this.props.params.userId)
       }
     })
   }
@@ -116,13 +120,9 @@ export default class UserDetails extends Component {
   }
 
   render() {
-    // declare local variables
-    const panelHeader = (<h3>User Details</h3>)
-
-    // render the veiw
     return (
       <div className="UserDetails">
-        {this.getUserDetails(panelHeader)}
+        {this.getUserDetails()}
       </div>
     )
   }
