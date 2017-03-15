@@ -68,7 +68,9 @@ class QwestCreate extends Component {
           <Panel header={panelHeader}>
             <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
               <FormGroup controlId="title">
-                <Col componentClass={ControlLabel} sm={2}>Title</Col>
+                <Col componentClass={ControlLabel} sm={2}>
+                  Title
+                </Col>
                 <Col sm={10}>
                   <FormControl
                     type="text"

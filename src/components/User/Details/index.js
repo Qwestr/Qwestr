@@ -1,5 +1,7 @@
+import firebase from 'firebase'
 import React, { Component } from 'react'
 import { Col, Grid, Glyphicon, Image, Panel, Row } from 'react-bootstrap'
+import { browserHistory } from 'react-router'
 import UserManager from '../../../managers/User'
 import './style.css'
 
@@ -8,7 +10,7 @@ export default class UserDetails extends Component {
     params: React.PropTypes.shape({
       userId: React.PropTypes.string
     }),
-    manager: React.PropTypes.instanceOf(UserManager),
+    manager: React.PropTypes.instanceOf(UserManager)
   }
 
   static defaultProps = {
@@ -19,31 +21,14 @@ export default class UserDetails extends Component {
   }
 
   constructor(props) {
-    // set props
+    // Set props
     super(props)
 
-    // set state
+    // Set state
     this.state = {
       noUserFound: false,
       user: {}
     }
-  }
-
-  componentDidMount() {
-    // Get User data
-    const userData = {
-      uid: this.props.params.userId
-    }
-
-    this.props.manager.getUser(userData, (data) => {
-      if (!data.val()) {
-        // Update state
-        this.setState({noUserFound: true})
-      } else {
-        // Update state
-        this.setState({user: data.val()})
-      }
-    })
   }
 
   getUserImage(user) {
@@ -66,10 +51,13 @@ export default class UserDetails extends Component {
     }
   }
 
-  getUserDetails(header) {
+  getUserDetails() {
+    // Create paner header
+    const panelHeader = (<h3>User Details</h3>)
+
     if (!this.state.noUserFound) {
       return (
-        <Panel header={header}>
+        <Panel header={panelHeader}>
           <Grid>
             <Row>
               <Col xs={3}>
@@ -95,14 +83,46 @@ export default class UserDetails extends Component {
     }
   }
 
-  render() {
-    // declare local variables
-    const panelHeader = (<h3>User Details</h3>)
+  getUserData(userId) {
+    // Create userData object
+    const userData = {
+      uid: userId
+    }
 
-    // render the veiw
+    // Get User data
+    this.props.manager.getUser(userData, (data) => {
+      if (!data.val()) {
+        // Update state
+        this.setState({noUserFound: true})
+      } else {
+        // Update state
+        this.setState({user: data.val()})
+      }
+    })
+  }
+
+  watchAuthState() {
+    // Setup auth change listener
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        // If User has not been authenticated, redirect to home
+        browserHistory.push('/')
+      } else {
+        // Get User data
+        this.getUserData(this.props.params.userId)
+      }
+    })
+  }
+
+  componentDidMount() {
+    // Setup listeners
+    this.watchAuthState()
+  }
+
+  render() {
     return (
       <div className="UserDetails">
-        {this.getUserDetails(panelHeader)}
+        {this.getUserDetails()}
       </div>
     )
   }
