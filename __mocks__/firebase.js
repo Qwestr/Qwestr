@@ -8,14 +8,18 @@ const firebase = jest.genMockFromModule('firebase')
 // Define local variables
 let mockDatabase = gawk({})
 let mockAuthUserId = 'mockAuthUserId'
+let mockUser = {
+  uid: mockAuthUserId
+}
 
 // Mocked Methods
 // ##############
 
 firebase.auth = () => {
   return {
-    currentUser: {
-      uid: mockAuthUserId
+    currentUser: mockUser,
+    onAuthStateChanged: (callback) => {
+      callback(mockUser)
     }
   }
 }
