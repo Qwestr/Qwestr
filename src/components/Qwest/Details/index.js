@@ -31,29 +31,6 @@ class QwestDetails extends Component {
     }
   }
 
-  getQwestDetails() {
-    // Create paner header
-    const panelHeader = (<h3>Qwest Details</h3>)
-
-    if (!this.state.noQwestFound) {
-      return (
-        <Panel className="qwest-details-content" header={panelHeader}>
-          <Grid>
-            {this.getQwestTitle(this.state.qwest)}
-          </Grid>
-        </Panel>
-      )
-    } else {
-      return (
-        <div className="qwest-not-found">
-          <h1>
-            <small>Qwest Not Found :(</small>
-          </h1>
-        </div>
-      )
-    }
-  }
-
   getQwestTitle(qwest) {
     if (qwest.title) {
       return (
@@ -70,6 +47,49 @@ class QwestDetails extends Component {
       )
     } else {
       return null
+    }
+  }
+
+  getQwestDescription(qwest) {
+    if (qwest.description) {
+      return (
+        <Row>
+          <Col componentClass={ControlLabel} sm={2}>
+            Description
+          </Col>
+          <Col sm={10}>
+            <div className="qwest-details-description">
+              {qwest.description}
+            </div>
+          </Col>
+        </Row>
+      )
+    } else {
+      return null
+    }
+  }
+
+  getQwestDetails() {
+    // Create paner header
+    const panelHeader = (<h3>Qwest Details</h3>)
+
+    if (!this.state.noQwestFound) {
+      return (
+        <Panel className="qwest-details-content" header={panelHeader}>
+          <Grid>
+            {this.getQwestTitle(this.state.qwest)}
+            {this.getQwestDescription(this.state.qwest)}
+          </Grid>
+        </Panel>
+      )
+    } else {
+      return (
+        <div className="qwest-not-found">
+          <h1>
+            <small>Qwest Not Found :(</small>
+          </h1>
+        </div>
+      )
     }
   }
 
