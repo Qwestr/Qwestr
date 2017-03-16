@@ -13,7 +13,8 @@ class QwestCreate extends Component {
 
     // Set state
     this.state = {
-      title: ''
+      title: '',
+      description: '',
     }
   }
 
@@ -24,7 +25,11 @@ class QwestCreate extends Component {
 
   handleChange(event) {
     // Update state values
-    this.setState({title: event.target.value})
+    if (event.target.id === 'title') {
+      this.setState({title: event.target.value})
+    } else if (event.target.id === 'description') {
+      this.setState({description: event.target.value})
+    }
   }
 
   handleFormSubmit(event) {
@@ -33,7 +38,8 @@ class QwestCreate extends Component {
 
     // Create new Qwest object and save
     const newQwest = new Qwest({
-      title: this.state.title
+      title: this.state.title,
+      description: this.state.description
     })
 
     newQwest.create(this.createQwestSuccessCallback)
@@ -74,9 +80,22 @@ class QwestCreate extends Component {
                 <Col sm={10}>
                   <FormControl
                     type="text"
-                    placeholder="What This Qwest will be Called"
+                    placeholder="What this Qwest will be called"
                     onChange={(event) => this.handleChange(event)}
                     value={this.state.title}
+                  />
+                </Col>
+              </FormGroup>
+              <FormGroup controlId="description">
+                <Col componentClass={ControlLabel} sm={2}>
+                  Description
+                </Col>
+                <Col sm={10}>
+                  <FormControl
+                    type="text"
+                    placeholder="What this Qwest is all about"
+                    onChange={(event) => this.handleChange(event)}
+                    value={this.state.description}
                   />
                 </Col>
               </FormGroup>
