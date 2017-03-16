@@ -29,6 +29,7 @@ export default class Qwest {
     this.accepted = props.accepted || null
     this.completed = props.completed || null
     this.title = props.title || null
+    this.description = props.description || null
   }
 
   create(successCallback) {

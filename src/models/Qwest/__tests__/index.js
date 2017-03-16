@@ -12,7 +12,8 @@ it('successfully creates a Qwest', () => {
 
   // Create Qwest object and save
   const newQwest = new Qwest({
-    title: 'New Qwest'
+    title: 'New Qwest',
+    description: 'A description of the Qwest'
   })
   newQwest.create()
 
@@ -22,6 +23,7 @@ it('successfully creates a Qwest', () => {
   // Expect that the approriate Qwests have been created/ updated
   expect(Object.keys(database['qwests'])).toHaveLength(1)
   expect(database['qwests']['mockId1'].title).toBe(newQwest.title)
+  expect(database['qwests']['mockId1'].description).toBe(newQwest.description)
   expect(database['qwests']['mockId1'].createdBy).toBe(currentAuthUserId)
 
   // Expect that the approriate User Qwests have been created/ updated
