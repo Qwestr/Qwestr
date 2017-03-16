@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 import classnames from 'classnames'
 import React, { Component } from 'react'
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Panel } from 'react-bootstrap'
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
 import Qwest from '../../../models/Qwest'
 import './style.css'
@@ -15,6 +15,14 @@ class QwestCreate extends Component {
     this.state = {
       title: '',
       description: '',
+      validationState: {
+        title: null,
+        description: null
+      },
+      validationText: {
+        title: null,
+        description: null
+      }
     }
   }
 
@@ -32,17 +40,39 @@ class QwestCreate extends Component {
     }
   }
 
+  validateForm() {
+    if (!this.state.title) {
+      // Update the state and return false
+      let updatedValidationState = this.state.validationState
+      updatedValidationState.title = 'error'
+
+      let updatedValidationText = this.state.validationText
+      updatedValidationText.title = 'A title is required.'
+
+      this.setState({
+        validationState: updatedValidationState,
+        validationText: updatedValidationText
+      })
+
+      return false
+    }
+
+    return true
+  }
+
   handleFormSubmit(event) {
     // Stop the form submission from reloading the page
     event.preventDefault()
 
-    // Create new Qwest object and save
-    const newQwest = new Qwest({
-      title: this.state.title,
-      description: this.state.description
-    })
+    if (this.validateForm()) {
+      // Create new Qwest object and save
+      const newQwest = new Qwest({
+        title: this.state.title,
+        description: this.state.description
+      })
 
-    newQwest.create(this.createQwestSuccessCallback)
+      newQwest.create(this.createQwestSuccessCallback)
+    }
   }
 
   watchAuthState() {
@@ -60,6 +90,16 @@ class QwestCreate extends Component {
     this.watchAuthState()
   }
 
+  getValidationText(field) {
+    if (this.state.validationText[field]) {
+      return (
+        <HelpBlock>{this.state.validationText[field]}</HelpBlock>
+      )
+    } else {
+      return null
+    }
+  }
+
   render() {
     // Declare relevant properties as local variables
     const { className, ..._props } = this.props
@@ -73,7 +113,7 @@ class QwestCreate extends Component {
         <div className="QwestCreate-content">
           <Panel header={panelHeader}>
             <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
-              <FormGroup controlId="title">
+              <FormGroup controlId="title" validationState={this.state.validationState.title}>
                 <Col componentClass={ControlLabel} sm={2}>
                   Title
                 </Col>
@@ -84,9 +124,10 @@ class QwestCreate extends Component {
                     onChange={(event) => this.handleChange(event)}
                     value={this.state.title}
                   />
+                  {this.getValidationText('title')}
                 </Col>
               </FormGroup>
-              <FormGroup controlId="description">
+              <FormGroup controlId="description" validationState={this.state.validationState.description}>
                 <Col componentClass={ControlLabel} sm={2}>
                   Description
                 </Col>
@@ -97,6 +138,7 @@ class QwestCreate extends Component {
                     onChange={(event) => this.handleChange(event)}
                     value={this.state.description}
                   />
+                  {this.getValidationText('description')}
                 </Col>
               </FormGroup>
               <FormGroup>
