@@ -1,20 +1,34 @@
 import firebase from 'firebase'
-import classnames from 'classnames'
 import React, { Component } from 'react'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-import Qwest from '../../../models/Qwest'
+// import Qwest from '../../../models/Qwest'
+import QwestManager from '../../../managers/Qwest'
 import './style.css'
 
 class QwestEdit extends Component {
+  static propTypes = {
+    params: React.PropTypes.shape({
+      qwestId: React.PropTypes.string
+    }),
+    manager: React.PropTypes.instanceOf(QwestManager)
+  }
+
+  static defaultProps = {
+    params: {
+      qwestId: 'defaultQwestId'
+    },
+    manager: new QwestManager()
+  }
+
   constructor(props) {
     // Set props
     super(props)
 
     // Set state
     this.state = {
-      title: '',
-      description: '',
+      noQwestFound: false,
+      qwest: {},
       validationState: {
         title: null,
         description: null
@@ -22,11 +36,11 @@ class QwestEdit extends Component {
       validationText: {
         title: null,
         description: null
-      }
+      },
     }
   }
 
-  createQwestSuccessCallback(data) {
+  editQwestSuccessCallback(data) {
     // Redirect to Qwest list route
     browserHistory.push('/qwest/list')
   }
@@ -65,13 +79,13 @@ class QwestEdit extends Component {
     event.preventDefault()
 
     if (this.validateForm()) {
-      // Create new Qwest object and save
-      const newQwest = new Qwest({
-        title: this.state.title,
-        description: this.state.description
-      })
+      // Update Qwest object and save
+      // const newQwest = new Qwest({
+      //   title: this.state.title,
+      //   description: this.state.description
+      // })
 
-      newQwest.create(this.createQwestSuccessCallback)
+      // newQwest.create(this.createQwestSuccessCallback)
     }
   }
 
@@ -101,16 +115,13 @@ class QwestEdit extends Component {
   }
 
   render() {
-    // Declare relevant properties as local variables
-    const { className, ..._props } = this.props
-
-    // Declare other local variables
-    const panelHeader = (<h3>Create New Qwest</h3>)
+    // Declare local variables
+    const panelHeader = (<h3>Edit Qwest</h3>)
 
     // Render the veiw
     return (
-      <div className={classnames('QwestCreate', className)}>
-        <div className="QwestCreate-content">
+      <div className="QwestEdit">
+        <div className="qwest-edit-content">
           <Panel header={panelHeader}>
             <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
               <FormGroup controlId="title" validationState={this.state.validationState.title}>
@@ -122,7 +133,7 @@ class QwestEdit extends Component {
                     type="text"
                     placeholder="What this Qwest will be called"
                     onChange={(event) => this.handleChange(event)}
-                    value={this.state.title}
+                    value={this.state.qwest.title}
                   />
                   {this.getValidationText('title')}
                 </Col>
@@ -136,14 +147,14 @@ class QwestEdit extends Component {
                     type="text"
                     placeholder="What this Qwest is all about"
                     onChange={(event) => this.handleChange(event)}
-                    value={this.state.description}
+                    value={this.state.qwest.description}
                   />
                   {this.getValidationText('description')}
                 </Col>
               </FormGroup>
               <FormGroup>
                 <Col smOffset={2} sm={10}>
-                  <Button type="submit">Create</Button>
+                  <Button type="submit">Update</Button>
                 </Col>
               </FormGroup>
             </Form>
