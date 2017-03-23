@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import React, { Component } from 'react'
+import update from 'react-addons-update';
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
 // import Qwest from '../../../models/Qwest'
@@ -28,7 +29,11 @@ class QwestEdit extends Component {
     // Set state
     this.state = {
       noQwestFound: false,
-      qwest: {},
+      isQwestLoaded: false,
+      qwest: {
+        title: '',
+        description: ''
+      },
       validationState: {
         title: null,
         description: null
@@ -48,9 +53,17 @@ class QwestEdit extends Component {
   handleChange(event) {
     // Update state values
     if (event.target.id === 'title') {
-      this.setState({title: event.target.value})
+      this.setState({
+        qwest: update(this.state.qwest, {
+          title: {$set: event.target.value}
+        })
+      })
     } else if (event.target.id === 'description') {
-      this.setState({description: event.target.value})
+      this.setState({
+        qwest: update(this.state.qwest, {
+          description: {$set: event.target.value}
+        })
+      })
     }
   }
 
@@ -89,12 +102,92 @@ class QwestEdit extends Component {
     }
   }
 
+  getQwestEditForm() {
+    // Create paner header
+    const panelHeader = (<h3>Edit Qwest</h3>)
+
+    if (!this.state.noQwestFound) {
+      if (this.state.isQwestLoaded) {
+        return (
+          <div className="qwest-edit-content">
+            <Panel header={panelHeader}>
+              <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
+                <FormGroup controlId="title" validationState={this.state.validationState.title}>
+                  <Col componentClass={ControlLabel} sm={2}>
+                    Title
+                  </Col>
+                  <Col sm={10}>
+                    <FormControl
+                      type="text"
+                      placeholder="What this Qwest will be called"
+                      onChange={(event) => this.handleChange(event)}
+                      value={this.state.qwest.title}
+                    />
+                    {this.getValidationText('title')}
+                  </Col>
+                </FormGroup>
+                <FormGroup controlId="description" validationState={this.state.validationState.description}>
+                  <Col componentClass={ControlLabel} sm={2}>
+                    Description
+                  </Col>
+                  <Col sm={10}>
+                    <FormControl
+                      type="text"
+                      placeholder="What this Qwest is all about"
+                      onChange={(event) => this.handleChange(event)}
+                      value={this.state.qwest.description}
+                    />
+                    {this.getValidationText('description')}
+                  </Col>
+                </FormGroup>
+                <FormGroup>
+                  <Col smOffset={2} sm={10}>
+                    <Button type="submit">Update</Button>
+                  </Col>
+                </FormGroup>
+              </Form>
+            </Panel>
+          </div>
+        )
+      } else {
+        return null
+      }
+    } else {
+      return (
+        <div className="qwest-not-found">
+          <h1>
+            <small>Qwest Not Found :(</small>
+          </h1>
+        </div>
+      )
+    }
+  }
+
+  getQwestData(qwestId) {
+    // get Qwest data
+    this.props.manager.getQwest(qwestId, (data) => {
+      if (!data.val()) {
+        // Update state
+        this.setState({noQwestFound: true})
+      } else {
+        // Update state
+        this.setState({
+          qwest: data.val(),
+          isQwestLoaded: true
+        })
+      }
+    })
+  }
+
   watchAuthState() {
     // Setup auth change listener
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         // If User has not been authenticated, redirect to home
         browserHistory.push('/')
+      } else {
+        // Get Qwest data
+        this.getQwestData(this.props.params.qwestId)
       }
     })
   }
@@ -115,51 +208,9 @@ class QwestEdit extends Component {
   }
 
   render() {
-    // Declare local variables
-    const panelHeader = (<h3>Edit Qwest</h3>)
-
-    // Render the veiw
     return (
       <div className="QwestEdit">
-        <div className="qwest-edit-content">
-          <Panel header={panelHeader}>
-            <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
-              <FormGroup controlId="title" validationState={this.state.validationState.title}>
-                <Col componentClass={ControlLabel} sm={2}>
-                  Title
-                </Col>
-                <Col sm={10}>
-                  <FormControl
-                    type="text"
-                    placeholder="What this Qwest will be called"
-                    onChange={(event) => this.handleChange(event)}
-                    value={this.state.qwest.title}
-                  />
-                  {this.getValidationText('title')}
-                </Col>
-              </FormGroup>
-              <FormGroup controlId="description" validationState={this.state.validationState.description}>
-                <Col componentClass={ControlLabel} sm={2}>
-                  Description
-                </Col>
-                <Col sm={10}>
-                  <FormControl
-                    type="text"
-                    placeholder="What this Qwest is all about"
-                    onChange={(event) => this.handleChange(event)}
-                    value={this.state.qwest.description}
-                  />
-                  {this.getValidationText('description')}
-                </Col>
-              </FormGroup>
-              <FormGroup>
-                <Col smOffset={2} sm={10}>
-                  <Button type="submit">Update</Button>
-                </Col>
-              </FormGroup>
-            </Form>
-          </Panel>
-        </div>
+        {this.getQwestEditForm()}
       </div>
     )
   }
