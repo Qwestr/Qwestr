@@ -5,12 +5,22 @@ export class UserQwest {
     this.assignedTo = props.assignedTo || null
     this.title = props.title || null
   }
+
+  update(qwestData) {
+    // update the UserQwest
+    this.title = qwestData.title
+  }
 }
 
 export class AssignedUserQwest {
   constructor(props) {
     this.assignedBy = props.createdBy || null
     this.title = props.title || null
+  }
+
+  update(qwestData) {
+    // update the AssignedUserQwest
+    this.title = qwestData.title
   }
 }
 
@@ -19,6 +29,11 @@ export class AssigningUserQwest {
     this.assignedTo = props.assignedTo || null
     this.accepted = props.accepted || null
     this.title = props.title || null
+  }
+
+  update(qwestData) {
+    // update the AssigningUserQwest
+    this.title = qwestData.title
   }
 }
 
@@ -49,6 +64,7 @@ export default class Qwest {
   }
 
   update(qwestData) {
+    // update the Qwest
     this.title = qwestData.title
     this.description = qwestData.description
   }
