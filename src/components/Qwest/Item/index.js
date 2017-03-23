@@ -166,11 +166,7 @@ export default class QwestItem extends Component {
       }
     } else if (this.props.completed) {
       if (this.props.qwest.assignedBy) {
-        return [{
-          title: 'Remove',
-          style: 'danger',
-          event: () => this.props.manager.remove(this.props.id)
-        }]
+        return []
       } else {
         return [{
           title: 'Restart',

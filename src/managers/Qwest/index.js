@@ -40,19 +40,23 @@ export default class QwestManager {
     ref.once('value').then(dataReceivedCallback)
   }
 
-  update(key, updateQwestData) {
+  update(key, updatedQwestData, successCallback) {
     this.getQwest(key, (data) => {
       // Create Qwest/ UserQwest objects from data
-      // const qwest = new Qwest(data.val())
-      // const userQwest = new UserQwest(data.val())
-      // const assignedUserQwest = new AssignedUserQwest(data.val())
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const assigningUserQwest = new AssigningUserQwest(data.val())
+      const assignedUserQwest = new AssignedUserQwest(data.val())
 
       // Update/ Modify Qwest/ UserQwest objects
-      // qwest.completed = true
+      qwest.update(updatedQwestData)
+      userQwest.update(updatedQwestData)
+      assigningUserQwest.update(updatedQwestData)
+      assignedUserQwest.update(updatedQwestData)
 
       // Prepare updates for Qwest/ UserQwest data
-      // let updates = {}
-      // updates['/qwests/' + key] = qwest
+      let updates = {}
+      updates['/qwests/' + key] = qwest
       // if (qwest.assignedTo) {
       //   updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
       //   updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = null
@@ -64,7 +68,7 @@ export default class QwestManager {
       // }
 
       // Update the database
-      // return firebase.database().ref().update(updates)
+      // return firebase.database().ref().update(updates).then(successCallback)
     })
   }
 
@@ -255,20 +259,6 @@ export default class QwestManager {
       updates['/user-qwests/' + assignedUserId + '/active/' + key] = null
       updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
       updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = null
-
-      // Update the database
-      return firebase.database().ref().update(updates)
-    })
-  }
-
-  remove(key) {
-    this.getQwest(key, (data) => {
-      // Create Qwest/ UserQwest objects from data
-      const qwest = new Qwest(data.val())
-
-      // Prepare updates for Qwest/ UserQwest data
-      let updates = {}
-      updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
 
       // Update the database
       return firebase.database().ref().update(updates)
