@@ -32,3 +32,22 @@ it('successfully creates a Qwest', () => {
   expect(Object.keys(database['user-qwests'][currentAuthUserId]['active'])).toHaveLength(1)
   expect(database['user-qwests'][currentAuthUserId]['active']['mockId1'].title).toBe(newQwest.title)
 })
+
+it('successfully updates a Qwest', () => {
+  // Create Qwest object
+  const newQwest = new Qwest({
+    title: 'New Qwest',
+    description: 'A description of the Qwest'
+  })
+
+  // Update the Qwest object
+  const updatedQwestData = {
+    title: 'Updated Qwest Title',
+    'description': 'An updated description of the Qwest'
+  }
+  newQwest.update(updatedQwestData)
+
+  // Expect that the Qwest has been successfully created/ updated
+  expect(newQwest.title).toBe(updatedQwestData.title)
+  expect(newQwest.description).toBe(updatedQwestData.description)
+})

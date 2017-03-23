@@ -47,4 +47,9 @@ export default class Qwest {
     // Update the database
     return firebase.database().ref().update(updates).then(successCallback)
   }
+
+  update(qwestData) {
+    this.title = qwestData.title
+    this.description = qwestData.description
+  }
 }
