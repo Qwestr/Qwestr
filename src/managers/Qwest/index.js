@@ -233,20 +233,6 @@ export default class QwestManager {
     })
   }
 
-  remove(key) {
-    this.getQwest(key, (data) => {
-      // Create Qwest/ UserQwest objects from data
-      const qwest = new Qwest(data.val())
-
-      // Prepare updates for Qwest/ UserQwest data
-      let updates = {}
-      updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = null
-
-      // Update the database
-      return firebase.database().ref().update(updates)
-    })
-  }
-
   delete(key) {
     this.getQwest(key, (data) => {
       // Create Qwest/ UserQwest objects from data
@@ -266,6 +252,47 @@ export default class QwestManager {
 
       // Update the database
       return firebase.database().ref().update(updates)
+    })
+  }
+
+  update(key, updatedQwestData, successCallback) {
+    this.getQwest(key, (data) => {
+      // Create Qwest/ UserQwest objects from data
+      const qwest = new Qwest(data.val())
+      const userQwest = new UserQwest(data.val())
+      const assigningUserQwest = new AssigningUserQwest(data.val())
+      const assignedUserQwest = new AssignedUserQwest(data.val())
+
+      // Update/ Modify Qwest/ UserQwest objects
+      qwest.update(updatedQwestData)
+      userQwest.update(updatedQwestData)
+      assigningUserQwest.update(updatedQwestData)
+      assignedUserQwest.update(updatedQwestData)
+
+      // Prepare updates for Qwest/ UserQwest data
+      let updates = {}
+      updates['/qwests/' + key] = qwest
+      if (qwest.assignedTo) {
+        if (qwest.completed) {
+          updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = assigningUserQwest
+          updates['/user-qwests/' + qwest.assignedTo + '/completed/' + key] = assignedUserQwest
+        } else if (qwest.accepted) {
+          updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = assigningUserQwest
+          updates['/user-qwests/' + qwest.assignedTo + '/active/' + key] = assignedUserQwest
+        } else {
+          updates['/user-qwests/' + qwest.createdBy + '/assigned/' + key] = assigningUserQwest
+          updates['/user-qwests/' + qwest.assignedTo + '/pending/' + key] = assignedUserQwest
+        }
+      } else {
+        if (qwest.completed) {
+          updates['/user-qwests/' + qwest.createdBy + '/completed/' + key] = userQwest
+        } else {
+          updates['/user-qwests/' + qwest.createdBy + '/active/' + key] = userQwest
+        }
+      }
+
+      // Update the database
+      return firebase.database().ref().update(updates).then(successCallback)
     })
   }
 }
