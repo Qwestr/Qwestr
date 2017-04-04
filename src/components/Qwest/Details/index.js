@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import React, { Component } from 'react'
-import { Col, ControlLabel, Grid, Row, Panel } from 'react-bootstrap'
+import { Button, Col, ControlLabel, Grid, Row, Panel } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
 import QwestManager from '../../../managers/Qwest'
 import './style.css'
@@ -27,6 +27,7 @@ class QwestDetails extends Component {
     // Set state
     this.state = {
       noQwestFound: false,
+      isQwestLoaded: false,
       qwest: {}
     }
   }
@@ -69,6 +70,32 @@ class QwestDetails extends Component {
     }
   }
 
+  getEditButton(isQwestLoaded) {
+    if (isQwestLoaded) {
+
+      // Setup Qwest edit link
+      const qwestEditLink = '/qwest/' + this.props.params.qwestId + '/edit'
+
+      return (
+        <div className="qwest-details-edit-button">
+          <Row>
+            <Col componentClass={ControlLabel} sm={2}>
+              Actions
+            </Col>
+            <Col sm={2}>
+              <Button bsStyle="primary" href={qwestEditLink} block>
+                Edit
+              </Button>
+            </Col>
+            <Col sm={8} />
+          </Row>
+        </div>
+      )
+    } else {
+      return null
+    }
+  }
+
   getQwestDetails() {
     // Create paner header
     const panelHeader = (<h3>Qwest Details</h3>)
@@ -79,6 +106,7 @@ class QwestDetails extends Component {
           <Grid>
             {this.getQwestTitle(this.state.qwest)}
             {this.getQwestDescription(this.state.qwest)}
+            {this.getEditButton(this.state.isQwestLoaded)}
           </Grid>
         </Panel>
       )
@@ -101,7 +129,10 @@ class QwestDetails extends Component {
         this.setState({noQwestFound: true})
       } else {
         // Update state
-        this.setState({qwest: data.val()})
+        this.setState({
+          qwest: data.val(),
+          isQwestLoaded: true
+        })
       }
     })
   }

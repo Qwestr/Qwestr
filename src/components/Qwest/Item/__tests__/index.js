@@ -281,8 +281,6 @@ describe('<QwestItem />', () => {
     expect(wrapper.find('.qwest-item-user-details').text()).toContain('Assigned By:')
     expect(wrapper.find('.qwest-item-user-details').text()).toContain(assigningUserName)
     expect(wrapper.find('.qwest-item-user-details a').prop('href')).toContain(assigningUserId)
-    expect(wrapper.find(ActionButtonGroup).text()).toContain('Remove')
-    expect(wrapper.find(ActionButtonDropdown).text()).toContain('Remove')
   })
 
   it('successfully renders the component for an assigned Qwest', () => {
