@@ -1,6 +1,13 @@
 # Qwestr-React
 
-A front-end client of Qwestr, bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+A Gameified Task Management Application
+
+## How It's Made
+
+Qwestr-React was developed using the following technology stack:
+
+- [React](https://facebook.github.io/react/)
+  - Bootstrapped using [Create React App](https://github.com/facebookincubator/create-react-app)
 
 ## License
 
