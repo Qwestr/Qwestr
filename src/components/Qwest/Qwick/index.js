@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { Col, Grid, ListGroupItem, Row } from 'react-bootstrap'
+import {
+  Button, Col, ControlLabel, Form, FormControl, FormGroup,
+  Grid, ListGroupItem, Row
+} from 'react-bootstrap'
 import './style.css'
 
 export default class QwestQwick extends Component {
@@ -21,12 +24,27 @@ export default class QwestQwick extends Component {
         QwestQwick
         <Grid>
           <Row>
-            <Col className='qwest-item-info' xs={9} sm={8}>
-            </Col>
-            <Col className='action-button-group' sm={4} xsHidden>
-            </Col>
-            <Col className='action-button-dropdown' xs={3} smHidden mdHidden lgHidden>
-            </Col>
+            <Form horizontal onSubmit={(event) => this.handleFormSubmit(event)}>
+              <FormGroup controlId="title" validationState={this.state.validationState.title}>
+                <Col componentClass={ControlLabel} sm={2}>
+                  Title
+                </Col>
+                <Col sm={10}>
+                  <FormControl
+                    type="text"
+                    placeholder="What this Qwest will be called"
+                    onChange={(event) => this.handleChange(event)}
+                    value={this.state.title}
+                  />
+                  {this.getValidationText('title')}
+                </Col>
+              </FormGroup>
+              <FormGroup>
+                <Col smOffset={2} sm={10}>
+                  <Button type="submit">Create</Button>
+                </Col>
+              </FormGroup>
+            </Form>
           </Row>
         </Grid>
       </ListGroupItem>
