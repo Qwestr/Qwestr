@@ -1,7 +1,9 @@
 import firebase from 'firebase'
 import classnames from 'classnames'
 import React, { Component } from 'react'
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel } from 'react-bootstrap'
+import {
+  Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel
+} from 'react-bootstrap'
 import { browserHistory } from 'react-router'
 import Qwest from '../../../models/Qwest'
 import './style.css'
