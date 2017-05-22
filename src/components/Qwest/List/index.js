@@ -10,6 +10,7 @@ import { browserHistory } from 'react-router'
 import QwestManager from '../../../managers/Qwest'
 import UserManager from '../../../managers/User'
 import QwestItem from '../Item'
+import QwestQwick from '../Qwick'
 import './style.css'
 
 class QwestList extends Component {
@@ -68,6 +69,7 @@ class QwestList extends Component {
       <Tabs id='Qwest-tabs' activeKey={this.state.activeTab} onSelect={(value) => this.handleTabSelect(value)}>
         <Tab eventKey='active' title="Active">
           <div className="QwestList-list">
+            <QwestQwick />
             <ListGroup>
               {this.getActiveQwestList()}
             </ListGroup>
