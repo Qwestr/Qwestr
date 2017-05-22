@@ -1,19 +1,4 @@
-.qwest-item-info {
-  text-align: left;
-}
-
-.qwest-item-title {
+.qwest-qwick-header {
   font-size: 16px;
-}
-
-.qwest-item-user-details {
-  font-size: 12px;
-}
-
-.action-button-group {
-  text-align: right;
-}
-
-.action-button-dropdown {
-  text-align: right;
+  padding-bottom: 10px;
 }
