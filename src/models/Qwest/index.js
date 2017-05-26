@@ -1,3 +1,5 @@
+import 'datejs'
+
 import firebase from 'firebase'
 
 export class UserQwest {
@@ -40,6 +42,7 @@ export class AssigningUserQwest {
 export default class Qwest {
   constructor(props) {
     this.createdBy = props.createdBy || firebase.auth().currentUser.uid
+    this.createdOn = props.createdOn || Date.today().setTimeToNow().toString()
     this.assignedTo = props.assignedTo || null
     this.accepted = props.accepted || null
     this.completed = props.completed || null
