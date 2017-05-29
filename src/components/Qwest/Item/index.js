@@ -143,17 +143,17 @@ export default class QwestItem extends Component {
         return [{
           title: 'Complete',
           style: 'primary',
-          event: () => this.props.manager.complete(this.props.id)
+          event: () => this.props.qwestManager.complete(this.props.id)
         }, {
           title: 'Drop',
           style: 'danger',
-          event: () => this.props.manager.drop(this.props.id)
+          event: () => this.props.qwestManager.drop(this.props.id)
         }]
       } else {
         return [{
           title: 'Complete',
           style: 'primary',
-          event: () => this.props.manager.complete(this.props.id)
+          event: () => this.props.qwestManager.complete(this.props.id)
         }, {
           title: 'Assign',
           style: 'success',
@@ -161,7 +161,7 @@ export default class QwestItem extends Component {
         }, {
           title: 'Delete',
           style: 'danger',
-          event: () => this.props.manager.delete(this.props.id)
+          event: () => this.props.qwestManager.delete(this.props.id)
         }]
       }
     } else if (this.props.completed) {
@@ -171,11 +171,11 @@ export default class QwestItem extends Component {
         return [{
           title: 'Restart',
           style: 'primary',
-          event: () => this.props.manager.restart(this.props.id)
+          event: () => this.props.qwestManager.restart(this.props.id)
         }, {
           title: 'Delete',
           style: 'danger',
-          event: () => this.props.manager.delete(this.props.id)
+          event: () => this.props.qwestManager.delete(this.props.id)
         }]
       }
     } else if (this.props.assigned) {
@@ -186,21 +186,21 @@ export default class QwestItem extends Component {
       }, {
         title: 'Revoke',
         style: 'warning',
-        event: () => this.props.manager.revoke(this.props.id)
+        event: () => this.props.qwestManager.revoke(this.props.id)
       }, {
         title: 'Delete',
         style: 'danger',
-        event: () => this.props.manager.delete(this.props.id)
+        event: () => this.props.qwestManager.delete(this.props.id)
       }]
     } else if (this.props.pending) {
       return [{
         title: 'Accept',
         style: 'primary',
-        event: () => this.props.manager.accept(this.props.id)
+        event: () => this.props.qwestManager.accept(this.props.id)
       }, {
         title: 'Reject',
         style: 'danger',
-        event: () => this.props.manager.reject(this.props.id)
+        event: () => this.props.qwestManager.reject(this.props.id)
       }]
     } else {
       return []
