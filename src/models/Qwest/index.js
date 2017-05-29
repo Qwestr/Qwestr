@@ -71,7 +71,7 @@ export default class Qwest {
   update(qwestData) {
     // update the Qwest
     this.title = qwestData.title
-    this.description = qwestData.description
+    this.description = qwestData.description || null
     this.updatedOn = Date.today().setTimeToNow().toString()
   }
 }
