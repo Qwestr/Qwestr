@@ -47,6 +47,7 @@ export default class Qwest {
     this.assignedTo = props.assignedTo || null
     this.accepted = props.accepted || null
     this.completed = props.completed || null
+    this.completedOn = props.completedOn || null
     this.title = props.title || null
     this.description = props.description || null
   }
