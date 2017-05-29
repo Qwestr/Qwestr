@@ -74,4 +74,11 @@ export default class Qwest {
     this.description = qwestData.description || null
     this.updatedOn = Date.today().setTimeToNow().toString()
   }
+
+  complete() {
+    // complete the Qwest
+    this.completed = true
+    this.completedOn = Date.today().setTimeToNow().toString()
+    this.updatedOn = Date.today().setTimeToNow().toString()
+  }
 }
