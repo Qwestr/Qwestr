@@ -57,6 +57,22 @@ describe('Qwest', () => {
     expect(newQwest.description).toBe(updatedQwestData.description)
     expect(newQwest.updatedOn).toBe(Date.today().setTimeToNow().toString())
   })
+
+  it('successfully completes a Qwest', () => {
+    // Create Qwest object
+    const newQwest = new Qwest({
+      title: 'New Qwest',
+      description: 'A description of the Qwest'
+    })
+
+    // Complete the Qwest
+    newQwest.complete()
+
+    // Expect that the Qwest has been successfully completed
+    expect(newQwest.completed).toBe(true)
+    expect(newQwest.completedOn).toBe(Date.today().setTimeToNow().toString())
+    expect(newQwest.updatedOn).toBe(Date.today().setTimeToNow().toString())
+  })
 })
 
 describe('UserQwest', () => {
