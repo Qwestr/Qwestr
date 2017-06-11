@@ -6,6 +6,7 @@ import QwestItem, {
   ActionButton, ActionButtonDropdown, ActionButtonGroup
 } from '../'
 import { AssignedUserQwest, AssigningUserQwest, UserQwest } from '../../../../models/Qwest'
+import QwestManager from '../../../../managers/Qwest'
 import UserManager from '../../../../managers/User'
 
 function createNewUser(userId, displayName) {
@@ -157,6 +158,28 @@ describe('<QwestItem />', () => {
     expect(wrapper.find(ActionButton).exists()).toBeFalsy()
     expect(wrapper.find(ActionButtonDropdown).exists()).toBeTruthy()
     expect(wrapper.find(MenuItem).exists()).toBeFalsy()
+  })
+
+  it('successfully renders the component using passed-in properties', () => {
+    // Create new properties
+    const qwest = new UserQwest({
+      title: 'Qwest Name'
+    })
+    const qwestManager = new QwestManager()
+    const userManager = new UserManager()
+
+    // Mount the component
+    const wrapper = mount(
+      <QwestItem
+        qwest={qwest}
+        qwestManager={qwestManager}
+        userManager={userManager}
+      />)
+
+    // Expect that the override values exist
+    expect(wrapper.prop('qwest')).toBe(qwest)
+    expect(wrapper.prop('qwestManager')).toBe(qwestManager)
+    expect(wrapper.prop('userManager')).toBe(userManager)
   })
 
   it('successfully renders the component for an active Qwest', () => {

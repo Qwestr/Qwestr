@@ -28,6 +28,8 @@ describe('Qwest', () => {
     expect(database['qwests']['mockId1'].title).toBe(newQwest.title)
     expect(database['qwests']['mockId1'].description).toBe(newQwest.description)
     expect(database['qwests']['mockId1'].createdBy).toBe(currentAuthUserId)
+    expect(database['qwests']['mockId1'].createdOn).toBe(Date.today().setTimeToNow().toString())
+    expect(database['qwests']['mockId1'].updatedOn).toBe(Date.today().setTimeToNow().toString())
 
     // Expect that the approriate User Qwests have been created/ updated
     expect(Object.keys(database['user-qwests'])).toHaveLength(1)
@@ -53,6 +55,23 @@ describe('Qwest', () => {
     // Expect that the Qwest has been successfully created/ updated
     expect(newQwest.title).toBe(updatedQwestData.title)
     expect(newQwest.description).toBe(updatedQwestData.description)
+    expect(newQwest.updatedOn).toBe(Date.today().setTimeToNow().toString())
+  })
+
+  it('successfully completes a Qwest', () => {
+    // Create Qwest object
+    const newQwest = new Qwest({
+      title: 'New Qwest',
+      description: 'A description of the Qwest'
+    })
+
+    // Complete the Qwest
+    newQwest.complete()
+
+    // Expect that the Qwest has been successfully completed
+    expect(newQwest.completed).toBe(true)
+    expect(newQwest.completedOn).toBe(Date.today().setTimeToNow().toString())
+    expect(newQwest.updatedOn).toBe(Date.today().setTimeToNow().toString())
   })
 })
 

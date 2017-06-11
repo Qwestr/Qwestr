@@ -150,7 +150,7 @@ class QwestList extends Component {
           key={key}
           id={key}
           qwest={this.state.userQwests.active[key]}
-          manager={this.state.qwestManager}
+          qwestManager={this.state.qwestManager}
           assignQwest={() => this.showAssignQwestModal(key)}
           active
         />
@@ -167,7 +167,7 @@ class QwestList extends Component {
           key={key}
           id={key}
           qwest={this.state.userQwests.completed[key]}
-          manager={this.state.qwestManager}
+          qwestManager={this.state.qwestManager}
           completed
         />
       )
@@ -183,7 +183,7 @@ class QwestList extends Component {
           key={key}
           id={key}
           qwest={this.state.userQwests.assigned[key]}
-          manager={this.state.qwestManager}
+          qwestManager={this.state.qwestManager}
           assignQwest={() => this.showAssignQwestModal(key)}
           assigned
         />
@@ -200,7 +200,7 @@ class QwestList extends Component {
           key={key}
           id={key}
           qwest={this.state.userQwests.pending[key]}
-          manager={this.state.qwestManager}
+          qwestManager={this.state.qwestManager}
           pending
         />
       )

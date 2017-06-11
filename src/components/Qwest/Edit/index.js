@@ -12,14 +12,14 @@ class QwestEdit extends Component {
     params: React.PropTypes.shape({
       qwestId: React.PropTypes.string
     }),
-    manager: React.PropTypes.instanceOf(QwestManager)
+    qwestManager: React.PropTypes.instanceOf(QwestManager)
   }
 
   static defaultProps = {
     params: {
       qwestId: 'defaultQwestId'
     },
-    manager: new QwestManager()
+    qwestManager: new QwestManager()
   }
 
   constructor(props) {
@@ -30,10 +30,9 @@ class QwestEdit extends Component {
     this.state = {
       noQwestFound: false,
       isQwestLoaded: false,
-      qwest: {
-        title: '',
-        description: ''
-      },
+      qwest: null,
+      title: '',
+      description: '',
       validationState: {
         title: null,
         description: null
@@ -56,19 +55,21 @@ class QwestEdit extends Component {
       this.setState({
         qwest: update(this.state.qwest, {
           title: {$set: event.target.value}
-        })
+        }),
+        title: event.target.value
       })
     } else if (event.target.id === 'description') {
       this.setState({
         qwest: update(this.state.qwest, {
           description: {$set: event.target.value}
-        })
+        }),
+        description: event.target.value
       })
     }
   }
 
   validateForm() {
-    if (!this.state.title) {
+    if (!this.state.qwest.title) {
       // Update the state and return false
       let updatedValidationState = this.state.validationState
       updatedValidationState.title = 'error'
@@ -92,13 +93,8 @@ class QwestEdit extends Component {
     event.preventDefault()
 
     if (this.validateForm()) {
-      // Update Qwest object and save
-      // const newQwest = new Qwest({
-      //   title: this.state.title,
-      //   description: this.state.description
-      // })
-
-      // newQwest.create(this.createQwestSuccessCallback)
+      // Update Qwest object
+      this.props.qwestManager.update(this.props.params.qwestId, this.state.qwest, this.editQwestSuccessCallback)
     }
   }
 
@@ -121,7 +117,7 @@ class QwestEdit extends Component {
                       type="text"
                       placeholder="What this Qwest will be called"
                       onChange={(event) => this.handleChange(event)}
-                      value={this.state.qwest.title}
+                      value={this.state.title}
                     />
                     {this.getValidationText('title')}
                   </Col>
@@ -135,7 +131,7 @@ class QwestEdit extends Component {
                       type="text"
                       placeholder="What this Qwest is all about"
                       onChange={(event) => this.handleChange(event)}
-                      value={this.state.qwest.description}
+                      value={this.state.description}
                     />
                     {this.getValidationText('description')}
                   </Col>
@@ -165,14 +161,19 @@ class QwestEdit extends Component {
 
   getQwestData(qwestId) {
     // get Qwest data
-    this.props.manager.getQwest(qwestId, (data) => {
+    this.props.qwestManager.getQwest(qwestId, (data) => {
       if (!data.val()) {
         // Update state
         this.setState({noQwestFound: true})
       } else {
+        // Get Qwest from returned data`
+        const qwest = data.val()
+
         // Update state
         this.setState({
-          qwest: data.val(),
+          qwest: qwest,
+          title: qwest.title || '',
+          description: qwest.description || '',
           isQwestLoaded: true
         })
       }
