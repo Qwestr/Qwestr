@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import Qwest, {
-  UserQwest, AssignedUserQwest, AssigningUserQwest
+  REPEAT_TYPE, UserQwest, AssignedUserQwest, AssigningUserQwest
 }  from '../'
 
 afterEach(() => {
@@ -16,7 +16,8 @@ describe('Qwest', () => {
     // Create Qwest object and save
     const newQwest = new Qwest({
       title: 'New Qwest',
-      description: 'A description of the Qwest'
+      description: 'A description of the Qwest',
+      repeats: REPEAT_TYPE.DAILY
     })
     newQwest.create()
 
@@ -27,6 +28,7 @@ describe('Qwest', () => {
     expect(Object.keys(database['qwests'])).toHaveLength(1)
     expect(database['qwests']['mockId1'].title).toBe(newQwest.title)
     expect(database['qwests']['mockId1'].description).toBe(newQwest.description)
+    expect(database['qwests']['mockId1'].repeats).toBe(newQwest.repeats)
     expect(database['qwests']['mockId1'].createdBy).toBe(currentAuthUserId)
     expect(database['qwests']['mockId1'].createdOn).toBe(Date.today().setTimeToNow().toString())
     expect(database['qwests']['mockId1'].updatedOn).toBe(Date.today().setTimeToNow().toString())
