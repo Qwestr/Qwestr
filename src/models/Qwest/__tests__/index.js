@@ -44,19 +44,22 @@ describe('Qwest', () => {
     // Create Qwest object
     const newQwest = new Qwest({
       title: 'New Qwest',
-      description: 'A description of the Qwest'
+      description: 'A description of the Qwest',
+      repeats: REPEAT_TYPE.DAILY
     })
 
     // Update the Qwest object
     const updatedQwestData = {
       title: 'Updated Qwest Title',
-      'description': 'An updated description of the Qwest'
+      'description': 'An updated description of the Qwest',
+      repeats: REPEAT_TYPE.WEEKLY
     }
     newQwest.update(updatedQwestData)
 
     // Expect that the Qwest has been successfully created/ updated
     expect(newQwest.title).toBe(updatedQwestData.title)
     expect(newQwest.description).toBe(updatedQwestData.description)
+    expect(newQwest.repeats).toBe(updatedQwestData.repeats)
     expect(newQwest.updatedOn).toBe(Date.today().setTimeToNow().toString())
   })
 
