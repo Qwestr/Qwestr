@@ -1,3 +1,5 @@
+import 'datejs'
+
 import firebase from 'firebase'
 
 export class UserQwest {
@@ -40,9 +42,12 @@ export class AssigningUserQwest {
 export default class Qwest {
   constructor(props) {
     this.createdBy = props.createdBy || firebase.auth().currentUser.uid
+    this.createdOn = props.createdOn || Date.today().setTimeToNow().toString()
+    this.updatedOn = props.updatedOn || Date.today().setTimeToNow().toString()
     this.assignedTo = props.assignedTo || null
     this.accepted = props.accepted || null
     this.completed = props.completed || null
+    this.completedOn = props.completedOn || null
     this.title = props.title || null
     this.description = props.description || null
   }
@@ -66,6 +71,14 @@ export default class Qwest {
   update(qwestData) {
     // update the Qwest
     this.title = qwestData.title
-    this.description = qwestData.description
+    this.description = qwestData.description || null
+    this.updatedOn = Date.today().setTimeToNow().toString()
+  }
+
+  complete() {
+    // complete the Qwest
+    this.completed = true
+    this.completedOn = Date.today().setTimeToNow().toString()
+    this.updatedOn = Date.today().setTimeToNow().toString()
   }
 }
