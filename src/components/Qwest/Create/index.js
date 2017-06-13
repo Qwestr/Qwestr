@@ -29,6 +29,18 @@ class QwestCreate extends Component {
     }
   }
 
+  getQwestRepeatSelects() {
+    const selectList = Object.keys(REPEAT_TYPE).map((key) =>
+      <option key={key} value={key}>{key}</option>
+    )
+    return (
+      <FormControl componentClass="select" placeholder="">
+        <option key="" value="">Never</option>
+        {selectList}
+      </FormControl>
+    )
+  }
+
   createQwestSuccessCallback(data) {
     // Redirect to Qwest list route
     browserHistory.push('/qwest/list')
@@ -149,11 +161,7 @@ class QwestCreate extends Component {
                   Repeats
                 </Col>
                 <Col sm={10}>
-                <FormControl componentClass="select" placeholder="">
-                  <option value="">Never</option>
-                  <option value="select">Daily</option>
-                  <option value="other">Weekly</option>
-                </FormControl>
+                  {this.getQwestRepeatSelects()}
                 </Col>
               </FormGroup>
               <FormGroup>
