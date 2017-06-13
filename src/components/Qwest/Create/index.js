@@ -5,7 +5,7 @@ import {
   Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel
 } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-import Qwest from '../../../models/Qwest'
+import Qwest, { REPEAT_TYPE } from '../../../models/Qwest'
 import './style.css'
 
 class QwestCreate extends Component {
@@ -17,6 +17,7 @@ class QwestCreate extends Component {
     this.state = {
       title: '',
       description: '',
+      repeats: '',
       validationState: {
         title: null,
         description: null
@@ -141,6 +142,18 @@ class QwestCreate extends Component {
                     value={this.state.description}
                   />
                   {this.getValidationText('description')}
+                </Col>
+              </FormGroup>
+              <FormGroup controlId="formControlsSelect">
+                <Col componentClass={ControlLabel} sm={2}>
+                  Repeats
+                </Col>
+                <Col sm={10}>
+                <FormControl componentClass="select" placeholder="">
+                  <option value="">Never</option>
+                  <option value="select">Daily</option>
+                  <option value="other">Weekly</option>
+                </FormControl>
                 </Col>
               </FormGroup>
               <FormGroup>
