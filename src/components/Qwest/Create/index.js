@@ -34,7 +34,11 @@ class QwestCreate extends Component {
       <option key={key} value={key}>{key}</option>
     )
     return (
-      <FormControl componentClass="select" placeholder="">
+      <FormControl
+        componentClass="select"
+        placeholder=""
+        onChange={(event) => this.handleChange(event)}
+      >
         <option key="" value="">Never</option>
         {selectList}
       </FormControl>
@@ -47,6 +51,8 @@ class QwestCreate extends Component {
   }
 
   handleChange(event) {
+    console.log('event.target.id', event.target.id)
+    console.log('event.target.value', event.target.value)
     // Update state values
     if (event.target.id === 'title') {
       this.setState({title: event.target.value})
@@ -156,7 +162,7 @@ class QwestCreate extends Component {
                   {this.getValidationText('description')}
                 </Col>
               </FormGroup>
-              <FormGroup controlId="formControlsSelect">
+              <FormGroup controlId="repeats">
                 <Col componentClass={ControlLabel} sm={2}>
                   Repeats
                 </Col>

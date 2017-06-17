@@ -2,7 +2,7 @@ import 'datejs'
 import Enum from 'es6-enum'
 import firebase from 'firebase'
 
-export const REPEAT_TYPE = Enum('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY')
+export const REPEAT_TYPE = Enum('Daily', 'Weekly', 'Monthly', 'Yearly')
 
 export class UserQwest {
   constructor(props) {
