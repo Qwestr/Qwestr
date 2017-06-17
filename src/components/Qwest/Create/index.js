@@ -38,6 +38,7 @@ class QwestCreate extends Component {
         componentClass="select"
         placeholder=""
         onChange={(event) => this.handleChange(event)}
+        value={this.state.repeats}
       >
         <option key="" value="">Never</option>
         {selectList}
