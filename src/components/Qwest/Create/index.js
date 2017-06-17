@@ -51,13 +51,13 @@ class QwestCreate extends Component {
   }
 
   handleChange(event) {
-    console.log('event.target.id', event.target.id)
-    console.log('event.target.value', event.target.value)
     // Update state values
     if (event.target.id === 'title') {
       this.setState({title: event.target.value})
     } else if (event.target.id === 'description') {
       this.setState({description: event.target.value})
+    } else if (event.target.id === 'repeats') {
+      this.setState({repeats: event.target.value})
     }
   }
 
@@ -89,7 +89,8 @@ class QwestCreate extends Component {
       // Create new Qwest object and save
       const newQwest = new Qwest({
         title: this.state.title,
-        description: this.state.description
+        description: this.state.description,
+        repeats: this.state.repeats
       })
 
       newQwest.create(this.createQwestSuccessCallback)
