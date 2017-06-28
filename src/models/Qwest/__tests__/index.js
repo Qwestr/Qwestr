@@ -17,7 +17,7 @@ describe('Qwest', () => {
     const newQwest = new Qwest({
       title: 'New Qwest',
       description: 'A description of the Qwest',
-      repeats: REPEAT_TYPE.DAILY
+      repeats: REPEAT_TYPE.Daily
     })
     newQwest.create()
 
@@ -45,14 +45,14 @@ describe('Qwest', () => {
     const newQwest = new Qwest({
       title: 'New Qwest',
       description: 'A description of the Qwest',
-      repeats: REPEAT_TYPE.DAILY
+      repeats: REPEAT_TYPE.Daily
     })
 
     // Update the Qwest object
     const updatedQwestData = {
       title: 'Updated Qwest Title',
-      'description': 'An updated description of the Qwest',
-      repeats: REPEAT_TYPE.WEEKLY
+      description: 'An updated description of the Qwest',
+      repeats: REPEAT_TYPE.Weekly
     }
     newQwest.update(updatedQwestData)
 
