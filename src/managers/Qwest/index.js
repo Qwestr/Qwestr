@@ -48,7 +48,7 @@ export default class QwestManager {
       const assignedUserQwest = new AssignedUserQwest(data.val())
 
       // Update/ Modify Qwest/ UserQwest objects
-      qwest.completed = true
+      qwest.complete()
 
       // Prepare updates for Qwest/ UserQwest data
       let updates = {}
