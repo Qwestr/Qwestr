@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import update from 'react-addons-update';
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-// import Qwest from '../../../models/Qwest'
+import { REPEAT_TYPE } from '../../../models/Qwest'
 import QwestManager from '../../../managers/Qwest'
 import './style.css'
 
@@ -33,6 +33,7 @@ class QwestEdit extends Component {
       qwest: null,
       title: '',
       description: '',
+      repeats: '',
       validationState: {
         title: null,
         description: null
@@ -42,6 +43,23 @@ class QwestEdit extends Component {
         description: null
       },
     }
+  }
+
+  getQwestRepeatSelects() {
+    const selectList = Object.keys(REPEAT_TYPE).map((key) =>
+      <option key={key} value={key}>{key}</option>
+    )
+    return (
+      <FormControl
+        componentClass="select"
+        placeholder=""
+        onChange={(event) => this.handleChange(event)}
+        value={this.state.repeats}
+      >
+        <option key="" value="">Never</option>
+        {selectList}
+      </FormControl>
+    )
   }
 
   editQwestSuccessCallback(data) {
@@ -64,6 +82,13 @@ class QwestEdit extends Component {
           description: {$set: event.target.value}
         }),
         description: event.target.value
+      })
+    } else if (event.target.id === 'repeats') {
+      this.setState({
+        qwest: update(this.state.qwest, {
+          repeats: {$set: event.target.value}
+        }),
+        repeats: event.target.value
       })
     }
   }
@@ -136,6 +161,14 @@ class QwestEdit extends Component {
                     {this.getValidationText('description')}
                   </Col>
                 </FormGroup>
+                <FormGroup controlId="repeats">
+                  <Col componentClass={ControlLabel} sm={2}>
+                    Repeats
+                  </Col>
+                  <Col sm={10}>
+                    {this.getQwestRepeatSelects()}
+                  </Col>
+                </FormGroup>
                 <FormGroup>
                   <Col smOffset={2} sm={10}>
                     <Button type="submit">Update</Button>
@@ -168,12 +201,14 @@ class QwestEdit extends Component {
       } else {
         // Get Qwest from returned data`
         const qwest = data.val()
+        console.log('qwest', qwest);
 
         // Update state
         this.setState({
           qwest: qwest,
           title: qwest.title || '',
           description: qwest.description || '',
+          repeats: qwest.repeats || '',
           isQwestLoaded: true
         })
       }

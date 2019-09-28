@@ -1,6 +1,8 @@
 import 'datejs'
-
+import Enum from 'es6-enum'
 import firebase from 'firebase'
+
+export const REPEAT_TYPE = Enum('Daily', 'Weekly', 'Monthly', 'Yearly')
 
 export class UserQwest {
   constructor(props) {
@@ -48,6 +50,7 @@ export default class Qwest {
     this.accepted = props.accepted || null
     this.completed = props.completed || null
     this.completedOn = props.completedOn || null
+    this.repeats = props.repeats || null
     this.title = props.title || null
     this.description = props.description || null
   }
@@ -72,6 +75,7 @@ export default class Qwest {
     // update the Qwest
     this.title = qwestData.title
     this.description = qwestData.description || null
+    this.repeats = qwestData.repeats || null
     this.updatedOn = Date.today().setTimeToNow().toString()
   }
 

@@ -70,6 +70,25 @@ class QwestDetails extends Component {
     }
   }
 
+  getQwestRepeats(qwest) {
+    if (qwest.repeats) {
+      return (
+        <Row>
+          <Col componentClass={ControlLabel} sm={2}>
+            Repeats
+          </Col>
+          <Col sm={10}>
+            <div className="qwest-details-repeats">
+              {qwest.repeats}
+            </div>
+          </Col>
+        </Row>
+      )
+    } else {
+      return null
+    }
+  }
+
   getEditButton(isQwestLoaded) {
     if (isQwestLoaded) {
 
@@ -106,6 +125,7 @@ class QwestDetails extends Component {
           <Grid>
             {this.getQwestTitle(this.state.qwest)}
             {this.getQwestDescription(this.state.qwest)}
+            {this.getQwestRepeats(this.state.qwest)}
             {this.getEditButton(this.state.isQwestLoaded)}
           </Grid>
         </Panel>

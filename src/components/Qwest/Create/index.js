@@ -5,7 +5,7 @@ import {
   Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Panel
 } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
-import Qwest from '../../../models/Qwest'
+import Qwest, { REPEAT_TYPE } from '../../../models/Qwest'
 import './style.css'
 
 class QwestCreate extends Component {
@@ -17,6 +17,7 @@ class QwestCreate extends Component {
     this.state = {
       title: '',
       description: '',
+      repeats: '',
       validationState: {
         title: null,
         description: null
@@ -26,6 +27,23 @@ class QwestCreate extends Component {
         description: null
       }
     }
+  }
+
+  getQwestRepeatSelects() {
+    const selectList = Object.keys(REPEAT_TYPE).map((key) =>
+      <option key={key} value={key}>{key}</option>
+    )
+    return (
+      <FormControl
+        componentClass="select"
+        placeholder=""
+        onChange={(event) => this.handleChange(event)}
+        value={this.state.repeats}
+      >
+        <option key="" value="">Never</option>
+        {selectList}
+      </FormControl>
+    )
   }
 
   createQwestSuccessCallback(data) {
@@ -39,6 +57,8 @@ class QwestCreate extends Component {
       this.setState({title: event.target.value})
     } else if (event.target.id === 'description') {
       this.setState({description: event.target.value})
+    } else if (event.target.id === 'repeats') {
+      this.setState({repeats: event.target.value})
     }
   }
 
@@ -70,7 +90,8 @@ class QwestCreate extends Component {
       // Create new Qwest object and save
       const newQwest = new Qwest({
         title: this.state.title,
-        description: this.state.description
+        description: this.state.description,
+        repeats: this.state.repeats
       })
 
       newQwest.create(this.createQwestSuccessCallback)
@@ -141,6 +162,14 @@ class QwestCreate extends Component {
                     value={this.state.description}
                   />
                   {this.getValidationText('description')}
+                </Col>
+              </FormGroup>
+              <FormGroup controlId="repeats">
+                <Col componentClass={ControlLabel} sm={2}>
+                  Repeats
+                </Col>
+                <Col sm={10}>
+                  {this.getQwestRepeatSelects()}
                 </Col>
               </FormGroup>
               <FormGroup>
