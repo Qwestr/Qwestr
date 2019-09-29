@@ -1,10 +1,17 @@
 import React from 'react'
+import Aux from 'react-aux'
+
+import QwestForm from './components/QwestForm/QwestForm'
 
 const App = () => {
+  const onSubmit = () => {
+    console.log('form submitted!')
+  }
+
   return (
-    <div>
-      <form></form>
-    </div>
+    <Aux>
+      <QwestForm onSubmit={onSubmit}></QwestForm>
+    </Aux>
   )
 }
 

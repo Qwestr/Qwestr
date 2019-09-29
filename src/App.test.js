@@ -2,6 +2,7 @@ import { configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 
+import QwestForm from './components/QwestForm/QwestForm'
 import App from './App'
 
 configure({
@@ -15,7 +16,7 @@ describe('App', () => {
     wrapper = shallow(<App></App>)
   })
 
-  it('should have a form to create a new qwest', () => {
-    expect(wrapper.find('form')).toHaveLength(1)
+  it('should contain a QwestForm component', () => {
+    expect(wrapper.find(QwestForm)).toHaveLength(1)
   })
 })
