@@ -15,15 +15,27 @@ describe('QwestForm', () => {
     wrapper = shallow(<QwestForm></QwestForm>)
   })
 
-  it('should contain an input element for the name of the qwest', () => {
+  it('should contain an input field for the name of the qwest', () => {
     expect(wrapper.find('input')).toHaveLength(1)
   })
 
-  it('should contain a button element to submit the inputs', () => {
+  it('should contain a submit button to submit the form', () => {
     expect(wrapper.find('button')).toHaveLength(1)
   })
 
-  it('should call the onSubmit method property with the inputted name when the button is clicked', () => {
+  it('should not call the submit method property when the form in invalid', () => {
+    // Create the mock function
+    const onSubmit = jest.fn()
+    // Update the component properties
+    wrapper.setProps({
+      onSubmit: onSubmit
+    })
+    // Simulate a click on the button
+    wrapper.find('button').simulate('click')
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
+  it('should call the submit method property and pass the form inputs when the form submission button is clicked', () => {
     // Create the mock function
     const onSubmit = jest.fn()
     // Update the component properties
@@ -36,17 +48,5 @@ describe('QwestForm', () => {
     expect(onSubmit).toHaveBeenCalledWith({
       name: 'Test'
     })
-  })
-
-  it('should not call the onSubmit method property when the form in invalid', () => {
-    // Create the mock function
-    const onSubmit = jest.fn()
-    // Update the component properties
-    wrapper.setProps({
-      onSubmit: onSubmit
-    })
-    // Simulate a click on the button
-    wrapper.find('button').simulate('click')
-    expect(onSubmit).not.toHaveBeenCalled()
   })
 })
