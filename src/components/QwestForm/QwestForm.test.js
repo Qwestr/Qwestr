@@ -12,7 +12,7 @@ describe('QwestForm', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallow(<QwestForm></QwestForm>)
+    wrapper = shallow(<QwestForm onSubmit={null}></QwestForm>)
   })
 
   it('should contain an input field for the name of the qwest', () => {
