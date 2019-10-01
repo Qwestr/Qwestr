@@ -27,7 +27,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Qwestr
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -151,7 +151,7 @@ export default function Dashboard() {
             noWrap
             className={classes.title}
           >
-            Dashboard
+            Qwestr
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
