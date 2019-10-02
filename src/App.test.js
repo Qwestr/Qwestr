@@ -5,7 +5,7 @@ import React from 'react'
 import App from './App'
 
 configure({
-  adapter: new Adapter()
+  adapter: new Adapter(),
 })
 
 describe('App', () => {
