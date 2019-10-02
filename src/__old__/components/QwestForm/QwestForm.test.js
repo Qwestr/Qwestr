@@ -5,7 +5,7 @@ import React from 'react'
 import QwestForm from './QwestForm'
 
 configure({
-  adapter: new Adapter()
+  adapter: new Adapter(),
 })
 
 describe('QwestForm', () => {
@@ -28,7 +28,7 @@ describe('QwestForm', () => {
     const onSubmit = jest.fn()
     // Update the component properties
     wrapper.setProps({
-      onSubmit: onSubmit
+      onSubmit: onSubmit,
     })
     // Simulate a click on the button
     wrapper.find('button').simulate('click')
@@ -40,13 +40,13 @@ describe('QwestForm', () => {
     const onSubmit = jest.fn()
     // Update the component properties
     wrapper.setProps({
-      onSubmit: onSubmit
+      onSubmit: onSubmit,
     })
     wrapper.find('input').simulate('change', { target: { value: 'Test' } })
     // Simulate a click on the button
     wrapper.find('button').simulate('click')
     expect(onSubmit).toHaveBeenCalledWith({
-      name: 'Test'
+      name: 'Test',
     })
   })
 })

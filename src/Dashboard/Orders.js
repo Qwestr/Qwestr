@@ -22,7 +22,7 @@ const rows = [
     'Elvis Presley',
     'Tupelo, MS',
     'VISA ⠀•••• 3719',
-    312.44
+    312.44,
   ),
   createData(
     1,
@@ -30,16 +30,23 @@ const rows = [
     'Paul McCartney',
     'London, UK',
     'VISA ⠀•••• 2574',
-    866.99
+    866.99,
   ),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
+  createData(
+    2,
+    '16 Mar, 2019',
+    'Tom Scholz',
+    'Boston, MA',
+    'MC ⠀•••• 1253',
+    100.81,
+  ),
   createData(
     3,
     '16 Mar, 2019',
     'Michael Jackson',
     'Gary, IN',
     'AMEX ⠀•••• 2000',
-    654.39
+    654.39,
   ),
   createData(
     4,
@@ -47,14 +54,14 @@ const rows = [
     'Bruce Springsteen',
     'Long Branch, NJ',
     'VISA ⠀•••• 5919',
-    212.79
-  )
+    212.79,
+  ),
 ]
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   seeMore: {
-    marginTop: theme.spacing(3)
-  }
+    marginTop: theme.spacing(3),
+  },
 }))
 
 export default function Orders() {
@@ -73,7 +80,7 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map(row => (
             <TableRow key={row.id}>
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.name}</TableCell>

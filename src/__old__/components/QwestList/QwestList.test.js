@@ -5,7 +5,7 @@ import React from 'react'
 import QwestList from './QwestList'
 
 configure({
-  adapter: new Adapter()
+  adapter: new Adapter(),
 })
 
 describe('QwestList', () => {
