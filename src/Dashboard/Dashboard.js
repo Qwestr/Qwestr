@@ -17,7 +17,9 @@ import Link from '@material-ui/core/Link'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import NotificationsIcon from '@material-ui/icons/Notifications'
+
 import { mainListItems, secondaryListItems } from './listItems'
+import QwestCreate from './QwestCreate'
 
 function Copyright() {
   return (
@@ -178,7 +180,9 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Paper className={classes.paper}>Create Qwest</Paper>
+              <Paper className={classes.paper}>
+                <QwestCreate />
+              </Paper>
             </Grid>
           </Grid>
         </Container>
