@@ -20,6 +20,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications'
 
 import { mainListItems, secondaryListItems } from './listItems'
 import QwestCreate from './QwestCreate'
+import QwestList from './QwestList'
 
 function Copyright() {
   return (
@@ -113,15 +114,18 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Dashboard() {
+  // Load styles
   const classes = useStyles()
+  // Load state
   const [open, setOpen] = React.useState(true)
+  // Define methods
   const handleDrawerOpen = () => {
     setOpen(true)
   }
   const handleDrawerClose = () => {
     setOpen(false)
   }
-
+  // Return component
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -182,6 +186,11 @@ export default function Dashboard() {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <QwestCreate />
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <QwestList />
               </Paper>
             </Grid>
           </Grid>

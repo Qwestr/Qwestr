@@ -16,14 +16,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const QwestCreate = () => {
-  const [name, setName] = useState('')
-
+  // Load styles
   const classes = useStyles()
-
+  // Load state
+  const [name, setName] = useState('')
+  // Define methods
   const onSubmitForm = event => {
     event.preventDefault()
   }
-
+  // Return component
   return (
     <Aux>
       <Typography variant="h5" gutterBottom>
