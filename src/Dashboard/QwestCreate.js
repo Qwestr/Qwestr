@@ -45,6 +45,7 @@ const QwestCreate = props => {
         <TextField
           id="name"
           label="Name"
+          fullWidth
           className={classes.textField}
           value={name}
           onChange={event => setName(event.target.value)}

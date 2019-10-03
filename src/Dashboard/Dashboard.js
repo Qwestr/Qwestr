@@ -129,6 +129,14 @@ export default function Dashboard() {
   const handleQwestCreate = qwest => {
     setQwests([...qwests, qwest])
   }
+  const handleQwestDelete = index => {
+    // Create a copy of the qwests
+    const updatedQwests = [...qwests]
+    // Remove the qwest from the list
+    updatedQwests.splice(index, 1)
+    // Set qwests state
+    setQwests(updatedQwests)
+  }
   // Return component
   return (
     <div className={classes.root}>
@@ -194,7 +202,7 @@ export default function Dashboard() {
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <QwestList qwests={qwests} />
+                <QwestList qwests={qwests} onDelete={handleQwestDelete} />
               </Paper>
             </Grid>
           </Grid>

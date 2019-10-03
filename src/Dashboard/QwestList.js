@@ -10,7 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 
 const QwestList = props => {
   // Destructure props
-  const { qwests } = props
+  const { qwests, onDelete } = props
   // Return component
   return (
     <Aux>
@@ -22,7 +22,12 @@ const QwestList = props => {
           <ListItem key={index}>
             <ListItemText primary={qwest.name} />
             <ListItemSecondaryAction>
-              <IconButton color="secondary" edge="end" aria-label="delete">
+              <IconButton
+                color="secondary"
+                edge="end"
+                aria-label="delete"
+                onClick={() => onDelete(index)}
+              >
                 <DeleteIcon />
               </IconButton>
             </ListItemSecondaryAction>
