@@ -11,15 +11,17 @@ import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FolderIcon from '@material-ui/icons/Folder'
 
-function generate(element) {
-  return [0, 1, 2].map(value =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  )
-}
+// function generate(element) {
+//   return [0, 1, 2].map(value =>
+//     React.cloneElement(element, {
+//       key: value,
+//     }),
+//   )
+// }
 
-const QwestList = () => {
+const QwestList = props => {
+  // Destructure props
+  const { qwests } = props
   // Return component
   return (
     <Aux>
@@ -27,7 +29,22 @@ const QwestList = () => {
         Qwests
       </Typography>
       <List>
-        {generate(
+        {qwests.map((qwest, index) => (
+          <ListItem key={index}>
+            <ListItemAvatar>
+              <Avatar>
+                <FolderIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={qwest.name} secondary={index} />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="delete">
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+        {/* {generate(
           <ListItem>
             <ListItemAvatar>
               <Avatar>
@@ -41,7 +58,7 @@ const QwestList = () => {
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>,
-        )}
+        )} */}
       </List>
     </Aux>
   )

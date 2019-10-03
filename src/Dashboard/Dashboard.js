@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -117,13 +117,17 @@ export default function Dashboard() {
   // Load styles
   const classes = useStyles()
   // Load state
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = useState(true)
+  const [qwests, setQwests] = useState([])
   // Define methods
   const handleDrawerOpen = () => {
     setOpen(true)
   }
   const handleDrawerClose = () => {
     setOpen(false)
+  }
+  const handleQwestCreate = qwest => {
+    setQwests([...qwests, qwest])
   }
   // Return component
   return (
@@ -185,12 +189,12 @@ export default function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <QwestCreate />
+                <QwestCreate onCreate={handleQwestCreate} />
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <QwestList />
+                <QwestList qwests={qwests} />
               </Paper>
             </Grid>
           </Grid>

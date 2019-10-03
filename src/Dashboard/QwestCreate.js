@@ -15,14 +15,25 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const QwestCreate = () => {
+const QwestCreate = props => {
   // Load styles
   const classes = useStyles()
+  // Destructure props
+  const { onCreate } = props
   // Load state
   const [name, setName] = useState('')
   // Define methods
+  const clearForm = () => {
+    setName('')
+  }
   const onSubmitForm = event => {
     event.preventDefault()
+    // Call onCreate method with new qwest
+    onCreate({
+      name: name,
+    })
+    // Clear form
+    clearForm()
   }
   // Return component
   return (
