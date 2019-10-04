@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
+import firebase from '../store/firebase'
+
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
@@ -27,12 +29,22 @@ const QwestCreate = props => {
     setName('')
   }
   const onSubmitForm = event => {
+    // Prevent default form submission
+    // DONT REMOVE!
     event.preventDefault()
-    // Call onCreate method with new qwest
-    onCreate({
+    // Create new qwest object
+    const newQwest = {
       name: name,
-    })
-    // Clear form
+    }
+
+    // Create firestore instance
+    const db = firebase.firestore()
+    // Add collection object to firestore
+    db.collection('qwests').add(newQwest)
+
+    // Call onCreate method with new qwest
+    onCreate(newQwest)
+    // Clear the form
     clearForm()
   }
   // Return component
