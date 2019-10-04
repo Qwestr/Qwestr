@@ -14,7 +14,15 @@ const QwestList = () => {
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
-  const handleQwestDelete = () => {}
+  const handleQwestDelete = id => {
+    // TODO: Refactor firebase code
+    // Create firestore instance
+    const db = firebase.firestore()
+    // Remove collection item
+    db.collection('qwests')
+      .doc(id)
+      .delete()
+  }
 
   // TODO: Refactor firebase code
   // Create firestore instance
@@ -41,7 +49,7 @@ const QwestList = () => {
                 color="secondary"
                 edge="end"
                 aria-label="delete"
-                onClick={() => handleQwestDelete()}
+                onClick={() => handleQwestDelete(qwest.id)}
               >
                 <DeleteIcon />
               </IconButton>
