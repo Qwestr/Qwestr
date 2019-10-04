@@ -17,11 +17,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const QwestCreate = props => {
+const QwestCreate = () => {
   // Load styles
   const classes = useStyles()
-  // Destructure props
-  const { onCreate } = props
   // Load state
   const [name, setName] = useState('')
   // Define methods
@@ -37,13 +35,12 @@ const QwestCreate = props => {
       name: name,
     }
 
+    // TODO: Refactor firebase code
     // Create firestore instance
     const db = firebase.firestore()
     // Add collection object to firestore
     db.collection('qwests').add(newQwest)
 
-    // Call onCreate method with new qwest
-    onCreate(newQwest)
     // Clear the form
     clearForm()
   }

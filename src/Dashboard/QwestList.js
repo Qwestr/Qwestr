@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Aux from 'react-aux'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
@@ -8,9 +8,24 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-const QwestList = props => {
-  // Destructure props
-  const { qwests, onDelete } = props
+import firebase from '../store/firebase'
+
+const QwestList = () => {
+  // Load state
+  const [qwests, setQwests] = useState([])
+  // Define methods
+  const handleQwestDelete = () => {}
+
+  // TODO: Refactor firebase code
+  // Create firestore instance
+  const db = firebase.firestore()
+  // Load collection
+  db.collection('qwests')
+    .get()
+    .then(querySnapshot => {
+      setQwests(querySnapshot.docs)
+    })
+
   // Return component
   return (
     <Aux>
@@ -18,15 +33,15 @@ const QwestList = props => {
         Qwests
       </Typography>
       <List>
-        {qwests.map((qwest, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={qwest.name} />
+        {qwests.map(qwest => (
+          <ListItem key={qwest.id}>
+            <ListItemText primary={qwest.data().name} />
             <ListItemSecondaryAction>
               <IconButton
                 color="secondary"
                 edge="end"
                 aria-label="delete"
-                onClick={() => onDelete(index)}
+                onClick={() => handleQwestDelete()}
               >
                 <DeleteIcon />
               </IconButton>
