@@ -1,14 +1,7 @@
 import firebase from 'firebase'
 
-// Set config parameters
-const config = {
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  projectId: '',
-  storageBucket: '',
-  messagingSenderId: '',
-}
+import config from '../config/firebase'
+
 // Initialize the app
 firebase.initializeApp(config)
 
