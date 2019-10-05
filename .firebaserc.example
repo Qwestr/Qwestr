@@ -1,3 +1,6 @@
+// Copy contents of this file to one in the same directory named '.firebaserc'
+// NOTE: Remember to fill in your own app id!
+
 {
   "projects": {
     "default": "<APP_ID>"
