@@ -5,4 +5,7 @@ import config from '../config/firebase'
 // Initialize the app
 firebase.initializeApp(config)
 
-export default firebase
+// Create firestore instance
+const firestore = firebase.firestore()
+
+export default firestore

@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import firebase from '../store/firebase'
+import firestore from '../store/firestore'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -34,13 +34,8 @@ const QwestCreate = () => {
     const newQwest = {
       name: name,
     }
-
-    // TODO: Refactor firebase code
-    // Create firestore instance
-    const db = firebase.firestore()
     // Add collection object to firestore
-    db.collection('qwests').add(newQwest)
-
+    firestore.collection('qwests').add(newQwest)
     // Clear the form
     clearForm()
   }

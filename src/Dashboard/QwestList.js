@@ -8,32 +8,26 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-import firebase from '../store/firebase'
+import firestore from '../store/firestore'
 
 const QwestList = () => {
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
   const handleQwestDelete = id => {
-    // TODO: Refactor firebase code
-    // Create firestore instance
-    const db = firebase.firestore()
     // Remove collection item
-    db.collection('qwests')
+    firestore
+      .collection('qwests')
       .doc(id)
       .delete()
   }
-
-  // TODO: Refactor firebase code
-  // Create firestore instance
-  const db = firebase.firestore()
   // Load collection
-  db.collection('qwests')
+  firestore
+    .collection('qwests')
     .get()
     .then(querySnapshot => {
       setQwests(querySnapshot.docs)
     })
-
   // Return component
   return (
     <Aux>
