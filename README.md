@@ -12,7 +12,9 @@ A gameified task management application
 
 3.  Run `npm run build` to build the code
 
-4.  Run `firebase deploy` to deploy the code to Firebase (Make sure to install and initialize the [Firebase CLI](https://firebase.google.com/docs/cli) before deploying)
+4.  Install and initialize the [Firebase CLI](https://firebase.google.com/docs/cli)
+
+5.  Run `firebase deploy` to deploy the code to Firebase
 
 ## Available Scripts
 
