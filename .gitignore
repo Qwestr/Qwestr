@@ -17,6 +17,10 @@
 # log files
 *.log
 
+# firebase files
+/.firebase
+.firebaserc
+
 # misc
 .DS_Store
 .env.local
