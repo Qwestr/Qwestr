@@ -1,6 +1,18 @@
 # Qwestr
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A gameified task management application
+
+## Deployment
+
+1.  Copy contents of file from **/src/config/firebase.js.example** to **/src/config/firebase.js** (update values)
+
+2.  Copy contents of file from **.firebaserc.example** to **.firebaserc** (update values)
+
+3.  Install all required packages using `npm install`
+
+3.  Run `npm run build` to build the code
+
+4.  Run `firebase deploy` to deploy the code to Firebase (Make sure to install and initialize the [Firebase CLI](https://firebase.google.com/docs/cli) before deploying)
 
 ## Available Scripts
 
