@@ -118,24 +118,12 @@ export default function Dashboard() {
   const classes = useStyles()
   // Load state
   const [open, setOpen] = useState(true)
-  const [qwests, setQwests] = useState([])
   // Define methods
   const handleDrawerOpen = () => {
     setOpen(true)
   }
   const handleDrawerClose = () => {
     setOpen(false)
-  }
-  const handleQwestCreate = qwest => {
-    setQwests([...qwests, qwest])
-  }
-  const handleQwestDelete = index => {
-    // Create a copy of the qwests
-    const updatedQwests = [...qwests]
-    // Remove the qwest from the list
-    updatedQwests.splice(index, 1)
-    // Set qwests state
-    setQwests(updatedQwests)
   }
   // Return component
   return (
@@ -197,12 +185,12 @@ export default function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <QwestCreate onCreate={handleQwestCreate} />
+                <QwestCreate />
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <QwestList qwests={qwests} onDelete={handleQwestDelete} />
+                <QwestList />
               </Paper>
             </Grid>
           </Grid>
