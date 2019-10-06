@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import * as ROUTES from '../../constants/routes'
+import { withFirebase } from '../Firebase'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
 import HomePage from '../Home'
@@ -17,6 +18,16 @@ class App extends Component {
     this.state = {
       authUser: null,
     }
+  }
+
+  componentDidMount() {
+    this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
+      authUser ? this.setState({ authUser }) : this.setState({ authUser: null })
+    })
+  }
+
+  componentWillUnmount() {
+    this.listener()
   }
 
   render() {
@@ -38,4 +49,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default withFirebase(App)
