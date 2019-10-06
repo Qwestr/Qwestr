@@ -17,6 +17,9 @@
 # log files
 *.log
 
+# environment files
+.env*
+
 # firebase files
 /.firebase
 .firebaserc
