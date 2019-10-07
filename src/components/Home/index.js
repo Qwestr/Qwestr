@@ -2,7 +2,7 @@ import React from 'react'
 
 import { withAuthorization } from '../Session'
 
-const Home = () => (
+const HomePage = () => (
   <div>
     <h1>Home Page</h1>
     <p>The Home Page is accessible by every signed in user.</p>
