@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import * as ROUTES from '../../constants/routes'
-import { withAuthentication } from '../Session'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
 import HomePage from '../Home'
@@ -11,6 +10,7 @@ import Navigation from '../Navigation'
 import PasswordForgetPage from '../PasswordForget'
 import SignInPage from '../SignIn'
 import SignUpPage from '../SignUp'
+import { withAuthentication } from '../Session'
 
 const App = () => (
   <Router>
