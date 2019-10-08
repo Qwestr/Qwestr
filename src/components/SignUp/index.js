@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 
+import * as ROLES from '../../constants/roles'
 import * as ROUTES from '../../constants/routes'
 import { withFirebase } from '../Firebase'
 
@@ -28,7 +29,13 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state
+    const { username, email, passwordOne, isAdmin } = this.state
+
+    const roles = {}
+    if (isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN
+    }
+
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
@@ -36,6 +43,7 @@ class SignUpFormBase extends Component {
         return this.props.firebase.user(authUser.user.uid).set({
           username,
           email,
+          roles,
         })
       })
       .then(() => {
