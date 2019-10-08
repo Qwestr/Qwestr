@@ -11,7 +11,6 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import firestore from '../store/firestore'
 
 const QwestList = () => {
-  console.log('QwestList being rendered!')
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
@@ -25,14 +24,12 @@ const QwestList = () => {
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the collection
-    const listener = firestore.collection('qwests').onSnapshot(snapshot => {
-      console.log('qwests loaded!')
+    const unsubscribe = firestore.collection('qwests').onSnapshot(snapshot => {
       setQwests(snapshot.docs)
     })
     // Unsubscribe from listener when component is destroyed
     return () => {
-      console.log('qwests listener destroyed!')
-      listener()
+      unsubscribe()
     }
   }, [])
   // Return component
