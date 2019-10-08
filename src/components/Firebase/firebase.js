@@ -37,7 +37,7 @@ class Firebase {
   // *** User API ***
   user = id => this.store.collection('users').doc(id)
 
-  users = () => this.store.collection('users').get()
+  users = () => this.store.collection('users')
 }
 
 export default Firebase
