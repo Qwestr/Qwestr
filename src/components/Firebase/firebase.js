@@ -18,7 +18,7 @@ class Firebase {
     // Initialize auth
     this.auth = app.auth()
     // Initialize firestore
-    this.store = firebase.firestore()
+    this.store = app.firestore()
   }
 
   // *** Auth API ***
