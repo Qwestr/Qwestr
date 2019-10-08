@@ -22,7 +22,8 @@ class AdminPage extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off()
+    // TODO: properly migrate firebase unsubscribe to firestore
+    // this.props.firebase.users().off()
   }
 
   render() {
