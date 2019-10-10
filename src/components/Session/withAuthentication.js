@@ -13,30 +13,14 @@ const withAuthentication = Component => {
     }
 
     componentDidMount() {
-      this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-        if (authUser) {
-          this.props.firebase
-            .user(authUser.uid)
-            .get()
-            .then(snapshot => {
-              // Get user document from snapshot data
-              const user = snapshot.data()
-              // default empty roles
-              if (!user.roles) {
-                user.roles = {}
-              }
-              // Merge auth and user document
-              authUser = {
-                uid: authUser.uid,
-                email: authUser.email,
-                ...user,
-              }
-              this.setState({ authUser })
-            })
-        } else {
+      this.listener = this.props.firebase.onAuthUserListener(
+        authUser => {
+          this.setState({ authUser })
+        },
+        () => {
           this.setState({ authUser: null })
-        }
-      })
+        },
+      )
     }
 
     componentWillUnmount() {

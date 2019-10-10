@@ -34,6 +34,32 @@ class Firebase {
 
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password)
 
+  // *** Auth State API ***
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.user(authUser.uid)
+          .get()
+          .then(snapshot => {
+            // Get user document from snapshot data
+            const user = snapshot.data()
+            // default empty roles
+            if (!user.roles) {
+              user.roles = {}
+            }
+            // Merge auth and user document
+            authUser = {
+              uid: authUser.uid,
+              email: authUser.email,
+              ...user,
+            }
+            next(authUser)
+          })
+      } else {
+        fallback()
+      }
+    })
+
   // *** User API ***
   user = id => this.store.collection('users').doc(id)
 
