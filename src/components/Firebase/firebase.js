@@ -19,6 +19,8 @@ class Firebase {
     this.auth = app.auth()
     // Initialize firestore
     this.store = app.firestore()
+    // Initialize social login providers
+    this.googleProvider = new app.auth.GoogleAuthProvider()
   }
 
   // *** Auth API ***
@@ -27,6 +29,8 @@ class Firebase {
 
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password)
+
+  doSignInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider)
 
   doSignOut = () => this.auth.signOut()
 
