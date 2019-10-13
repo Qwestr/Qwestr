@@ -47,7 +47,7 @@ class Firebase {
           .then(snapshot => {
             // Get user document from snapshot data
             const user = snapshot.data()
-            // default empty roles
+            // Default empty roles
             if (!user.roles) {
               user.roles = {}
             }
