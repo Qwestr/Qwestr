@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withFirebase } from '../Firebase'
 
 import PasswordChangeForm from '../PasswordChange'
 import { PasswordForgetForm } from '../PasswordForget'
@@ -7,38 +8,72 @@ import { AuthUserContext, withAuthorization } from '../Session'
 const SIGN_IN_METHODS = [
   {
     id: 'password',
+    description: 'Password',
     provider: null,
   },
   {
-    id: 'google',
+    id: 'google.com',
+    description: 'Google',
     provider: 'googleProvider',
   },
   {
-    id: 'facebook',
+    id: 'facebook.com',
+    description: 'Facebook',
     provider: 'facebookProvider',
   },
 ]
 
-class LoginManagement extends Component {
+class LoginManagementBase extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeSignInMethods: [],
+      error: null,
+    }
+  }
+
+  componentDidMount() {
+    this.props.firebase.auth
+      .fetchSignInMethodsForEmail(this.props.authUser.email)
+      .then(activeSignInMethods =>
+        this.setState({ activeSignInMethods, error: null }),
+      )
+      .catch(error => this.setState({ error }))
+  }
+
   render() {
+    const { activeSignInMethods, error } = this.state
+
     return (
       <div>
         Sign In Methods:
         <ul>
           {SIGN_IN_METHODS.map(signInMethod => {
+            const isEnabled = activeSignInMethods.includes(signInMethod.id)
+
             return (
               <li key={signInMethod.id}>
-                <button type="button" onClick={() => {}}>
-                  {signInMethod.id}
-                </button>
+                {isEnabled ? (
+                  <button type="button" onClick={() => {}}>
+                    Deactivate {signInMethod.id}
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => {}}>
+                    Link {signInMethod.id}
+                  </button>
+                )}
               </li>
             )
           })}{' '}
         </ul>
+        {error && error.message}
       </div>
     )
   }
 }
+
+const LoginManagement = withFirebase(LoginManagementBase)
 
 const AccountPage = () => (
   <AuthUserContext.Consumer>
