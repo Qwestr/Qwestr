@@ -16,15 +16,18 @@ class AdminPage extends Component {
 
   componentDidMount() {
     this.setState({ loading: true })
-    this.props.firebase
-      .users()
-      .get()
-      .then(snapshot => {
-        this.setState({
-          users: snapshot.docs,
-          loading: false,
-        })
+    // Setup listener to the collection
+    this.unsubscribe = this.props.firebase.users().onSnapshot(snapshot => {
+      this.setState({
+        users: snapshot.docs,
+        loading: false,
       })
+    })
+  }
+
+  componentWillUnmount() {
+    // Unsubscribe to collection listener
+    this.unsubscribe()
   }
 
   render() {
