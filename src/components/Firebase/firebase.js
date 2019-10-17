@@ -73,6 +73,11 @@ class Firebase {
   user = id => this.store.collection('users').doc(id)
 
   users = () => this.store.collection('users')
+
+  // *** Message API ***
+  message = id => this.store.collection('messages').doc(id)
+
+  messages = () => this.store.collection('messages')
 }
 
 export default Firebase
