@@ -15,6 +15,7 @@ class MessagesBase extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      text: '',
       loading: false,
       messages: [],
     }
@@ -36,8 +37,21 @@ class MessagesBase extends Component {
     this.unsubscribe()
   }
 
+  onChangeText = event => {
+    this.setState({ text: event.target.value })
+  }
+
+  onCreateMessage = event => {
+    this.props.firebase.messages().add({
+      text: this.state.text,
+    })
+    this.setState({ text: '' })
+    event.preventDefault()
+  }
+
   render() {
-    const { messages, loading } = this.state
+    const { text, messages, loading } = this.state
+
     return (
       <div>
         {loading && <div>Loading ...</div>}
@@ -48,6 +62,10 @@ class MessagesBase extends Component {
             <div>There are no messages!</div>
           )
         ) : null}
+        <form onSubmit={this.onCreateMessage}>
+          <input type="text" value={text} onChange={this.onChangeText} />
+          <button type="submit">Send</button>
+        </form>
       </div>
     )
   }
@@ -58,13 +76,14 @@ const Messages = withFirebase(MessagesBase)
 const MessageList = ({ messages }) => (
   <ul>
     {messages.map(message => (
-      <MessageItem key={message.uid} message={message} />
+      <MessageItem key={message.id} message={message} />
     ))}{' '}
   </ul>
 )
 const MessageItem = ({ message }) => (
   <li>
-    <strong>{message.userId}</strong> {message.text}
+    {/* <strong>{message.userId}</strong> {message.text} */}
+    {message.data().text}
   </li>
 )
 
