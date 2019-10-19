@@ -18,18 +18,23 @@ class MessagesBase extends Component {
       text: '',
       loading: false,
       messages: [],
+      limit: 5,
     }
   }
 
   componentDidMount() {
     this.setState({ loading: true })
     // Setup listener to the collection
-    this.unsubscribe = this.props.firebase.messages().onSnapshot(snapshot => {
-      this.setState({
-        messages: snapshot.docs,
-        loading: false,
+    this.unsubscribe = this.props.firebase
+      .messages()
+      .orderBy('createdAt')
+      .limit(this.state.limit)
+      .onSnapshot(snapshot => {
+        this.setState({
+          messages: snapshot.docs,
+          loading: false,
+        })
       })
-    })
   }
 
   componentWillUnmount() {
