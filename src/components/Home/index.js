@@ -43,8 +43,9 @@ class MessagesBase extends Component {
 
   onCreateMessage = (event, authUser) => {
     this.props.firebase.messages().add({
-      text: this.state.text,
       userId: authUser.uid,
+      text: this.state.text,
+      createdAt: this.props.firebase.serverValues.serverTimestamp(),
     })
     this.setState({ text: '' })
     event.preventDefault()
@@ -54,6 +55,7 @@ class MessagesBase extends Component {
     this.props.firebase.message(message.id).set({
       ...message.data(),
       text,
+      editedAt: this.props.firebase.serverValues.serverTimestamp(),
     })
   }
 
@@ -146,6 +148,7 @@ class MessageItem extends Component {
         ) : (
           <span>
             <strong>{message.data().userId}</strong> {message.data().text}
+            {message.data().editedAt && <span>(Edited)</span>}
           </span>
         )}
         {editMode ? (

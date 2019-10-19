@@ -17,6 +17,8 @@ class Firebase {
     app.initializeApp(config)
     // Get email auth provider
     this.emailAuthProvider = app.auth.EmailAuthProvider
+    // Get server values
+    this.serverValues = app.firestore.FieldValue
     // Initialize auth
     this.auth = app.auth()
     // Initialize firestore
