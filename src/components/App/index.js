@@ -6,6 +6,7 @@ import AccountPage from '../Account'
 import AdminPage from '../Admin'
 import HomePage from '../Home'
 import LandingPage from '../Landing'
+import Layout from '../Layout'
 import Navigation from '../Navigation'
 import PasswordForgetPage from '../PasswordForget'
 import SignInPage from '../SignIn'
@@ -14,7 +15,7 @@ import { withAuthentication } from '../Session'
 
 const App = () => (
   <Router>
-    <div>
+    {/* <div>
       <Navigation />
       <hr />
       <Route exact path={ROUTES.LANDING} component={LandingPage} />
@@ -24,7 +25,8 @@ const App = () => (
       <Route path={ROUTES.HOME} component={HomePage} />
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.ADMIN} component={AdminPage} />
-    </div>
+    </div> */}
+    <Layout />
   </Router>
 )
 
