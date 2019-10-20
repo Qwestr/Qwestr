@@ -71,5 +71,4 @@ const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN]
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
-  withFirebase,
 )(AdminPage)
