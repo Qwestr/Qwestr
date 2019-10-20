@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
-import { withFirebase } from '../Firebase'
+import { compose } from 'recompose'
 
+import { withFirebase } from '../Firebase'
 import PasswordChangeForm from '../PasswordChange'
 import { PasswordForgetForm } from '../PasswordForget'
-import { AuthUserContext, withAuthorization } from '../Session'
+import {
+  AuthUserContext,
+  withAuthorization,
+  withEmailVerification,
+} from '../Session'
 
 const SIGN_IN_METHODS = [
   {
@@ -202,4 +207,7 @@ const AccountPage = () => (
 
 const condition = authUser => !!authUser
 
-export default withAuthorization(condition)(AccountPage)
+export default compose(
+  withEmailVerification,
+  withAuthorization(condition),
+)(AccountPage)

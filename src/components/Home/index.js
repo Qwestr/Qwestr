@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+import { compose } from 'recompose'
 
-import { AuthUserContext, withAuthorization } from '../Session'
+import {
+  AuthUserContext,
+  withAuthorization,
+  withEmailVerification,
+} from '../Session'
 import { withFirebase } from '../Firebase'
 
 const HomePage = () => (
@@ -187,4 +192,7 @@ class MessageItem extends Component {
 
 const condition = authUser => !!authUser
 
-export default withAuthorization(condition)(HomePage)
+export default compose(
+  withEmailVerification,
+  withAuthorization(condition),
+)(HomePage)
