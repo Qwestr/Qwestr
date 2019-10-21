@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import firestore from '../store/firestore'
-
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
@@ -17,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const QwestCreate = () => {
+const QwestCreate = props => {
   // Load styles
   const classes = useStyles()
   // Load state
@@ -34,8 +32,8 @@ const QwestCreate = () => {
     const newQwest = {
       name: name,
     }
-    // Add collection object to firestore
-    firestore.collection('qwests').add(newQwest)
+    // Add new qwest
+    props.store.qwests().add(newQwest)
     // Clear the form
     clearForm()
   }

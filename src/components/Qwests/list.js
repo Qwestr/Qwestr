@@ -8,30 +8,25 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-import firestore from '../store/firestore'
-
-const QwestList = () => {
+const QwestList = props => {
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
   const handleQwestDelete = id => {
-    // Remove collection item
-    firestore
-      .collection('qwests')
-      .doc(id)
-      .delete()
+    // Delete qwest
+    props.store.qwest(id).delete()
   }
   // Define effects handlers
   useEffect(() => {
-    // Setup listener to the collection
-    const unsubscribe = firestore.collection('qwests').onSnapshot(snapshot => {
+    // Setup listener to the qwests collection
+    const unsubscribe = props.store.qwests().onSnapshot(snapshot => {
       setQwests(snapshot.docs)
     })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [])
+  }, [props.store])
   // Return component
   return (
     <Aux>

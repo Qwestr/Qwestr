@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { compose } from 'recompose'
 
 import * as ROLES from '../../constants/roles'
-import { withFirebase } from '../Firebase'
 import { withAuthorization, withEmailVerification } from '../Session'
 
 class AdminPage extends Component {

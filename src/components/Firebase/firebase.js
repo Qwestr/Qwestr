@@ -79,14 +79,19 @@ class Firebase {
     })
 
   // *** User API ***
-  user = id => this.store.collection('users').doc(id)
-
   users = () => this.store.collection('users')
 
+  user = id => this.store.collection('users').doc(id)
+
   // *** Message API ***
+  messages = () => this.store.collection('messages')
+
   message = id => this.store.collection('messages').doc(id)
 
-  messages = () => this.store.collection('messages')
+  // *** Qwest API ***
+  qwests = () => this.store.collection('qwests')
+
+  qwest = id => this.store.collection('qwests').doc(id)
 }
 
 export default Firebase
