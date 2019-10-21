@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
-import { auth } from '../store/firestore'
+// import { auth } from '../store/firestore'
 
 function Copyright() {
   return (
@@ -63,7 +63,7 @@ export default function SignUp() {
   const handleSignup = event => {
     event.preventDefault()
     // Sign up user
-    auth.createUserWithEmailAndPassword(email, password)
+    // auth.createUserWithEmailAndPassword(email, password)
   }
   // Return component
   return (
