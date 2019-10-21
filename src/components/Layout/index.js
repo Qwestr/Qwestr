@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -11,16 +12,21 @@ import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Badge from '@material-ui/core/Badge'
 import Container from '@material-ui/core/Container'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
 import Link from '@material-ui/core/Link'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 
+import * as ROUTES from '../../constants/routes'
+import AccountPage from '../Account'
+import AdminPage from '../Admin'
+import HomePage from '../Home'
+import LandingPage from '../Landing'
+import Navigation from '../Navigation'
+import PasswordForgetPage from '../PasswordForget'
+import SignInPage from '../SignIn'
+import SignUpPage from '../SignUp'
 import { mainListItems, secondaryListItems } from './listItems'
-// import QwestCreate from './QwestCreate'
-// import QwestList from './QwestList'
 
 function Copyright() {
   return (
@@ -182,18 +188,14 @@ export default function Layout() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          {/* <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <QwestCreate />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <QwestList />
-              </Paper>
-            </Grid>
-          </Grid> */}
+          <Navigation />
+          <Route exact path={ROUTES.LANDING} component={LandingPage} />
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+          <Route path={ROUTES.HOME} component={HomePage} />
+          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route path={ROUTES.ADMIN} component={AdminPage} />
         </Container>
         <Copyright />
       </main>
