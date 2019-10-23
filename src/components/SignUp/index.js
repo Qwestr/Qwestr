@@ -1,10 +1,24 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 
-import * as ROLES from '../../constants/roles'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import Container from '@material-ui/core/Container'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Grid from '@material-ui/core/Grid'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+
 import * as ROUTES from '../../constants/routes'
 import { withFirebase } from '../Firebase'
+
+const MARKETING_EMAILS_SIGN_UP_MESSAGE =
+  'I want to receive inspiration and stay informed about updates via email.'
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use'
 const ERROR_MSG_ACCOUNT_EXISTS = `
@@ -15,144 +29,173 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
   on your personal account page.
 `
 
-const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
-    <SignUpForm />
-  </div>
-)
+const useStyles = makeStyles(theme => ({
+  '@global': {
+    body: {
+      backgroundColor: theme.palette.common.white,
+    },
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
 
-const INITIAL_STATE = {
-  username: '',
-  email: '',
-  passwordOne: '',
-  passwordTwo: '',
-  isAdmin: false,
-  error: null,
-}
-
-class SignUpFormBase extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { ...INITIAL_STATE }
-  }
-
-  onSubmit = event => {
-    const { username, email, passwordOne, isAdmin } = this.state
-
-    const roles = {}
-    if (isAdmin) {
-      roles[ROLES.ADMIN] = true
-    }
-
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
+const SignUpPage = props => {
+  // Load styles
+  const classes = useStyles()
+  // Load state
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [allowExtraEmails, setAllowExtraEmails] = useState(false)
+  const [error, setError] = useState(null)
+  // Define methods
+  const isInvalid = username === '' || email === '' || password === ''
+  const handleSignup = event => {
+    // Prevent default form submission
+    // DONT REMOVE!
+    event.preventDefault()
+    // Sign up user
+    props.firebase
+      .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
         // Create a user document
-        return this.props.firebase.user(authUser.user.uid).set({
+        return props.firebase.user(authUser.user.uid).set({
           username,
           email,
-          roles,
+          allowExtraEmails,
         })
       })
       .then(() => {
-        return this.props.firebase.doSendEmailVerification()
+        // Send verification email
+        return props.firebase.doSendEmailVerification()
       })
       .then(() => {
-        this.setState({ ...INITIAL_STATE })
-        this.props.history.push(ROUTES.HOME)
+        // Push to the home route
+        props.history.push(ROUTES.HOME)
       })
       .catch(error => {
+        // Show relevant error messages
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-          error.message = ERROR_MSG_ACCOUNT_EXISTS
+          setError(ERROR_MSG_ACCOUNT_EXISTS)
         }
-        this.setState({ error })
       })
-    event.preventDefault()
   }
-
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
-
-  onChangeCheckbox = event => {
-    this.setState({ [event.target.name]: event.target.checked })
-  }
-
-  render() {
-    const {
-      username,
-      email,
-      passwordOne,
-      passwordTwo,
-      isAdmin,
-      error,
-    } = this.state
-
-    const isInvalid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      email === '' ||
-      username === ''
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <label>
-          Admin:
-          <input
-            name="isAdmin"
-            type="checkbox"
-            checked={isAdmin}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
-        <button disabled={isInvalid} type="submit">
-          Sign Up
-        </button>
-        {error && <p>{error.message}</p>}
-      </form>
-    )
-  }
+  // Return component
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h1">
+          Qwestr
+        </Typography>
+        <Typography component="h2" variant="h5">
+          Sign up
+        </Typography>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <form className={classes.form} noValidate onSubmit={handleSignup}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                name="username"
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                autoFocus
+                onChange={event => setUsername(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                onChange={event => setEmail(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                onChange={event => setPassword(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="primary"
+                    onChange={event => setAllowExtraEmails(!allowExtraEmails)}
+                  />
+                }
+                label={MARKETING_EMAILS_SIGN_UP_MESSAGE}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            disabled={isInvalid}
+          >
+            Sign Up
+          </Button>
+          {error && (
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Typography color="secondary">{error}</Typography>
+              </Grid>
+            </Grid>
+          )}
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Typography>
+                Already have an account?{' '}
+                <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+              </Typography>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+    </Container>
+  )
 }
 
-const SignUpLink = () => (
-  <p>
+export const SignUpLink = () => (
+  <Typography>
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
+  </Typography>
 )
 
-const SignUpForm = compose(
+export default compose(
   withRouter,
   withFirebase,
-)(SignUpFormBase)
-
-export default SignUpPage
-export { SignUpForm, SignUpLink }
+)(SignUpPage)
