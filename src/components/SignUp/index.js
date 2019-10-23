@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
-
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -17,12 +16,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import * as ROUTES from '../../constants/routes'
 import { withFirebase } from '../Firebase'
 
-const MARKETING_EMAILS_SIGN_UP_MESSAGE =
-  'I want to receive inspiration and stay informed about updates via email.'
-
+const MARKETING_EMAILS_SIGN_UP_MESSAGE = `
+  I want to receive inspiration and stay informed about updates via email.
+`
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use'
+
 const ERROR_MSG_ACCOUNT_EXISTS = `
-  An account with this E-Mail address already exists.
+  An account with this Email address already exists.
   Try to login with this account instead. If you think the
   account is already used from one of the social logins, try
   to sign-in with one of them. Afterward, associate your accounts
@@ -65,6 +65,7 @@ const SignUpPage = props => {
   const [error, setError] = useState(null)
   // Define methods
   const isInvalid = username === '' || email === '' || password === ''
+
   const handleSignup = event => {
     // Prevent default form submission
     // DONT REMOVE!
@@ -89,10 +90,12 @@ const SignUpPage = props => {
         props.history.push(ROUTES.HOME)
       })
       .catch(error => {
-        // Show relevant error messages
+        // Set custom error message (if applicable)
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-          setError(ERROR_MSG_ACCOUNT_EXISTS)
+          error.message = ERROR_MSG_ACCOUNT_EXISTS
         }
+        // Set error
+        setError(error)
       })
   }
   // Return component
@@ -103,12 +106,12 @@ const SignUpPage = props => {
         <Typography component="h1" variant="h1">
           Qwestr
         </Typography>
-        <Typography component="h2" variant="h5">
-          Sign up
-        </Typography>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+        <Typography component="h2" variant="h5">
+          Sign up
+        </Typography>
         <form className={classes.form} noValidate onSubmit={handleSignup}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -171,13 +174,15 @@ const SignUpPage = props => {
           {error && (
             <Grid container justify="flex-end">
               <Grid item>
-                <Typography color="secondary">{error}</Typography>
+                <Typography variant="body2" color="secondary">
+                  {error.message}
+                </Typography>
               </Grid>
             </Grid>
           )}
           <Grid container justify="flex-end">
             <Grid item>
-              <Typography>
+              <Typography variant="body2">
                 Already have an account?{' '}
                 <Link to={ROUTES.SIGN_IN}>Sign In</Link>
               </Typography>
@@ -190,7 +195,7 @@ const SignUpPage = props => {
 }
 
 export const SignUpLink = () => (
-  <Typography>
+  <Typography variant="body2">
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
   </Typography>
 )
