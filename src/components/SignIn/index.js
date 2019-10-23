@@ -232,13 +232,11 @@ const SignUpPage = props => {
             <Grid container justify="flex-end">
               <Grid item>
                 <Typography variant="body2" color="secondary">
-                  {error}
+                  {error.message}
                 </Typography>
               </Grid>
             </Grid>
           )}
-          <SignInGoogle />
-          <SignInFacebook />
           <Grid container>
             <Grid item xs>
               <PasswordForgetLink />
