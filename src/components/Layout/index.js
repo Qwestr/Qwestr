@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Route } from 'react-router-dom'
+import Aux from 'react-aux'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -27,6 +28,7 @@ import PasswordForgetPage from '../PasswordForget'
 import QwestsPage from '../Qwests'
 import SignInPage from '../SignIn'
 import SignUpPage from '../SignUp'
+import { AuthUserContext } from '../Session'
 import { mainListItems, secondaryListItems } from './listItems'
 
 function Copyright() {
@@ -114,7 +116,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Layout() {
+const Layout = () => {
   // Load styles
   const classes = useStyles()
   // Load state
@@ -128,73 +130,89 @@ export default function Layout() {
   }
   // Return component
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden,
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            Qwestr
-          </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
+    <AuthUserContext.Consumer>
+      {authUser => (
+        <div className={classes.root}>
+          <CssBaseline />
+          {authUser && (
+            <Aux>
+              <AppBar
+                position="absolute"
+                className={clsx(classes.appBar, open && classes.appBarShift)}
+              >
+                <Toolbar className={classes.toolbar}>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={handleDrawerOpen}
+                    className={clsx(
+                      classes.menuButton,
+                      open && classes.menuButtonHidden,
+                    )}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Typography
+                    component="h1"
+                    variant="h6"
+                    color="inherit"
+                    noWrap
+                    className={classes.title}
+                  >
+                    Qwestr
+                  </Typography>
+                  <IconButton color="inherit">
+                    <Badge badgeContent={4} color="secondary">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </Toolbar>
+              </AppBar>
+              <Drawer
+                variant="permanent"
+                classes={{
+                  paper: clsx(
+                    classes.drawerPaper,
+                    !open && classes.drawerPaperClose,
+                  ),
+                }}
+                open={open}
+              >
+                <div className={classes.toolbarIcon}>
+                  <IconButton onClick={handleDrawerClose}>
+                    <ChevronLeftIcon />
+                  </IconButton>
+                </div>
+                <Divider />
+                <List>{mainListItems}</List>
+                <Divider />
+                <List>{secondaryListItems}</List>
+              </Drawer>
+            </Aux>
+          )}
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              {authUser && <Navigation />}
+              <Route exact path={ROUTES.LANDING} component={LandingPage} />
+              <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+              <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+              <Route
+                path={ROUTES.PASSWORD_FORGET}
+                component={PasswordForgetPage}
+              />
+              <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+              <Route path={ROUTES.ADMIN} component={AdminPage} />
+              <Route path={ROUTES.HOME} component={HomePage} />
+              <Route path={ROUTES.QWESTS} component={QwestsPage} />
+            </Container>
+            <Copyright />
+          </main>
         </div>
-        <Divider />
-        <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Navigation />
-          <Route exact path={ROUTES.LANDING} component={LandingPage} />
-          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-          <Route path={ROUTES.ADMIN} component={AdminPage} />
-          <Route path={ROUTES.HOME} component={HomePage} />
-          <Route path={ROUTES.QWESTS} component={QwestsPage} />
-        </Container>
-        <Copyright />
-      </main>
-    </div>
+      )}
+    </AuthUserContext.Consumer>
   )
 }
+
+export default Layout
