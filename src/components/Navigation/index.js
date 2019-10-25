@@ -1,10 +1,10 @@
 import React from 'react'
 import Aux from 'react-aux'
 import { Link } from 'react-router-dom'
+import HomeIcon from '@material-ui/icons/Home'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import DashboardIcon from '@material-ui/icons/Dashboard'
 import PeopleIcon from '@material-ui/icons/People'
 import LayersIcon from '@material-ui/icons/Layers'
 
@@ -18,15 +18,9 @@ const Navigation = () => (
       <Aux>
         <ListItem button component={Link} to={ROUTES.HOME}>
           <ListItemIcon>
-            <DashboardIcon />
+            <HomeIcon />
           </ListItemIcon>
           <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button component={Link} to={ROUTES.ACCOUNT}>
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary="Account" />
         </ListItem>
         <ListItem button component={Link} to={ROUTES.QWESTS}>
           <ListItemIcon>

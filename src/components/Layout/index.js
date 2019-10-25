@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import Aux from 'react-aux'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
@@ -14,6 +14,7 @@ import Container from '@material-ui/core/Container'
 import Link from '@material-ui/core/Link'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import * as ROUTES from '../../constants/routes'
 import AccountPage from '../Account'
@@ -111,9 +112,12 @@ const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
+  accountButton: {
+    color: 'white',
+  },
 }))
 
-const Layout = () => {
+const Layout = props => {
   // Load styles
   const classes = useStyles()
   // Load state
@@ -159,6 +163,12 @@ const Layout = () => {
                   >
                     Qwestr
                   </Typography>
+                  <IconButton
+                    className={classes.accountButton}
+                    onClick={() => props.history.push(ROUTES.ACCOUNT)}
+                  >
+                    <AccountCircleIcon />
+                  </IconButton>
                   <SignOutButton />
                 </Toolbar>
               </AppBar>
@@ -205,4 +215,4 @@ const Layout = () => {
   )
 }
 
-export default Layout
+export default withRouter(Layout)
