@@ -27,12 +27,12 @@ const QwestsPage = props => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <QwestCreate store={props.firebase} />
+            <QwestCreate firebase={props.firebase} />
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <QwestList store={props.firebase} />
+            <QwestList firebase={props.firebase} />
           </Paper>
         </Grid>
       </Grid>

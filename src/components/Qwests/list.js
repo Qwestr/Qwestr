@@ -14,19 +14,19 @@ const QwestList = props => {
   // Define methods
   const handleQwestDelete = id => {
     // Delete qwest
-    props.store.qwest(id).delete()
+    props.firebase.qwest(id).delete()
   }
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the qwests collection
-    const unsubscribe = props.store.qwests().onSnapshot(snapshot => {
+    const unsubscribe = props.firebase.qwests().onSnapshot(snapshot => {
       setQwests(snapshot.docs)
     })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [props.store])
+  }, [props.firebase])
   // Return component
   return (
     <Aux>
