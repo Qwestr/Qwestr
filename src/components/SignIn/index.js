@@ -1,15 +1,15 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import * as ROUTES from '../../constants/routes'
 import { withFirebase } from '../Firebase'
@@ -46,110 +46,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
+  submitButton: {
     margin: theme.spacing(3, 0, 2),
   },
+  socialButton: {
+    margin: theme.spacing(0, 0, 2),
+  },
 }))
-
-class SignInGoogleBase extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { error: null }
-  }
-
-  onSubmit = event => {
-    // Prevent default form submission
-    // DONT REMOVE!
-    event.preventDefault()
-    // Sign in with Google
-    this.props.firebase
-      .doSignInWithGoogle()
-      .then(socialAuthUser => {
-        // Create a user document
-        return this.props.firebase.user(socialAuthUser.user.uid).set({
-          username: socialAuthUser.user.displayName,
-          email: socialAuthUser.user.email,
-          roles: {},
-        })
-      })
-      .then(() => {
-        this.setState({ error: null })
-        this.props.history.push(ROUTES.HOME)
-      })
-      .catch(error => {
-        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-          error.message = ERROR_MSG_ACCOUNT_EXISTS
-        }
-        this.setState({ error })
-      })
-  }
-
-  render() {
-    const { error } = this.state
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Google</button>
-        {error && <p>{error.message}</p>}
-      </form>
-    )
-  }
-}
-
-class SignInFacebookBase extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { error: null }
-  }
-
-  onSubmit = event => {
-    // Prevent default form submission
-    // DONT REMOVE!
-    event.preventDefault()
-    // Sign in with Facebook
-    this.props.firebase
-      .doSignInWithFacebook()
-      .then(socialAuthUser => {
-        // Create a user document
-        return this.props.firebase.user(socialAuthUser.user.uid).set({
-          username: socialAuthUser.additionalUserInfo.profile.name,
-          email: socialAuthUser.additionalUserInfo.profile.email,
-          roles: {},
-        })
-      })
-      .then(() => {
-        this.setState({ error: null })
-        this.props.history.push(ROUTES.HOME)
-      })
-      .catch(error => {
-        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-          error.message = ERROR_MSG_ACCOUNT_EXISTS
-        }
-        this.setState({ error })
-      })
-  }
-
-  render() {
-    const { error } = this.state
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Facebook</button>
-        {error && <p>{error.message}</p>}
-      </form>
-    )
-  }
-}
-
-const SignInGoogle = compose(
-  withRouter,
-  withFirebase,
-)(SignInGoogleBase)
-
-const SignInFacebook = compose(
-  withRouter,
-  withFirebase,
-)(SignInFacebookBase)
 
 const SignUpPage = props => {
   // Load styles
@@ -170,6 +73,56 @@ const SignUpPage = props => {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         // Push to the home route
+        props.history.push(ROUTES.HOME)
+      })
+      .catch(error => {
+        // Set custom error message (if applicable)
+        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+          error.message = ERROR_MSG_ACCOUNT_EXISTS
+        }
+        // Set error
+        setError(error)
+      })
+  }
+
+  const signInGoogle = () => {
+    // Sign in with Google
+    props.firebase
+      .doSignInWithGoogle()
+      .then(socialAuthUser => {
+        // Create a user document
+        return props.firebase.user(socialAuthUser.user.uid).set({
+          username: socialAuthUser.user.displayName,
+          email: socialAuthUser.user.email,
+        })
+      })
+      .then(() => {
+        // Push to home page
+        props.history.push(ROUTES.HOME)
+      })
+      .catch(error => {
+        // Set custom error message (if applicable)
+        if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+          error.message = ERROR_MSG_ACCOUNT_EXISTS
+        }
+        // Set error
+        setError(error)
+      })
+  }
+
+  const signInFacebook = () => {
+    // Sign in with Facebook
+    props.firebase
+      .doSignInWithFacebook()
+      .then(socialAuthUser => {
+        // Create a user document
+        return props.firebase.user(socialAuthUser.user.uid).set({
+          username: socialAuthUser.additionalUserInfo.profile.name,
+          email: socialAuthUser.additionalUserInfo.profile.email,
+        })
+      })
+      .then(() => {
+        // Push to home page
         props.history.push(ROUTES.HOME)
       })
       .catch(error => {
@@ -223,10 +176,26 @@ const SignUpPage = props => {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={classes.submitButton}
             disabled={isInvalid}
           >
             Sign In
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            className={classes.socialButton}
+            onClick={signInGoogle}
+          >
+            Sign In with Google
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            className={classes.socialButton}
+            onClick={signInFacebook}
+          >
+            Sign In with Facebook
           </Button>
           {error && (
             <Grid container justify="flex-end">

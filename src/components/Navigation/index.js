@@ -28,7 +28,7 @@ const Navigation = () => (
           </ListItemIcon>
           <ListItemText primary="Qwests" />
         </ListItem>
-        {!!authUser.roles[ROLES.ADMIN] && (
+        {!!authUser.roles && !!authUser.roles[ROLES.ADMIN] && (
           <ListItem button component={Link} to={ROUTES.ADMIN}>
             <ListItemIcon>
               <PeopleIcon />
