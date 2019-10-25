@@ -7,16 +7,13 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Drawer from '@material-ui/core/Drawer'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
-import Badge from '@material-ui/core/Badge'
 import Container from '@material-ui/core/Container'
 import Link from '@material-ui/core/Link'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import NotificationsIcon from '@material-ui/icons/Notifications'
 
 import * as ROUTES from '../../constants/routes'
 import AccountPage from '../Account'
@@ -27,9 +24,9 @@ import Navigation from '../Navigation'
 import PasswordForgetPage from '../PasswordForget'
 import QwestsPage from '../Qwests'
 import SignInPage from '../SignIn'
+import SignOutButton from '../SignOut'
 import SignUpPage from '../SignUp'
 import { AuthUserContext } from '../Session'
-import { mainListItems, secondaryListItems } from './listItems'
 
 function Copyright() {
   return (
@@ -162,11 +159,7 @@ const Layout = () => {
                   >
                     Qwestr
                   </Typography>
-                  <IconButton color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
+                  <SignOutButton />
                 </Toolbar>
               </AppBar>
               <Drawer
@@ -185,16 +178,13 @@ const Layout = () => {
                   </IconButton>
                 </div>
                 <Divider />
-                <List>{mainListItems}</List>
-                <Divider />
-                <List>{secondaryListItems}</List>
+                <Navigation />
               </Drawer>
             </Aux>
           )}
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-              {authUser && <Navigation />}
               <Route exact path={ROUTES.LANDING} component={LandingPage} />
               <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
               <Route path={ROUTES.SIGN_IN} component={SignInPage} />
