@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import PeopleIcon from '@material-ui/icons/People'
-import LayersIcon from '@material-ui/icons/Layers'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 
 import * as ROLES from '../../constants/roles'
 import * as ROUTES from '../../constants/routes'
@@ -24,7 +24,7 @@ const Navigation = () => (
         </ListItem>
         <ListItem button component={Link} to={ROUTES.QWESTS}>
           <ListItemIcon>
-            <LayersIcon />
+            <CheckCircleIcon />
           </ListItemIcon>
           <ListItemText primary="Qwests" />
         </ListItem>
