@@ -35,7 +35,6 @@ class AdminPage extends Component {
     return (
       <div>
         <h1>Admin</h1>
-        <p>The Admin Page is accessible by every signed in admin user.</p>
         {loading && <div>Loading ...</div>}
         <UserList users={users} />
       </div>

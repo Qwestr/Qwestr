@@ -19,14 +19,16 @@ const QwestList = props => {
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the qwests collection
-    const unsubscribe = props.firebase.qwests().onSnapshot(snapshot => {
-      setQwests(snapshot.docs)
-    })
+    const unsubscribe = props.firebase
+      .userQwests(props.authUser)
+      .onSnapshot(snapshot => {
+        setQwests(snapshot.docs)
+      })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [props.firebase])
+  }, [props.authUser, props.firebase])
   // Return component
   return (
     <Aux>
