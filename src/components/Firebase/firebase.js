@@ -84,11 +84,6 @@ class Firebase {
 
   user = id => this.store.collection('users').doc(id)
 
-  // *** Message API ***
-  messages = () => this.store.collection('messages')
-
-  message = id => this.store.collection('messages').doc(id)
-
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
