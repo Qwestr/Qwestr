@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { withFirebase } from '../Firebase'
 
-const PasswordChangeForm = () => {
+const PasswordChangeForm = props => {
   // Load state
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -16,7 +16,7 @@ const PasswordChangeForm = () => {
     // DONT REMOVE!
     event.preventDefault()
     // Update password
-    this.props.firebase
+    props.firebase
       .doPasswordUpdate(password)
       .then(() => {
         // Clear form
