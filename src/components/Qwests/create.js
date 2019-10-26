@@ -24,7 +24,8 @@ const QwestCreate = props => {
   const clearForm = () => {
     setName('')
   }
-  const onSubmitForm = (event, authUser) => {
+
+  const onSubmit = (event, authUser) => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
@@ -45,7 +46,7 @@ const QwestCreate = props => {
       <Typography variant="h5" gutterBottom>
         Create Qwest
       </Typography>
-      <form onSubmit={event => onSubmitForm(event, props.authUser)}>
+      <form onSubmit={event => onSubmit(event, props.authUser)}>
         <TextField
           id="name"
           label="Name"
@@ -61,7 +62,7 @@ const QwestCreate = props => {
           className={classes.button}
           disabled={!name}
         >
-          SUBMIT
+          Submit
         </Button>
       </form>
     </Aux>
