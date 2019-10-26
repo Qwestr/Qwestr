@@ -1,4 +1,11 @@
 import React, { useState } from 'react'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import TextField from '@material-ui/core/TextField'
+
 import { withFirebase } from '../Firebase'
 
 const PasswordChangeForm = props => {
@@ -29,19 +36,32 @@ const PasswordChangeForm = props => {
   }
   // Return component
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        name="password"
-        value={password}
-        onChange={event => setPassword(event.target.value)}
-        type="password"
-        placeholder="New Password"
-      />
-      <button disabled={!password} type="submit">
-        Reset My Password
-      </button>
-      {error && <p>{error.message}</p>}
-    </form>
+    <Card>
+      <CardHeader title="Reset Password" />
+      <form onSubmit={onSubmit}>
+        <CardContent>
+          <TextField
+            name="password"
+            type="password"
+            label="New Password"
+            fullWidth
+            value={password}
+            onChange={event => setPassword(event.target.value)}
+          />
+          {error && <p>{error.message}</p>}
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={!password}
+          >
+            Reset
+          </Button>
+        </CardActions>
+      </form>
+    </Card>
   )
 }
 
