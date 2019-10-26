@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { compose } from 'recompose'
 
-import { withFirebase } from '../Firebase'
+import * as ROLES from '../../constants/roles'
+import { withAuthorization, withEmailVerification } from '../Session'
 
 class AdminPage extends Component {
   constructor(props) {
@@ -13,16 +15,18 @@ class AdminPage extends Component {
 
   componentDidMount() {
     this.setState({ loading: true })
-    this.props.firebase.users().then(querySnapshot => {
+    // Setup listener to the collection
+    this.unsubscribe = this.props.firebase.users().onSnapshot(snapshot => {
       this.setState({
-        users: querySnapshot.docs,
+        users: snapshot.docs,
         loading: false,
       })
     })
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off()
+    // Unsubscribe to collection listener
+    this.unsubscribe()
   }
 
   render() {
@@ -45,18 +49,24 @@ const UserList = ({ users }) => (
         <span>
           <strong>ID:</strong> {user.id}
         </span>
-        <br></br>
+        <br />
         <span>
           <strong>E-Mail:</strong> {user.data().email}
         </span>
-        <br></br>
+        <br />
         <span>
           <strong>Username:</strong> {user.data().username}
         </span>
-        <br></br>
+        <br />
+        <br />
       </li>
     ))}
   </ul>
 )
 
-export default withFirebase(AdminPage)
+const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN]
+
+export default compose(
+  withEmailVerification,
+  withAuthorization(condition),
+)(AdminPage)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Aux from 'react-aux'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
@@ -8,26 +8,27 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-import firestore from '../store/firestore'
-
-const QwestList = () => {
+const QwestList = props => {
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
   const handleQwestDelete = id => {
-    // Remove collection item
-    firestore
-      .collection('qwests')
-      .doc(id)
-      .delete()
+    // Delete qwest
+    props.firebase.qwest(id).delete()
   }
-  // Load collection
-  firestore
-    .collection('qwests')
-    .get()
-    .then(querySnapshot => {
-      setQwests(querySnapshot.docs)
-    })
+  // Define effects handlers
+  useEffect(() => {
+    // Setup listener to the qwests collection
+    const unsubscribe = props.firebase
+      .userQwests(props.authUser)
+      .onSnapshot(snapshot => {
+        setQwests(snapshot.docs)
+      })
+    // Unsubscribe from listener when component is destroyed
+    return () => {
+      unsubscribe()
+    }
+  }, [props.authUser, props.firebase])
   // Return component
   return (
     <Aux>

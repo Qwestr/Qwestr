@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import firestore from '../store/firestore'
-
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
@@ -17,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const QwestCreate = () => {
+const QwestCreate = props => {
   // Load styles
   const classes = useStyles()
   // Load state
@@ -26,16 +24,18 @@ const QwestCreate = () => {
   const clearForm = () => {
     setName('')
   }
-  const onSubmitForm = event => {
+  const onSubmitForm = (event, authUser) => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
     // Create new qwest object
     const newQwest = {
+      userId: authUser.uid,
       name: name,
+      createdAt: props.firebase.serverValues.serverTimestamp(),
     }
-    // Add collection object to firestore
-    firestore.collection('qwests').add(newQwest)
+    // Add new qwest
+    props.firebase.qwests().add(newQwest)
     // Clear the form
     clearForm()
   }
@@ -45,7 +45,7 @@ const QwestCreate = () => {
       <Typography variant="h5" gutterBottom>
         Create Qwest
       </Typography>
-      <form onSubmit={onSubmitForm}>
+      <form onSubmit={event => onSubmitForm(event, props.authUser)}>
         <TextField
           id="name"
           label="Name"
