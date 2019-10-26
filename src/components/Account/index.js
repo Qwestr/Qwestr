@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
+import Aux from 'react-aux'
 import { compose } from 'recompose'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
 import { withFirebase } from '../Firebase'
 import PasswordChangeForm from '../PasswordChange'
-import { PasswordForgetForm } from '../PasswordForget'
 import {
   AuthUserContext,
   withAuthorization,
@@ -50,13 +56,9 @@ class DefaultLoginToggle extends Component {
     const isInvalid = passwordOne !== passwordTwo || passwordOne === ''
 
     return isEnabled ? (
-      <button
-        type="button"
-        onClick={() => onUnlink(signInMethod.id)}
-        disabled={onlyOneLeft}
-      >
-        Deactivate {signInMethod.id}
-      </button>
+      <Button onClick={() => onUnlink(signInMethod.id)} disabled={onlyOneLeft}>
+        Disable {signInMethod.id}
+      </Button>
     ) : (
       <form onSubmit={this.onSubmit}>
         <input
@@ -73,9 +75,9 @@ class DefaultLoginToggle extends Component {
           type="password"
           placeholder="Confirm New Password"
         />
-        <button disabled={isInvalid} type="submit">
-          Link {signInMethod.id}
-        </button>
+        <Button disabled={isInvalid} type="submit">
+          Enable {signInMethod.id}
+        </Button>
       </form>
     )
   }
@@ -89,17 +91,13 @@ const SocialLoginToggle = ({
   onUnlink,
 }) =>
   isEnabled ? (
-    <button
-      type="button"
-      onClick={() => onUnlink(signInMethod.id)}
-      disabled={onlyOneLeft}
-    >
-      Deactivate {signInMethod.id}
-    </button>
+    <Button onClick={() => onUnlink(signInMethod.id)} disabled={onlyOneLeft}>
+      Disable {signInMethod.id}
+    </Button>
   ) : (
-    <button type="button" onClick={() => onLink(signInMethod.provider)}>
-      Link {signInMethod.id}
-    </button>
+    <Button onClick={() => onLink(signInMethod.provider)}>
+      Enable {signInMethod.id}
+    </Button>
   )
 
 class LoginManagementBase extends Component {
@@ -154,15 +152,15 @@ class LoginManagementBase extends Component {
     const { activeSignInMethods, error } = this.state
 
     return (
-      <div>
-        Sign In Methods:
-        <ul>
+      <Card>
+        <CardHeader title="Sign In Methods" />
+        <CardContent>
           {SIGN_IN_METHODS.map(signInMethod => {
             const onlyOneLeft = activeSignInMethods.length === 1
             const isEnabled = activeSignInMethods.includes(signInMethod.id)
 
             return (
-              <li key={signInMethod.id}>
+              <Aux key={signInMethod.id}>
                 {signInMethod.id === 'password' ? (
                   <DefaultLoginToggle
                     onlyOneLeft={onlyOneLeft}
@@ -180,12 +178,12 @@ class LoginManagementBase extends Component {
                     onUnlink={this.onUnlink}
                   />
                 )}
-              </li>
+              </Aux>
             )
           })}
-        </ul>
-        {error && error.message}
-      </div>
+          {error && error.message}
+        </CardContent>
+      </Card>
     )
   }
 }
@@ -195,11 +193,19 @@ const LoginManagement = withFirebase(LoginManagementBase)
 const AccountPage = () => (
   <AuthUserContext.Consumer>
     {authUser => (
-      <div>
-        <h1>Account</h1>
-        <PasswordChangeForm />
-        <LoginManagement authUser={authUser} />
-      </div>
+      <Aux>
+        <Typography variant="h4" gutterBottom>
+          Account
+        </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <LoginManagement authUser={authUser} />
+          </Grid>
+          <Grid item xs={12}>
+            <PasswordChangeForm />
+          </Grid>
+        </Grid>
+      </Aux>
     )}
   </AuthUserContext.Consumer>
 )
