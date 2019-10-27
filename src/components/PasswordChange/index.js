@@ -37,7 +37,7 @@ const PasswordChangeForm = props => {
   // Return component
   return (
     <Card>
-      <CardHeader title="Reset Password" />
+      <CardHeader title="Change Password" />
       <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
