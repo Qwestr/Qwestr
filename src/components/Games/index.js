@@ -11,7 +11,7 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-// import QwestCreate from './create'
+import GameCreate from './create'
 // import QwestList from './list'
 
 const useStyles = makeStyles(theme => ({
@@ -35,12 +35,12 @@ const GamesPage = props => {
             Games
           </Typography>
           <Grid container spacing={3}>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <QwestCreate firebase={props.firebase} authUser={authUser} />
+                <GameCreate firebase={props.firebase} authUser={authUser} />
               </Paper>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <QwestList firebase={props.firebase} authUser={authUser} />
               </Paper>
