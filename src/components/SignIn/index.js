@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'recompose'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -54,7 +54,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SignUpPage = props => {
+const SignInLink = () => (
+  <Typography variant="body2">
+    Just remembered it? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+  </Typography>
+)
+
+const SignInPage = props => {
   // Load styles
   const classes = useStyles()
   // Load state
@@ -197,6 +203,14 @@ const SignUpPage = props => {
           >
             Sign In with Facebook
           </Button>
+          <Grid container>
+            <Grid item xs>
+              <PasswordForgetLink />
+            </Grid>
+            <Grid item>
+              <SignUpLink />
+            </Grid>
+          </Grid>
           {error && (
             <Grid container justify="flex-end">
               <Grid item>
@@ -206,21 +220,15 @@ const SignUpPage = props => {
               </Grid>
             </Grid>
           )}
-          <Grid container>
-            <Grid item xs>
-              <PasswordForgetLink />
-            </Grid>
-            <Grid item>
-              <SignUpLink />
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
   )
 }
 
+export { SignInLink }
+
 export default compose(
   withRouter,
   withFirebase,
-)(SignUpPage)
+)(SignInPage)

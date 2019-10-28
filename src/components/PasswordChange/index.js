@@ -1,61 +1,68 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import TextField from '@material-ui/core/TextField'
+
 import { withFirebase } from '../Firebase'
 
-const INITIAL_STATE = {
-  passwordOne: '',
-  passwordTwo: '',
-  error: null,
-}
-
-class PasswordChangeForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { ...INITIAL_STATE }
+const PasswordChangeForm = props => {
+  // Load state
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
+  // Define methods
+  const clearForm = () => {
+    setPassword('')
+    setError(null)
   }
 
-  onSubmit = event => {
-    const { passwordOne } = this.state
-    this.props.firebase
-      .doPasswordUpdate(passwordOne)
+  const onSubmit = event => {
+    // Prevent default form submission
+    // DONT REMOVE!
+    event.preventDefault()
+    // Update password
+    props.firebase
+      .doPasswordUpdate(password)
       .then(() => {
-        this.setState({ ...INITIAL_STATE })
+        // Clear form
+        clearForm()
       })
       .catch(error => {
-        this.setState({ error })
+        // Set error
+        setError(error)
       })
-    event.preventDefault()
   }
-
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
-
-  render() {
-    const { passwordOne, passwordTwo, error } = this.state
-    const isInvalid = passwordOne !== passwordTwo || passwordOne === ''
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
-        {error && <p>{error.message}</p>}
+  // Return component
+  return (
+    <Card>
+      <CardHeader title="Change Password" />
+      <form onSubmit={onSubmit}>
+        <CardContent>
+          <TextField
+            name="password"
+            type="password"
+            label="New Password"
+            fullWidth
+            value={password}
+            onChange={event => setPassword(event.target.value)}
+          />
+          {error && <p>{error.message}</p>}
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={!password}
+          >
+            Reset
+          </Button>
+        </CardActions>
       </form>
-    )
-  }
+    </Card>
+  )
 }
+
 export default withFirebase(PasswordChangeForm)
