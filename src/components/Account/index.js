@@ -206,7 +206,15 @@ class LoginManagementBase extends Component {
               )
             })}
           </Grid>
-          {error && error.message}
+          {error && (
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Typography variant="body2" color="secondary">
+                  {error.message}
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
         </CardContent>
       </Card>
     )

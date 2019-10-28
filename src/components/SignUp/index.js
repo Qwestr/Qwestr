@@ -54,6 +54,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const SignUpLink = () => (
+  <Typography variant="body2">
+    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+  </Typography>
+)
+
 const SignUpPage = props => {
   // Load styles
   const classes = useStyles()
@@ -171,6 +177,14 @@ const SignUpPage = props => {
           >
             Sign Up
           </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Typography variant="body2">
+                Already have an account?{' '}
+                <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+              </Typography>
+            </Grid>
+          </Grid>
           {error && (
             <Grid container justify="flex-end">
               <Grid item>
@@ -180,25 +194,13 @@ const SignUpPage = props => {
               </Grid>
             </Grid>
           )}
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Typography variant="body2">
-                Already have an account?{' '}
-                <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-              </Typography>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
   )
 }
 
-export const SignUpLink = () => (
-  <Typography variant="body2">
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </Typography>
-)
+export { SignUpLink }
 
 export default compose(
   withRouter,
