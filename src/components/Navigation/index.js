@@ -28,6 +28,12 @@ const Navigation = () => (
           </ListItemIcon>
           <ListItemText primary="Qwests" />
         </ListItem>
+        <ListItem button component={Link} to={ROUTES.GAMES}>
+          <ListItemIcon>
+            <CheckCircleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Games" />
+        </ListItem>
         {!!authUser.roles && !!authUser.roles[ROLES.ADMIN] && (
           <ListItem button component={Link} to={ROUTES.ADMIN}>
             <ListItemIcon>

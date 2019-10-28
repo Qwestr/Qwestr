@@ -23,6 +23,7 @@ import HomePage from '../Home'
 import LandingPage from '../Landing'
 import Navigation from '../Navigation'
 import PasswordForgetPage from '../PasswordForget'
+import GamesPage from '../Games'
 import QwestsPage from '../Qwests'
 import SignInPage from '../SignIn'
 import SignOutButton from '../SignOut'
@@ -206,6 +207,7 @@ const Layout = props => {
               <Route path={ROUTES.ADMIN} component={AdminPage} />
               <Route path={ROUTES.HOME} component={HomePage} />
               <Route path={ROUTES.QWESTS} component={QwestsPage} />
+              <Route path={ROUTES.GAMES} component={GamesPage} />
             </Container>
             <Copyright />
           </main>
