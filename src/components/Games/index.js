@@ -12,7 +12,7 @@ import {
   withEmailVerification,
 } from '../Session'
 import GameCreate from './create'
-// import QwestList from './list'
+import GameList from './list'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,11 +40,11 @@ const GamesPage = props => {
                 <GameCreate firebase={props.firebase} authUser={authUser} />
               </Paper>
             </Grid>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <QwestList firebase={props.firebase} authUser={authUser} />
+                <GameList firebase={props.firebase} authUser={authUser} />
               </Paper>
-            </Grid> */}
+            </Grid>
           </Grid>
         </Aux>
       )}
