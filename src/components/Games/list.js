@@ -19,15 +19,15 @@ const GameList = props => {
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the games collection
-    // const unsubscribe = props.firebase
-    //   .userGames(props.authUser)
-    //   .onSnapshot(snapshot => {
-    //     setGames(snapshot.docs)
-    //   })
-    // // Unsubscribe from listener when component is destroyed
-    // return () => {
-    //   unsubscribe()
-    // }
+    const unsubscribe = props.firebase
+      .userGames(props.authUser)
+      .onSnapshot(snapshot => {
+        setGames(snapshot.docs)
+      })
+    // Unsubscribe from listener when component is destroyed
+    return () => {
+      unsubscribe()
+    }
   }, [props.authUser, props.firebase])
   // Return component
   return (
