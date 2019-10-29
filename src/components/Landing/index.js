@@ -1,6 +1,5 @@
 import React from 'react'
 import Aux from 'react-aux'
-import { withRouter } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -9,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as ROUTES from '../../constants/routes'
+import { withUnauthorization } from '../Session'
 
 const useStyles = makeStyles(theme => ({
   heroContent: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Landing = props => {
+const LandingPage = props => {
   // Load styles
   const classes = useStyles()
   // Return template
@@ -75,4 +75,4 @@ const Landing = props => {
   )
 }
 
-export default withRouter(Landing)
+export default withUnauthorization(LandingPage)

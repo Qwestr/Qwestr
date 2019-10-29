@@ -2,10 +2,12 @@ import AuthUserContext from './context'
 import withAuthentication from './withAuthentication'
 import withAuthorization from './withAuthorization'
 import withEmailVerification from './withEmailVerification'
+import withUnauthorization from './withUnauthorization'
 
 export {
   AuthUserContext,
   withAuthentication,
   withAuthorization,
   withEmailVerification,
+  withUnauthorization,
 }
