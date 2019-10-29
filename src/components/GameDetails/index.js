@@ -5,10 +5,16 @@ import { compose } from 'recompose'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import QwestCreate from '../QwestCreate'
-import { withAuthorization, withEmailVerification } from '../Session'
+import QwestList from '../QwestList'
+import {
+  AuthUserContext,
+  withAuthorization,
+  withEmailVerification,
+} from '../Session'
 
 const GameDetailsPage = props => {
   // Load url params
@@ -28,24 +34,35 @@ const GameDetailsPage = props => {
   }, [id, props.firebase])
   // Return component
   return (
-    <Aux>
-      <Typography variant="h4" gutterBottom>
-        Game
-      </Typography>
-      {game && (
+    <AuthUserContext.Consumer>
+      {authUser => (
         <Aux>
-          <Card>
-            <CardHeader title="Details" />
-            <CardContent>
-              <Typography variant="body2">
-                <b>Name: </b> {game.name}
-              </Typography>
-            </CardContent>
-          </Card>
-          <QwestCreate />
+          <Typography variant="h4" gutterBottom>
+            Game
+          </Typography>
+          {game && (
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Card>
+                  <CardHeader title="Details" />
+                  <CardContent>
+                    <Typography variant="body2">
+                      <b>Name: </b> {game.name}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12}>
+                <QwestCreate firebase={props.firebase} authUser={authUser} />
+              </Grid>
+              <Grid item xs={12}>
+                <QwestList firebase={props.firebase} authUser={authUser} />
+              </Grid>
+            </Grid>
+          )}
         </Aux>
       )}
-    </Aux>
+    </AuthUserContext.Consumer>
   )
 }
 
