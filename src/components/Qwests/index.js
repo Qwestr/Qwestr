@@ -12,7 +12,7 @@ import {
   withEmailVerification,
 } from '../Session'
 import QwestCreate from '../QwestCreate'
-import QwestList from './list'
+import QwestList from '../QwestList'
 
 const useStyles = makeStyles(theme => ({
   paper: {
