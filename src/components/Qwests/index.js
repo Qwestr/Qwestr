@@ -11,7 +11,7 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import QwestCreate from './create'
+import QwestCreate from '../QwestCreate'
 import QwestList from './list'
 
 const useStyles = makeStyles(theme => ({
