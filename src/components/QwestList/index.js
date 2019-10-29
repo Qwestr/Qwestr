@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import Aux from 'react-aux'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 
 const QwestList = props => {
@@ -31,28 +32,28 @@ const QwestList = props => {
   }, [props.authUser, props.firebase])
   // Return component
   return (
-    <Aux>
-      <Typography variant="h5" gutterBottom>
-        Qwests
-      </Typography>
-      <List>
-        {qwests.map(qwest => (
-          <ListItem key={qwest.id}>
-            <ListItemText primary={qwest.data().name} />
-            <ListItemSecondaryAction>
-              <IconButton
-                color="secondary"
-                edge="end"
-                aria-label="delete"
-                onClick={() => handleQwestDelete(qwest.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
-    </Aux>
+    <Card>
+      <CardHeader title="Qwests" />
+      <CardContent>
+        <List>
+          {qwests.map(qwest => (
+            <ListItem key={qwest.id}>
+              <ListItemText primary={qwest.data().name} />
+              <ListItemSecondaryAction>
+                <IconButton
+                  color="secondary"
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => handleQwestDelete(qwest.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </CardContent>
+    </Card>
   )
 }
 

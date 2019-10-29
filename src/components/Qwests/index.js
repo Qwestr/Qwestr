@@ -1,9 +1,7 @@
 import React from 'react'
 import Aux from 'react-aux'
 import { compose } from 'recompose'
-import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 import {
@@ -14,18 +12,7 @@ import {
 import QwestCreate from '../QwestCreate'
 import QwestList from '../QwestList'
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-}))
-
 const QwestsPage = props => {
-  // Load styles
-  const classes = useStyles()
   // Return component
   return (
     <AuthUserContext.Consumer>
@@ -36,14 +23,10 @@ const QwestsPage = props => {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <QwestCreate firebase={props.firebase} authUser={authUser} />
-              </Paper>
+              <QwestCreate firebase={props.firebase} authUser={authUser} />
             </Grid>
             <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <QwestList firebase={props.firebase} authUser={authUser} />
-              </Paper>
+              <QwestList firebase={props.firebase} authUser={authUser} />
             </Grid>
           </Grid>
         </Aux>

@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Aux from 'react-aux'
 import { useParams } from 'react-router-dom'
 import { compose } from 'recompose'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
 import Typography from '@material-ui/core/Typography'
 
+import QwestCreate from '../QwestCreate'
 import { withAuthorization, withEmailVerification } from '../Session'
 
 const GameDetailsPage = props => {
@@ -28,6 +32,19 @@ const GameDetailsPage = props => {
       <Typography variant="h4" gutterBottom>
         Game
       </Typography>
+      {game && (
+        <Aux>
+          <Card>
+            <CardHeader title="Details" />
+            <CardContent>
+              <Typography variant="body2">
+                <b>Name: </b> {game.name}
+              </Typography>
+            </CardContent>
+          </Card>
+          <QwestCreate />
+        </Aux>
+      )}
     </Aux>
   )
 }
