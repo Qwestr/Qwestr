@@ -9,24 +9,24 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import QwestCreate from '../QwestCreate'
-import QwestList from '../QwestList'
+import GameCreate from './create'
+import GameList from './list'
 
-const QwestsPage = props => {
+const GamesPage = props => {
   // Return component
   return (
     <AuthUserContext.Consumer>
       {authUser => (
         <Aux>
           <Typography variant="h4" gutterBottom>
-            Qwests
+            Games
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <QwestCreate firebase={props.firebase} authUser={authUser} />
+              <GameCreate firebase={props.firebase} authUser={authUser} />
             </Grid>
             <Grid item xs={12}>
-              <QwestList firebase={props.firebase} authUser={authUser} />
+              <GameList firebase={props.firebase} authUser={authUser} />
             </Grid>
           </Grid>
         </Aux>
@@ -40,4 +40,4 @@ const condition = authUser => !!authUser
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
-)(QwestsPage)
+)(GamesPage)

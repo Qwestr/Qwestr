@@ -87,10 +87,21 @@ class Firebase {
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
+  gameQwests = game =>
+    this.store.collection('qwests').where('gameId', '==', game.id)
+
   userQwests = authUser =>
     this.store.collection('qwests').where('userId', '==', authUser.uid)
 
   qwest = id => this.store.collection('qwests').doc(id)
+
+  // *** Game API ***
+  games = () => this.store.collection('games')
+
+  userGames = authUser =>
+    this.store.collection('games').where('userId', '==', authUser.uid)
+
+  game = id => this.store.collection('games').doc(id)
 }
 
 export default Firebase
