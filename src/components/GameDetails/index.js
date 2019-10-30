@@ -17,6 +17,8 @@ import {
 } from '../Session'
 
 const GameDetailsPage = props => {
+  // Deconstruct properties
+  const { firebase } = props
   // Load url params
   const { id } = useParams()
   // Load state
@@ -24,14 +26,14 @@ const GameDetailsPage = props => {
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the game collection object
-    const unsubscribe = props.firebase.game(id).onSnapshot(snapshot => {
-      setGame(snapshot.data())
+    const unsubscribe = firebase.game(id).onSnapshot(snapshot => {
+      setGame(snapshot)
     })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [id, props.firebase])
+  }, [id, firebase])
   // Return component
   return (
     <AuthUserContext.Consumer>
@@ -46,17 +48,25 @@ const GameDetailsPage = props => {
                 <Card>
                   <CardHeader title="Details" />
                   <CardContent>
-                    <Typography variant="body2">
-                      <b>Name: </b> {game.name}
+                    <Typography variant="body1">
+                      <b>Name: </b> {game.data().name}
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid item xs={12}>
-                <QwestCreate firebase={props.firebase} authUser={authUser} />
+                <QwestCreate
+                  game={game}
+                  firebase={firebase}
+                  authUser={authUser}
+                />
               </Grid>
               <Grid item xs={12}>
-                <QwestList firebase={props.firebase} authUser={authUser} />
+                <QwestList
+                  game={game}
+                  firebase={firebase}
+                  authUser={authUser}
+                />
               </Grid>
             </Grid>
           )}

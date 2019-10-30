@@ -10,26 +10,34 @@ import ListItemText from '@material-ui/core/ListItemText'
 import DeleteIcon from '@material-ui/icons/Delete'
 
 const QwestList = props => {
+  // Deconstruct properties
+  const { authUser, firebase, game } = props
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
   const handleQwestDelete = id => {
     // Delete qwest
-    props.firebase.qwest(id).delete()
+    firebase.qwest(id).delete()
   }
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the qwests collection
-    const unsubscribe = props.firebase
-      .userQwests(props.authUser)
-      .onSnapshot(snapshot => {
+    let unsubscribe
+    // Determine the context of the qwest list (game or user)
+    if (game) {
+      unsubscribe = firebase.gameQwests(game).onSnapshot(snapshot => {
         setQwests(snapshot.docs)
       })
+    } else {
+      unsubscribe = firebase.userQwests(authUser).onSnapshot(snapshot => {
+        setQwests(snapshot.docs)
+      })
+    }
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [props.authUser, props.firebase])
+  }, [authUser, firebase, game])
   // Return component
   return (
     <Card>

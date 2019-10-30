@@ -87,6 +87,9 @@ class Firebase {
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
+  gameQwests = game =>
+    this.store.collection('qwests').where('gameId', '==', game.id)
+
   userQwests = authUser =>
     this.store.collection('qwests').where('userId', '==', authUser.uid)
 

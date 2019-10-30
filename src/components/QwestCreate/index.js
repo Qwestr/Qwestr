@@ -7,6 +7,8 @@ import CardHeader from '@material-ui/core/CardHeader'
 import TextField from '@material-ui/core/TextField'
 
 const QwestCreate = props => {
+  // Deconstruct properties
+  const { authUser, firebase, game } = props
   // Load state
   const [name, setName] = useState('')
   // Define methods
@@ -14,18 +16,23 @@ const QwestCreate = props => {
     setName('')
   }
 
-  const onSubmit = (event, authUser) => {
+  const onSubmit = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
     // Create new qwest object
     const newQwest = {
-      userId: authUser.uid,
       name: name,
-      createdAt: props.firebase.serverValues.serverTimestamp(),
+      createdAt: firebase.serverValues.serverTimestamp(),
+    }
+    // Determine the context of the qwest list (game or user)
+    if (game) {
+      newQwest.gameId = game.id
+    } else {
+      newQwest.userId = authUser.uid
     }
     // Add new qwest
-    props.firebase.qwests().add(newQwest)
+    firebase.qwests().add(newQwest)
     // Clear the form
     clearForm()
   }
@@ -33,7 +40,7 @@ const QwestCreate = props => {
   return (
     <Card>
       <CardHeader title="Create Qwest" />
-      <form onSubmit={event => onSubmit(event, props.authUser)}>
+      <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
             id="name"
