@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import PeopleIcon from '@material-ui/icons/People'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports'
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle'
 
 import * as ROLES from '../../constants/roles'
 import * as ROUTES from '../../constants/routes'
@@ -34,6 +35,12 @@ const Navigation = () => (
             <SportsEsportsIcon />
           </ListItemIcon>
           <ListItemText primary="Games" />
+        </ListItem>
+        <ListItem button component={Link} to={ROUTES.FRIENDS}>
+          <ListItemIcon>
+            <SupervisedUserCircleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Friends" />
         </ListItem>
         {!!authUser.roles && !!authUser.roles[ROLES.ADMIN] && (
           <ListItem button component={Link} to={ROUTES.ADMIN}>
