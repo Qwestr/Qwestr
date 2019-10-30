@@ -6,48 +6,29 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-const ConfirmDialog = () => {
-  // Load state
-  const [open, setOpen] = useState(false)
-  // Define methods
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
+const ConfirmDialog = props => {
+  // Deconstruct properties
+  const { isOpen, handleClose, title, message } = props
   // Return component
   return (
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Disagree
-          </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={isOpen}
+      onClose={() => handleClose(false)}
+      aria-labelledby="confirm-dialog"
+    >
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{message}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => handleClose(false)} color="secondary">
+          Cancel
+        </Button>
+        <Button onClick={() => handleClose(true)} color="primary" autoFocus>
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 
