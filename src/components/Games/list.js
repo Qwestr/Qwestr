@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import Aux from 'react-aux'
 import { Link } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -14,71 +14,71 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import DeleteIcon from '@material-ui/icons/Delete'
 
 import * as ROUTES from '../../constants/routes'
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    padding: theme.spacing(2),
-  },
-}))
+import ConfirmDialog from '../ConfimDialog'
 
 const GameList = props => {
-  // Load styles
-  const classes = useStyles()
+  // Deconstruct properties
+  const { authUser, firebase } = props
   // Load state
   const [games, setGames] = useState([])
   // Define methods
   const handleGameDelete = id => {
     // Delete game
-    props.firebase.game(id).delete()
+    firebase.game(id).delete()
   }
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the games collection
-    const unsubscribe = props.firebase
-      .userGames(props.authUser)
-      .onSnapshot(snapshot => {
-        setGames(snapshot.docs)
-      })
+    const unsubscribe = firebase.userGames(authUser).onSnapshot(snapshot => {
+      setGames(snapshot.docs)
+    })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [props.authUser, props.firebase])
+  }, [authUser, firebase])
   // Return component
   return (
-    <Card>
-      <CardHeader title="Games" />
-      <CardContent>
-        <List>
-          {games.map(game => (
-            <ListItem key={game.id}>
-              <ListItemText primary={game.data().name} />
-              <ListItemSecondaryAction>
-                <Grid container spacing={3}>
-                  <Grid item>
-                    <Link to={`${ROUTES.GAMES}/${game.id}`}>
-                      <IconButton color="primary" edge="end" aria-label="view">
-                        <VisibilityIcon />
+    <Aux>
+      <Card>
+        <CardHeader title="Games" />
+        <CardContent>
+          <List>
+            {games.map(game => (
+              <ListItem key={game.id}>
+                <ListItemText primary={game.data().name} />
+                <ListItemSecondaryAction>
+                  <Grid container spacing={3}>
+                    <Grid item>
+                      <Link to={`${ROUTES.GAMES}/${game.id}`}>
+                        <IconButton
+                          color="primary"
+                          edge="end"
+                          aria-label="view"
+                        >
+                          <VisibilityIcon />
+                        </IconButton>
+                      </Link>
+                    </Grid>
+                    <Grid item>
+                      <IconButton
+                        color="secondary"
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => handleGameDelete(game.id)}
+                      >
+                        <DeleteIcon />
                       </IconButton>
-                    </Link>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <IconButton
-                      color="secondary"
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleGameDelete(game.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
-      </CardContent>
-    </Card>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </CardContent>
+      </Card>
+      <ConfirmDialog />
+    </Aux>
   )
 }
 
