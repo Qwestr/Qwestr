@@ -26,7 +26,7 @@ const FriendAdd = props => {
       .findUserByEmail(email)
       .get()
       .then(snapshot => {
-        // Check if the user exists
+        // Check if the user does not exist
         if (snapshot.empty) {
           // Set error
           setError(
@@ -35,16 +35,28 @@ const FriendAdd = props => {
         } else {
           // Get user from snapshot
           const user = snapshot.docs[0]
-          // Create new invite object
-          const newInvite = {
-            requesterId: authUser.uid,
-            requestedId: user.id,
-            createdAt: props.firebase.serverValues.serverTimestamp(),
-          }
-          // Add new invite
-          props.firebase.invites().add(newInvite)
-          // Clear the form
-          clearForm()
+          // Find invites for user
+          firebase
+            .findInvitesForUser(user, authUser)
+            .get()
+            .then(snapshot => {
+              // Check if the invite exists
+              if (!snapshot.empty) {
+                // Set error
+                setError('An invite has already been sent to this user.')
+              } else {
+                // Create new invite object
+                const newInvite = {
+                  requesterId: authUser.uid,
+                  requestedId: user.id,
+                  createdAt: props.firebase.serverValues.serverTimestamp(),
+                }
+                // Add new invite
+                props.firebase.invites().add(newInvite)
+                // Clear the form
+                clearForm()
+              }
+            })
         }
       })
   }
