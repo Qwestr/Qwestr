@@ -84,6 +84,9 @@ class Firebase {
 
   user = id => this.store.collection('users').doc(id)
 
+  findUserByEmail = email =>
+    this.store.collection('users').where('email', '==', email)
+
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
@@ -102,6 +105,9 @@ class Firebase {
     this.store.collection('games').where('userId', '==', authUser.uid)
 
   game = id => this.store.collection('games').doc(id)
+
+  // *** Invite API ***
+  invites = () => this.store.collection('invites')
 }
 
 export default Firebase

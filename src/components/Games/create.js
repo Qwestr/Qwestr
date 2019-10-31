@@ -7,6 +7,8 @@ import CardHeader from '@material-ui/core/CardHeader'
 import TextField from '@material-ui/core/TextField'
 
 const GameCreate = props => {
+  // Deconstruct properties
+  const { authUser, firebase } = props
   // Load state
   const [name, setName] = useState('')
   // Define methods
@@ -14,7 +16,7 @@ const GameCreate = props => {
     setName('')
   }
 
-  const onSubmit = (event, authUser) => {
+  const onSubmit = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
@@ -22,10 +24,10 @@ const GameCreate = props => {
     const newGame = {
       userId: authUser.uid,
       name: name,
-      createdAt: props.firebase.serverValues.serverTimestamp(),
+      createdAt: firebase.serverValues.serverTimestamp(),
     }
     // Add new game
-    props.firebase.games().add(newGame)
+    firebase.games().add(newGame)
     // Clear the form
     clearForm()
   }
@@ -33,7 +35,7 @@ const GameCreate = props => {
   return (
     <Card>
       <CardHeader title="Create Game" />
-      <form onSubmit={event => onSubmit(event, props.authUser)}>
+      <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
             id="name"
