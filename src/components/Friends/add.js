@@ -11,19 +11,27 @@ const FriendAdd = props => {
   const { authUser, firebase } = props
   // Load state
   const [email, setEmail] = useState('')
-  const [error, setError] = useState(null)
+  const [error, setError] = useState('')
   // Define methods
   const clearForm = () => {
     setEmail('')
+    setError('')
   }
 
   const onSubmit = (event, authUser) => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
+    // Set email to lowercase
+    const invitedEmail = email.toLowerCase()
+    // Make sure the user is not trying to invite themselves
+    if (invitedEmail === authUser.email) {
+      setError('You cannot invite yourself!')
+      return
+    }
     // Find the user by email address
     firebase
-      .findUserByEmail(email)
+      .findUserByEmail(invitedEmail)
       .get()
       .then(snapshot => {
         // Check if the user does not exist
