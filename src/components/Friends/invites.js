@@ -71,8 +71,8 @@ const ReceivedInviteList = props => {
           {invites.map(invite => (
             <ListItem key={invite.id}>
               <ListItemText
-                primary={invite.data().requestedUsername}
-                secondary={invite.data().requestedEmail}
+                primary={invite.data().requesterUsername}
+                secondary={invite.data().requesterEmail}
               />
             </ListItem>
           ))}

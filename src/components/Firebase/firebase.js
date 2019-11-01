@@ -109,11 +109,17 @@ class Firebase {
   // *** Invite API ***
   invites = () => this.store.collection('invites')
 
-  findInvitesForUser = (user, authUser) =>
+  findSentInvitesForUser = (user, authUser) =>
     this.store
       .collection('invites')
       .where('requestedId', '==', user.id)
       .where('requesterId', '==', authUser.uid)
+
+  findReceivedInvitesForUser = (user, authUser) =>
+    this.store
+      .collection('invites')
+      .where('requesterId', '==', user.id)
+      .where('requestedId', '==', authUser.uid)
 
   sentUserInvites = authUser =>
     this.store.collection('invites').where('requesterId', '==', authUser.uid)

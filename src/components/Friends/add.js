@@ -43,32 +43,43 @@ const FriendAdd = props => {
         } else {
           // Get user from snapshot
           const user = snapshot.docs[0]
-          // Find invites for user
+          // Find sent invites for user
           firebase
-            .findInvitesForUser(user, authUser)
+            .findSentInvitesForUser(user, authUser)
             .get()
             .then(snapshot => {
-              // Check if the invite exists
+              // Check if the received invite exists
               if (!snapshot.empty) {
                 // Set error
                 setError('An invite has already been sent to this user.')
               } else {
-                // console.log('authUser', authUser)
-                // console.log('user', user)
-                // Create new invite object
-                const newInvite = {
-                  requesterId: authUser.uid,
-                  requesterUsername: authUser.username,
-                  requesterEmail: authUser.email,
-                  requestedId: user.id,
-                  requestedUsername: user.data().username,
-                  requestedEmail: user.data().email,
-                  createdAt: props.firebase.serverValues.serverTimestamp(),
-                }
-                // Add new invite
-                props.firebase.invites().add(newInvite)
-                // Clear the form
-                clearForm()
+                // Find sent invites for user
+                firebase
+                  .findReceivedInvitesForUser(user, authUser)
+                  .get()
+                  .then(snapshot => {
+                    if (!snapshot.empty) {
+                      // Set error
+                      setError(
+                        'An invite has already been received from this user.',
+                      )
+                    } else {
+                      // Create new invite object
+                      const newInvite = {
+                        requesterId: authUser.uid,
+                        requesterUsername: authUser.username,
+                        requesterEmail: authUser.email,
+                        requestedId: user.id,
+                        requestedUsername: user.data().username,
+                        requestedEmail: user.data().email,
+                        createdAt: props.firebase.serverValues.serverTimestamp(),
+                      }
+                      // Add new invite
+                      props.firebase.invites().add(newInvite)
+                      // Clear the form
+                      clearForm()
+                    }
+                  })
               }
             })
         }
