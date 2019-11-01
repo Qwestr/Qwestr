@@ -44,4 +44,42 @@ const SentInviteList = props => {
   )
 }
 
-export default SentInviteList
+const ReceivedInviteList = props => {
+  // Deconstruct properties
+  const { authUser, firebase } = props
+  // Load state
+  const [invites, setInvites] = useState([])
+  // Define effects handlers
+  useEffect(() => {
+    // Setup listener to the invites collection
+    const unsubscribe = firebase
+      .receivedUserInvites(authUser)
+      .onSnapshot(snapshot => {
+        setInvites(snapshot.docs)
+      })
+    // Unsubscribe from listener when component is destroyed
+    return () => {
+      unsubscribe()
+    }
+  }, [authUser, firebase])
+  // Return component
+  return (
+    <Card>
+      <CardHeader title="Received Invites" />
+      <CardContent>
+        <List>
+          {invites.map(invite => (
+            <ListItem key={invite.id}>
+              <ListItemText
+                primary={invite.data().requestedUsername}
+                secondary={invite.data().requestedEmail}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </CardContent>
+    </Card>
+  )
+}
+
+export { ReceivedInviteList, SentInviteList }

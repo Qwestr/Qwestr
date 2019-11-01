@@ -10,7 +10,7 @@ import {
   withEmailVerification,
 } from '../Session'
 import FriendAdd from './add'
-import SentInviteList from './invites'
+import { ReceivedInviteList, SentInviteList } from './invites'
 
 const FriendsPage = props => {
   // Deconstruct properties
@@ -29,6 +29,9 @@ const FriendsPage = props => {
             </Grid>
             <Grid item xs={12}>
               <SentInviteList firebase={firebase} authUser={authUser} />
+            </Grid>
+            <Grid item xs={12}>
+              <ReceivedInviteList firebase={firebase} authUser={authUser} />
             </Grid>
           </Grid>
         </Aux>
