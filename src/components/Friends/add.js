@@ -18,7 +18,7 @@ const FriendAdd = props => {
     setError('')
   }
 
-  const onSubmit = (event, authUser) => {
+  const onSubmit = async (event, authUser) => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
@@ -26,64 +26,50 @@ const FriendAdd = props => {
     const invitedEmail = email.toLowerCase()
     // Make sure the user is not trying to invite themselves
     if (invitedEmail === authUser.email) {
+      // Set error and return
       setError('You cannot invite yourself!')
       return
     }
     // Find the user by email address
-    firebase
-      .findUserByEmail(invitedEmail)
-      .get()
-      .then(snapshot => {
-        // Check if the user does not exist
-        if (snapshot.empty) {
-          // Set error
-          setError(
-            'No user with the provided email address was found.  Please try again.',
-          )
-        } else {
-          // Get user from snapshot
-          const user = snapshot.docs[0]
-          // Find sent invites for user
-          firebase
-            .findSentInvitesForUser(user, authUser)
-            .get()
-            .then(snapshot => {
-              // Check if the received invite exists
-              if (!snapshot.empty) {
-                // Set error
-                setError('An invite has already been sent to this user.')
-              } else {
-                // Find sent invites for user
-                firebase
-                  .findReceivedInvitesForUser(user, authUser)
-                  .get()
-                  .then(snapshot => {
-                    if (!snapshot.empty) {
-                      // Set error
-                      setError(
-                        'An invite has already been received from this user.',
-                      )
-                    } else {
-                      // Create new invite object
-                      const newInvite = {
-                        requesterId: authUser.uid,
-                        requesterUsername: authUser.username,
-                        requesterEmail: authUser.email,
-                        requestedId: user.id,
-                        requestedUsername: user.data().username,
-                        requestedEmail: user.data().email,
-                        createdAt: props.firebase.serverValues.serverTimestamp(),
-                      }
-                      // Add new invite
-                      props.firebase.invites().add(newInvite)
-                      // Clear the form
-                      clearForm()
-                    }
-                  })
-              }
-            })
-        }
-      })
+    let snapshot = await firebase.findUserByEmail(invitedEmail).get()
+    // Check if the user does not exist
+    if (snapshot.empty) {
+      // Set error and return
+      setError('No user with the provided email address was found.')
+      return
+    }
+    // Get user from snapshot
+    const user = snapshot.docs[0]
+    // Find sent invites for user
+    snapshot = await firebase.findSentInvitesForUser(user, authUser).get()
+    // Check if the sent invite exists
+    if (!snapshot.empty) {
+      // Set error and return
+      setError('An invite has already been sent to this user.')
+      return
+    }
+    // Find received invites for user
+    snapshot = await firebase.findReceivedInvitesForUser(user, authUser).get()
+    // Check if the received invite exists
+    if (!snapshot.empty) {
+      // Set error and return
+      setError('An invite has already been received from this user.')
+      return
+    }
+    // Create new invite object
+    const newInvite = {
+      requesterId: authUser.uid,
+      requesterUsername: authUser.username,
+      requesterEmail: authUser.email,
+      requestedId: user.id,
+      requestedUsername: user.data().username,
+      requestedEmail: user.data().email,
+      createdAt: props.firebase.serverValues.serverTimestamp(),
+    }
+    // Add new invite
+    props.firebase.invites().add(newInvite)
+    // Clear the form
+    clearForm()
   }
   // Return component
   return (
