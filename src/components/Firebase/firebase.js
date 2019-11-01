@@ -114,6 +114,9 @@ class Firebase {
       .collection('invites')
       .where('requestedId', '==', user.id)
       .where('requesterId', '==', authUser.uid)
+
+  sentUserInvites = authUser =>
+    this.store.collection('invites').where('requesterId', '==', authUser.uid)
 }
 
 export default Firebase
