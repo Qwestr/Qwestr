@@ -8,14 +8,19 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CancelIcon from '@material-ui/icons/Cancel'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const SentInviteList = props => {
   // Deconstruct properties
   const { authUser, firebase } = props
   // Load state
   const [invites, setInvites] = useState([])
+  // Define methods
+  const deleteFriendInvite = invite => {
+    // TODO: put functionality to accept friend invite here
+  }
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the invites collection
@@ -41,6 +46,20 @@ const SentInviteList = props => {
                 primary={invite.data().requestedUsername}
                 secondary={invite.data().requestedEmail}
               />
+              <ListItemSecondaryAction>
+                <Grid container spacing={3}>
+                  <Grid item>
+                    <IconButton
+                      color="secondary"
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => deleteFriendInvite(invite)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
