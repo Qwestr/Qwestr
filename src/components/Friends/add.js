@@ -53,10 +53,16 @@ const FriendAdd = props => {
                 // Set error
                 setError('An invite has already been sent to this user.')
               } else {
+                // console.log('authUser', authUser)
+                // console.log('user', user)
                 // Create new invite object
                 const newInvite = {
                   requesterId: authUser.uid,
+                  requesterUsername: authUser.username,
+                  requesterEmail: authUser.email,
                   requestedId: user.id,
+                  requestedUsername: user.data().username,
+                  requestedEmail: user.data().email,
                   createdAt: props.firebase.serverValues.serverTimestamp(),
                 }
                 // Add new invite
