@@ -109,6 +109,8 @@ class Firebase {
   // *** Invite API ***
   invites = () => this.store.collection('invites')
 
+  invite = id => this.store.collection('invites').doc(id)
+
   findSentInvitesForUser = (user, authUser) =>
     this.store
       .collection('invites')

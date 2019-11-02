@@ -75,7 +75,10 @@ const ReceivedInviteList = props => {
   const [invites, setInvites] = useState([])
   // Define methods
   const acceptFriendInvite = invite => {
+    // Update friends lists, your friends now, yay!
     firebase.acceptFriendInvite(invite)
+    // Delete invite
+    firebase.invite(invite.id).delete()
   }
 
   const rejectFriendInvite = invite => {
