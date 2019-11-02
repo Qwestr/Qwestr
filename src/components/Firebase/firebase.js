@@ -18,8 +18,8 @@ class Firebase {
     app.initializeApp(config)
     // Get email auth provider
     this.emailAuthProvider = app.auth.EmailAuthProvider
-    // Get server values
-    this.serverValues = app.firestore.FieldValue
+    // Get FieldValue
+    this.FieldValue = app.firestore.FieldValue
     // Initialize auth
     this.auth = app.auth()
     // Initialize firestore
@@ -126,6 +126,22 @@ class Firebase {
 
   receivedUserInvites = authUser =>
     this.store.collection('invites').where('requestedId', '==', authUser.uid)
+
+  acceptFriendInvite = invite =>
+    // console.log('invite', invite.data())
+    this.store
+      .collection('users')
+      .doc(invite.data().requestedId)
+      .set(
+        {
+          friends: [],
+        },
+        { merge: true },
+      )
+  // .get()
+  // .then(doc => {
+  //   console.log('doc', doc.data())
+  // })
 }
 
 export default Firebase

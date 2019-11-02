@@ -24,7 +24,7 @@ const GameCreate = props => {
     const newGame = {
       userId: authUser.uid,
       name: name,
-      createdAt: firebase.serverValues.serverTimestamp(),
+      createdAt: firebase.FieldValue.serverTimestamp(),
     }
     // Add new game
     firebase.games().add(newGame)

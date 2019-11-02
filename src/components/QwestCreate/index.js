@@ -23,7 +23,7 @@ const QwestCreate = props => {
     // Create new qwest object
     const newQwest = {
       name: name,
-      createdAt: firebase.serverValues.serverTimestamp(),
+      createdAt: firebase.FieldValue.serverTimestamp(),
     }
     // Determine the context of the qwest list (game or user)
     if (game) {

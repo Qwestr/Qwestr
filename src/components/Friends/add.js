@@ -64,7 +64,7 @@ const FriendAdd = props => {
       requestedId: user.id,
       requestedUsername: user.data().username,
       requestedEmail: user.data().email,
-      createdAt: props.firebase.serverValues.serverTimestamp(),
+      createdAt: firebase.FieldValue.serverTimestamp(),
     }
     // Add new invite
     props.firebase.invites().add(newInvite)
