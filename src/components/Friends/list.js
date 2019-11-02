@@ -26,13 +26,14 @@ const FriendList = props => {
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the games collection
-    // const unsubscribe = firebase.userGames(authUser).onSnapshot(snapshot => {
+    // firebase.userFriends(authUser)
+    // const unsubscribe = firebase.userFriends(authUser).onSnapshot(snapshot => {
     //   setGames(snapshot.docs)
     // })
-    // // Unsubscribe from listener when component is destroyed
-    // return () => {
-    //   unsubscribe()
-    // }
+    // Unsubscribe from listener when component is destroyed
+    return () => {
+      // unsubscribe()
+    }
   }, [authUser, firebase])
   // Return component
   return (
