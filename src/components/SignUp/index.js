@@ -81,11 +81,14 @@ const SignUpPage = props => {
       .doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
         // Create a user document
-        return props.firebase.user(authUser.user.uid).set({
-          username,
-          email,
-          allowExtraEmails,
-        })
+        return props.firebase.user(authUser.user.uid).set(
+          {
+            username,
+            email,
+            allowExtraEmails,
+          },
+          { merge: true },
+        )
       })
       .then(() => {
         // Send verification email
