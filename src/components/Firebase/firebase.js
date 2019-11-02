@@ -130,19 +130,27 @@ class Firebase {
     this.store.collection('invites').where('requestedId', '==', authUser.uid)
 
   acceptFriendInvite = invite => {
-    // Update friends array of requested user with requester ID
+    // Update friends collection of requested user with requester user data
     this.store
       .collection('users')
       .doc(invite.data().requestedId)
-      .update({
-        friends: this.FieldValue.arrayUnion(invite.data().requesterId),
+      .collection('friends')
+      .doc(invite.data().requesterId)
+      .set({
+        username: invite.data().requesterUsername,
+        email: invite.data().requesterEmail,
+        createdAt: this.FieldValue.serverTimestamp(),
       })
-    // Update friends array of requester user with requested ID
+    // Update friends collection of requester user with requested user data
     this.store
       .collection('users')
       .doc(invite.data().requesterId)
-      .update({
-        friends: this.FieldValue.arrayUnion(invite.data().requestedId),
+      .collection('friends')
+      .doc(invite.data().requestedId)
+      .set({
+        username: invite.data().requestedUsername,
+        email: invite.data().requestedEmail,
+        createdAt: this.FieldValue.serverTimestamp(),
       })
   }
 }
