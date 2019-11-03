@@ -97,10 +97,13 @@ const SignInPage = props => {
       .doSignInWithGoogle()
       .then(socialAuthUser => {
         // Create a user document
-        return props.firebase.user(socialAuthUser.user.uid).set({
-          username: socialAuthUser.user.displayName,
-          email: socialAuthUser.user.email,
-        })
+        return props.firebase.user(socialAuthUser.user.uid).set(
+          {
+            username: socialAuthUser.user.displayName,
+            email: socialAuthUser.user.email,
+          },
+          { merge: true },
+        )
       })
       .then(() => {
         // Push to home page
@@ -122,10 +125,13 @@ const SignInPage = props => {
       .doSignInWithFacebook()
       .then(socialAuthUser => {
         // Create a user document
-        return props.firebase.user(socialAuthUser.user.uid).set({
-          username: socialAuthUser.additionalUserInfo.profile.name,
-          email: socialAuthUser.additionalUserInfo.profile.email,
-        })
+        return props.firebase.user(socialAuthUser.user.uid).set(
+          {
+            username: socialAuthUser.additionalUserInfo.profile.name,
+            email: socialAuthUser.additionalUserInfo.profile.email,
+          },
+          { merge: true },
+        )
       })
       .then(() => {
         // Push to home page

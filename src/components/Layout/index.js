@@ -19,6 +19,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import * as ROUTES from '../../constants/routes'
 import AccountPage from '../Account'
 import AdminPage from '../Admin'
+import FriendsPage from '../Friends'
 import HomePage from '../Home'
 import LandingPage from '../Landing'
 import Navigation from '../Navigation'
@@ -210,6 +211,7 @@ const Layout = props => {
               <Route path={ROUTES.QWESTS} component={QwestsPage} />
               <Route exact path={ROUTES.GAMES} component={GamesPage} />
               <Route path={ROUTES.GAME_DETAILS} component={GameDetailsPage} />
+              <Route path={ROUTES.FRIENDS} component={FriendsPage} />
             </Container>
             <Copyright />
           </main>

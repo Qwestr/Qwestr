@@ -18,8 +18,8 @@ class Firebase {
     app.initializeApp(config)
     // Get email auth provider
     this.emailAuthProvider = app.auth.EmailAuthProvider
-    // Get server values
-    this.serverValues = app.firestore.FieldValue
+    // Get FieldValue
+    this.FieldValue = app.firestore.FieldValue
     // Initialize auth
     this.auth = app.auth()
     // Initialize firestore
@@ -84,6 +84,15 @@ class Firebase {
 
   user = id => this.store.collection('users').doc(id)
 
+  userFriends = id =>
+    this.store
+      .collection('users')
+      .doc(id)
+      .collection('friends')
+
+  findUserByEmail = email =>
+    this.store.collection('users').where('email', '==', email)
+
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
@@ -102,6 +111,54 @@ class Firebase {
     this.store.collection('games').where('userId', '==', authUser.uid)
 
   game = id => this.store.collection('games').doc(id)
+
+  // *** Invite API ***
+  invites = () => this.store.collection('invites')
+
+  invite = id => this.store.collection('invites').doc(id)
+
+  findSentInvitesForUser = (user, authUser) =>
+    this.store
+      .collection('invites')
+      .where('requestedId', '==', user.id)
+      .where('requesterId', '==', authUser.uid)
+
+  findReceivedInvitesForUser = (user, authUser) =>
+    this.store
+      .collection('invites')
+      .where('requesterId', '==', user.id)
+      .where('requestedId', '==', authUser.uid)
+
+  sentUserInvites = authUser =>
+    this.store.collection('invites').where('requesterId', '==', authUser.uid)
+
+  receivedUserInvites = authUser =>
+    this.store.collection('invites').where('requestedId', '==', authUser.uid)
+
+  acceptFriendInvite = invite => {
+    // Update friends collection of requested user with requester user data
+    this.store
+      .collection('users')
+      .doc(invite.data().requestedId)
+      .collection('friends')
+      .doc(invite.data().requesterId)
+      .set({
+        username: invite.data().requesterUsername,
+        email: invite.data().requesterEmail,
+        createdAt: this.FieldValue.serverTimestamp(),
+      })
+    // Update friends collection of requester user with requested user data
+    this.store
+      .collection('users')
+      .doc(invite.data().requesterId)
+      .collection('friends')
+      .doc(invite.data().requestedId)
+      .set({
+        username: invite.data().requestedUsername,
+        email: invite.data().requestedEmail,
+        createdAt: this.FieldValue.serverTimestamp(),
+      })
+  }
 }
 
 export default Firebase

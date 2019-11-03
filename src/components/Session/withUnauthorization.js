@@ -15,7 +15,7 @@ const withUnauthorization = Component => {
             this.props.history.push(ROUTES.HOME)
           }
         },
-        () => this.props.history.push(ROUTES.HOME),
+        () => {},
       )
     }
 
