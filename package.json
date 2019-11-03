@@ -15,6 +15,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "build:develop": "env-cmd -f ./.env.development npm run-script build",
+    "build:staging": "env-cmd -f ./.env.staging npm run-script build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -37,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "env-cmd": "^10.0.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^6.4.0",
