@@ -84,6 +84,12 @@ class Firebase {
 
   user = id => this.store.collection('users').doc(id)
 
+  userFriends = id =>
+    this.store
+      .collection('users')
+      .doc(id)
+      .collection('friends')
+
   findUserByEmail = email =>
     this.store.collection('users').where('email', '==', email)
 
