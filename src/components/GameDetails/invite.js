@@ -19,11 +19,11 @@ const GameInviteForm = props => {
   const { authUser, firebase, game } = props
   // Load state
   const [friends, setFriends] = useState([])
-  const [player, setPlayer] = useState('')
+  const [friend, setFriend] = useState('')
   const [error, setError] = useState('')
   // Define methods
   const clearForm = () => {
-    setPlayer('')
+    setFriend('')
     setError('')
   }
 
@@ -32,13 +32,11 @@ const GameInviteForm = props => {
     // DONT REMOVE!
     event.preventDefault()
     // Find sent invites for user
-    let snapshot = await firebase
-      .findSentGameInvitesForPlayer(player, game)
-      .get()
+    let snapshot = await firebase.findSentGameInvitesForUser(friend, game).get()
     // Check if the sent invite exists
     if (!snapshot.empty) {
       // Set error and return
-      setError('An invite has already been sent to this player.')
+      setError('An invite has already been sent to this user.')
       return
     }
     // Find received invites for user
@@ -54,9 +52,9 @@ const GameInviteForm = props => {
       requesterId: authUser.uid,
       requesterUsername: authUser.username,
       requesterEmail: authUser.email,
-      requestedId: player.id,
-      requestedUsername: player.data().username,
-      requestedEmail: player.data().email,
+      requestedId: friend.id,
+      requestedUsername: friend.data().username,
+      requestedEmail: friend.data().email,
       gameId: game.id,
       gameName: game.data().name,
       createdAt: firebase.FieldValue.serverTimestamp(),
@@ -82,18 +80,18 @@ const GameInviteForm = props => {
   // Return component
   return (
     <Card>
-      <CardHeader title="Invite Player" />
+      <CardHeader title="Invite Friend" />
       <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
-            id="player"
-            label="Player"
+            id="friend"
+            label="Friend"
             fullWidth
             select
             error={!!error}
             helperText={error}
-            value={player}
-            onChange={event => setPlayer(event.target.value)}
+            value={friend}
+            onChange={event => setFriend(event.target.value)}
           >
             {friends.map(friend => (
               <MenuItem key={friend.id} value={friend}>
@@ -107,7 +105,7 @@ const GameInviteForm = props => {
             variant="contained"
             color="primary"
             type="submit"
-            disabled={!player}
+            disabled={!friend}
           >
             Submit
           </Button>

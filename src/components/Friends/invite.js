@@ -40,7 +40,7 @@ const FriendInviteForm = props => {
       return
     }
     // Find the user by email address
-    let snapshot = await firebase.findUserByEmail(invitedEmail).get()
+    let snapshot = await firebase.findUserForEmail(invitedEmail).get()
     // Check if the user does not exist
     if (snapshot.empty) {
       // Set error and return
@@ -50,7 +50,9 @@ const FriendInviteForm = props => {
     // Get user from snapshot
     const user = snapshot.docs[0]
     // Make sure the user is not already a friend
-    snapshot = await firebase.findUserFriend(user, authUser).get()
+    snapshot = await firebase
+      .findUserFriendForEmail(user.data().email, authUser)
+      .get()
     // Check if the user exists
     if (!snapshot.empty) {
       // Set error and return

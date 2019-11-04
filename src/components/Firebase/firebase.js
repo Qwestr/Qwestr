@@ -90,15 +90,15 @@ class Firebase {
       .doc(id)
       .collection('friends')
 
-  findUserByEmail = email =>
+  findUserForEmail = email =>
     this.store.collection('users').where('email', '==', email)
 
-  findUserFriend = (user, authUser) =>
+  findUserFriendForEmail = (email, authUser) =>
     this.store
       .collection('users')
       .doc(authUser.uid)
       .collection('friends')
-      .where('email', '==', user.data().email)
+      .where('email', '==', email)
 
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
@@ -138,10 +138,10 @@ class Firebase {
       .where('requestedId', '==', authUser.uid)
       .where('gameId', '==', null)
 
-  findSentGameInvitesForPlayer = (player, game) =>
+  findSentGameInvitesForUser = (user, game) =>
     this.store
       .collection('invites')
-      .where('requestedId', '==', player.id)
+      .where('requestedId', '==', user.id)
       .where('gameId', '==', game.id)
 
   sentUserInvites = authUser =>
@@ -155,6 +155,12 @@ class Firebase {
       .collection('invites')
       .where('requestedId', '==', authUser.uid)
       .where('gameId', '==', null)
+
+  gameInvitesForUser = authUser =>
+    this.store
+      .collection('invites')
+      .where('requestedId', '==', authUser.uid)
+      .where('gameId', '>=', '')
 
   acceptFriendInvite = invite => {
     // Update friends collection of requested user with requester user data
