@@ -180,6 +180,9 @@ class Firebase {
         createdAt: this.FieldValue.serverTimestamp(),
       })
   }
+
+  sentGameInvites = id =>
+    this.store.collection('invites').where('gameId', '==', id)
 }
 
 export default Firebase

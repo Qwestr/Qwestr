@@ -15,7 +15,7 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import PlayerInvite from './invite'
+import { GameInviteForm, GameInviteList } from './invite'
 
 const GameDetailsPage = props => {
   // Deconstruct properties
@@ -56,11 +56,14 @@ const GameDetailsPage = props => {
                 </Card>
               </Grid>
               <Grid item xs={12}>
-                <PlayerInvite
+                <GameInviteForm
                   game={game}
                   firebase={firebase}
                   authUser={authUser}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <GameInviteList game={game} firebase={firebase} />
               </Grid>
               <Grid item xs={12}>
                 <QwestCreate

@@ -19,7 +19,7 @@ const SentInviteList = props => {
   const [invites, setInvites] = useState([])
   // Define methods
   const deleteFriendInvite = invite => {
-    // TODO: put functionality to accept friend invite here
+    // TODO: put functionality to delete friend invite here
   }
   // Define effects handlers
   useEffect(() => {
