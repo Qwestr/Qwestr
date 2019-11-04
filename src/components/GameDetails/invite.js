@@ -24,15 +24,17 @@ const PlayerInvite = props => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
-    // // Find sent invites for user
-    // snapshot = await firebase.findSentInvitesForUser(user, authUser).get()
-    // // Check if the sent invite exists
-    // if (!snapshot.empty) {
-    //   // Set error and return
-    //   setError('An invite has already been sent to this user.')
-    //   return
-    // }
-    // // Find received invites for user
+    // Find sent invites for user
+    let snapshot = await firebase
+      .findSentGameInvitesForPlayer(player, game)
+      .get()
+    // Check if the sent invite exists
+    if (!snapshot.empty) {
+      // Set error and return
+      setError('An invite has already been sent to this player.')
+      return
+    }
+    // Find received invites for user
     // snapshot = await firebase.findReceivedInvitesForUser(user, authUser).get()
     // // Check if the received invite exists
     // if (!snapshot.empty) {

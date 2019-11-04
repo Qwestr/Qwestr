@@ -129,6 +129,12 @@ class Firebase {
       .where('requesterId', '==', user.id)
       .where('requestedId', '==', authUser.uid)
 
+  findSentGameInvitesForPlayer = (player, game) =>
+    this.store
+      .collection('invites')
+      .where('requestedId', '==', player.id)
+      .where('requestedGameId', '==', game.id)
+
   sentUserInvites = authUser =>
     this.store.collection('invites').where('requesterId', '==', authUser.uid)
 
