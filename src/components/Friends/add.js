@@ -40,6 +40,14 @@ const FriendAdd = props => {
     }
     // Get user from snapshot
     const user = snapshot.docs[0]
+    // Make sure the user is not already a friend
+    snapshot = await firebase.findUserFriend(user, authUser).get()
+    // Check if the user exists
+    if (!snapshot.empty) {
+      // Set error and return
+      setError('This user is already a friend.')
+      return
+    }
     // Find sent invites for user
     snapshot = await firebase.findSentInvitesForUser(user, authUser).get()
     // Check if the sent invite exists

@@ -93,6 +93,13 @@ class Firebase {
   findUserByEmail = email =>
     this.store.collection('users').where('email', '==', email)
 
+  findUserFriend = (user, authUser) =>
+    this.store
+      .collection('users')
+      .doc(authUser.uid)
+      .collection('friends')
+      .where('email', '==', user.data().email)
+
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
@@ -136,10 +143,16 @@ class Firebase {
       .where('requestedGameId', '==', game.id)
 
   sentUserInvites = authUser =>
-    this.store.collection('invites').where('requesterId', '==', authUser.uid)
+    this.store
+      .collection('invites')
+      .where('requesterId', '==', authUser.uid)
+      .where('requestedGameId', '==', null)
 
   receivedUserInvites = authUser =>
-    this.store.collection('invites').where('requestedId', '==', authUser.uid)
+    this.store
+      .collection('invites')
+      .where('requestedId', '==', authUser.uid)
+      .where('requestedGameId', '==', null)
 
   acceptFriendInvite = invite => {
     // Update friends collection of requested user with requester user data
