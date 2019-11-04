@@ -18,7 +18,7 @@ const FriendAdd = props => {
     setError('')
   }
 
-  const onSubmit = async (event, authUser) => {
+  const onSubmit = async event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
@@ -75,7 +75,7 @@ const FriendAdd = props => {
   return (
     <Card>
       <CardHeader title="Add Friend" />
-      <form onSubmit={event => onSubmit(event, authUser)}>
+      <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
             id="email"
