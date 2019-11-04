@@ -72,8 +72,8 @@ const FriendAdd = props => {
       requestedId: user.id,
       requestedUsername: user.data().username,
       requestedEmail: user.data().email,
-      requestedGameId: null,
-      requestedGameName: null,
+      gameId: null,
+      gameName: null,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
     // Add new invite

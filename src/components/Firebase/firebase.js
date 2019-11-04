@@ -129,32 +129,32 @@ class Firebase {
       .collection('invites')
       .where('requestedId', '==', user.id)
       .where('requesterId', '==', authUser.uid)
-      .where('requestedGameId', '==', null)
+      .where('gameId', '==', null)
 
   findReceivedInvitesForUser = (user, authUser) =>
     this.store
       .collection('invites')
       .where('requesterId', '==', user.id)
       .where('requestedId', '==', authUser.uid)
-      .where('requestedGameId', '==', null)
+      .where('gameId', '==', null)
 
   findSentGameInvitesForPlayer = (player, game) =>
     this.store
       .collection('invites')
       .where('requestedId', '==', player.id)
-      .where('requestedGameId', '==', game.id)
+      .where('gameId', '==', game.id)
 
   sentUserInvites = authUser =>
     this.store
       .collection('invites')
       .where('requesterId', '==', authUser.uid)
-      .where('requestedGameId', '==', null)
+      .where('gameId', '==', null)
 
   receivedUserInvites = authUser =>
     this.store
       .collection('invites')
       .where('requestedId', '==', authUser.uid)
-      .where('requestedGameId', '==', null)
+      .where('gameId', '==', null)
 
   acceptFriendInvite = invite => {
     // Update friends collection of requested user with requester user data

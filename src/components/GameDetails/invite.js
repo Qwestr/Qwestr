@@ -50,8 +50,8 @@ const PlayerInvite = props => {
       requestedId: player.id,
       requestedUsername: player.data().username,
       requestedEmail: player.data().email,
-      requestedGameId: game.id,
-      requestedGameName: game.data().name,
+      gameId: game.id,
+      gameName: game.data().name,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
     // Add new invite
