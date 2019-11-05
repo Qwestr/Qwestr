@@ -105,24 +105,6 @@ const JoinedGameList = props => {
   const { authUser, firebase } = props
   // Load state
   const [games, setGames] = useState([])
-  const [game, setGame] = useState(null)
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
-  // Define methods
-  const confirmGameDelete = game => {
-    // Set game
-    setGame(game)
-    // Open confirm dialog
-    setIsConfirmDialogOpen(true)
-  }
-
-  const handleGameDelete = confirm => {
-    if (confirm) {
-      // Delete game
-      firebase.game(game.id).delete()
-    }
-    // Close confirm dialog
-    setIsConfirmDialogOpen(false)
-  }
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the user games collection
@@ -159,16 +141,6 @@ const JoinedGameList = props => {
                         </IconButton>
                       </Link>
                     </Grid>
-                    <Grid item>
-                      <IconButton
-                        color="secondary"
-                        edge="end"
-                        aria-label="delete"
-                        onClick={() => confirmGameDelete(game)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Grid>
                   </Grid>
                 </ListItemSecondaryAction>
               </ListItem>
@@ -176,12 +148,6 @@ const JoinedGameList = props => {
           </List>
         </CardContent>
       </Card>
-      <ConfirmDialog
-        isOpen={isConfirmDialogOpen}
-        handleClose={handleGameDelete}
-        title="Delete Game"
-        message="Are you sure you want to delete this game?  This cannot be undone."
-      />
     </Aux>
   )
 }
