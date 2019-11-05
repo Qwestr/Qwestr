@@ -155,6 +155,30 @@ class Firebase {
       })
   }
 
+  deleteGame = async id => {
+    // Get game's players collections
+    const players = await this.store
+      .collection('games')
+      .doc(id)
+      .collection('players')
+      .get()
+    // Iterate through each player
+    players.docs.forEach(player => {
+      // Remove game from player's games collection
+      this.store
+        .collection('users')
+        .doc(player.id)
+        .collection('games')
+        .doc(id)
+        .delete()
+    })
+    // Delete game
+    this.store
+      .collection('games')
+      .doc(id)
+      .delete()
+  }
+
   // *** Invite API ***
   invites = () => this.store.collection('invites')
 

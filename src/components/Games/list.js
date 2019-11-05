@@ -34,7 +34,8 @@ const CreatedGameList = props => {
   const handleGameDelete = confirm => {
     if (confirm) {
       // Delete game
-      firebase.game(game.id).delete()
+      firebase.deleteGame(game.id)
+      // firebase.game(game.id).delete()
     }
     // Close confirm dialog
     setIsConfirmDialogOpen(false)
