@@ -39,14 +39,7 @@ const GameInviteForm = props => {
       setError('An invite has already been sent to this user.')
       return
     }
-    // Find received invites for user
-    // snapshot = await firebase.findReceivedInvitesForUser(user, authUser).get()
-    // // Check if the received invite exists
-    // if (!snapshot.empty) {
-    //   // Set error and return
-    //   setError('An invite has already been received from this user.')
-    //   return
-    // }
+    // TODO: make sure a user who is already a player of the game is not invited
     // Create new invite object
     const newInvite = {
       requesterId: authUser.uid,

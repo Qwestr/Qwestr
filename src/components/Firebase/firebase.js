@@ -156,7 +156,6 @@ class Firebase {
   createGame = async (game, authUser) => {
     // Create the new game
     const newGame = await this.store.collection('games').add(game)
-    // console.log('newGame', newGame)
     // Create players collection for game
     newGame
       .collection('players')

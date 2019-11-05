@@ -10,7 +10,7 @@ import {
   withEmailVerification,
 } from '../Session'
 import GameCreate from './create'
-import { CreatedGameList, JoinedGameList } from './list'
+import GameList from './list'
 import { GameInviteList } from './invite'
 
 const GamesPage = props => {
@@ -30,10 +30,7 @@ const GamesPage = props => {
               <GameInviteList firebase={props.firebase} authUser={authUser} />
             </Grid>
             <Grid item xs={12}>
-              <JoinedGameList firebase={props.firebase} authUser={authUser} />
-            </Grid>
-            <Grid item xs={12}>
-              <CreatedGameList firebase={props.firebase} authUser={authUser} />
+              <GameList firebase={props.firebase} authUser={authUser} />
             </Grid>
           </Grid>
         </Aux>
