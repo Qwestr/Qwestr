@@ -10,6 +10,7 @@ import CardHeader from '@material-ui/core/CardHeader'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
+import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
 import QwestCreate from '../QwestCreate'
 import QwestList from '../QwestList'
@@ -41,7 +42,8 @@ const GameDetailsPage = props => {
     if (confirm) {
       // Delete game
       firebase.deleteGame(game.id)
-      // firebase.game(game.id).delete()
+      // Push to the games page
+      props.history.push(ROUTES.GAMES)
     }
     // Close confirm dialog
     setIsConfirmDialogOpen(false)
