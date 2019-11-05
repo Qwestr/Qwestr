@@ -122,6 +122,12 @@ class Firebase {
 
   game = id => this.store.collection('games').doc(id)
 
+  gamePlayers = id =>
+    this.store
+      .collection('games')
+      .doc(id)
+      .collection('players')
+
   createdGames = authUser =>
     this.store.collection('games').where('userId', '==', authUser.uid)
 
