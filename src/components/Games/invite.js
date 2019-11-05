@@ -20,7 +20,7 @@ const GameInviteList = props => {
   const acceptGameInvite = invite => {
     // TODO: put functionality to reject game invite here
     // // Update friends lists, your friends now, yay!
-    // firebase.acceptFriendInvite(invite)
+    firebase.acceptGameInvite(invite)
     // // Delete invite
     // firebase.invite(invite.id).delete()
   }

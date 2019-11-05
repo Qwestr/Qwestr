@@ -114,10 +114,43 @@ class Firebase {
   // *** Game API ***
   games = () => this.store.collection('games')
 
-  userGames = authUser =>
+  game = id => this.store.collection('games').doc(id)
+
+  createdGames = authUser =>
     this.store.collection('games').where('userId', '==', authUser.uid)
 
-  game = id => this.store.collection('games').doc(id)
+  joinedGames = authUser =>
+    this.store
+      .collection('games')
+      .where('players', 'array-contains', authUser.uid)
+
+  acceptGameInvite = invite => {
+    // Update games document with requested user data
+    this.store
+      .collection('games')
+      .doc(invite.data().gameId)
+      .update({
+        players: [invite.data().requestedId],
+      })
+    // .collection('friends')
+    // .doc(invite.data().requesterId)
+    // .set({
+    //   username: invite.data().requesterUsername,
+    //   email: invite.data().requesterEmail,
+    //   createdAt: this.FieldValue.serverTimestamp(),
+    // })
+    // Update friends collection of requester user with requested user data
+    // this.store
+    //   .collection('users')
+    //   .doc(invite.data().requesterId)
+    //   .collection('friends')
+    //   .doc(invite.data().requestedId)
+    //   .set({
+    //     username: invite.data().requestedUsername,
+    //     email: invite.data().requestedEmail,
+    //     createdAt: this.FieldValue.serverTimestamp(),
+    //   })
+  }
 
   // *** Invite API ***
   invites = () => this.store.collection('invites')
@@ -163,7 +196,7 @@ class Firebase {
       .where('gameId', '>=', '')
 
   acceptFriendInvite = invite => {
-    // Update friends collection of requested user with requester user data
+    // Update friends document of requested user with requester user data
     this.store
       .collection('users')
       .doc(invite.data().requestedId)
@@ -174,7 +207,7 @@ class Firebase {
         email: invite.data().requesterEmail,
         createdAt: this.FieldValue.serverTimestamp(),
       })
-    // Update friends collection of requester user with requested user data
+    // Update friends document of requester user with requested user data
     this.store
       .collection('users')
       .doc(invite.data().requesterId)

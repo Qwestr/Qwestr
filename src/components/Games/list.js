@@ -16,7 +16,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfimDialog'
 
-const GameList = props => {
+const CreatedGameList = props => {
   // Deconstruct properties
   const { authUser, firebase } = props
   // Load state
@@ -41,8 +41,8 @@ const GameList = props => {
   }
   // Define effects handlers
   useEffect(() => {
-    // Setup listener to the games collection
-    const unsubscribe = firebase.userGames(authUser).onSnapshot(snapshot => {
+    // Setup listener to the created games collection
+    const unsubscribe = firebase.createdGames(authUser).onSnapshot(snapshot => {
       setGames(snapshot.docs)
     })
     // Unsubscribe from listener when component is destroyed
@@ -54,7 +54,7 @@ const GameList = props => {
   return (
     <Aux>
       <Card>
-        <CardHeader title="Games" />
+        <CardHeader title="Created Games" />
         <CardContent>
           <List>
             {games.map(game => (
@@ -100,4 +100,88 @@ const GameList = props => {
   )
 }
 
-export default GameList
+const JoinedGameList = props => {
+  // Deconstruct properties
+  const { authUser, firebase } = props
+  // Load state
+  const [games, setGames] = useState([])
+  const [game, setGame] = useState(null)
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  // Define methods
+  const confirmGameDelete = game => {
+    // Set game
+    setGame(game)
+    // Open confirm dialog
+    setIsConfirmDialogOpen(true)
+  }
+
+  const handleGameDelete = confirm => {
+    if (confirm) {
+      // Delete game
+      firebase.game(game.id).delete()
+    }
+    // Close confirm dialog
+    setIsConfirmDialogOpen(false)
+  }
+  // Define effects handlers
+  useEffect(() => {
+    // Setup listener to the joined games collection
+    const unsubscribe = firebase.joinedGames(authUser).onSnapshot(snapshot => {
+      setGames(snapshot.docs)
+    })
+    // Unsubscribe from listener when component is destroyed
+    return () => {
+      unsubscribe()
+    }
+  }, [authUser, firebase])
+  // Return component
+  return (
+    <Aux>
+      <Card>
+        <CardHeader title="Joined Games" />
+        <CardContent>
+          <List>
+            {games.map(game => (
+              <ListItem key={game.id}>
+                <ListItemText primary={game.data().name} />
+                <ListItemSecondaryAction>
+                  <Grid container spacing={3}>
+                    <Grid item>
+                      <Link to={`${ROUTES.GAMES}/${game.id}`}>
+                        <IconButton
+                          color="primary"
+                          edge="end"
+                          aria-label="view"
+                        >
+                          <VisibilityIcon />
+                        </IconButton>
+                      </Link>
+                    </Grid>
+                    <Grid item>
+                      <IconButton
+                        color="secondary"
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => confirmGameDelete(game)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </CardContent>
+      </Card>
+      <ConfirmDialog
+        isOpen={isConfirmDialogOpen}
+        handleClose={handleGameDelete}
+        title="Delete Game"
+        message="Are you sure you want to delete this game?  This cannot be undone."
+      />
+    </Aux>
+  )
+}
+
+export { CreatedGameList, JoinedGameList }
