@@ -141,7 +141,6 @@ class Firebase {
       .set({
         username: invite.data().requestedUsername,
         email: invite.data().requestedEmail,
-        createdAt: this.FieldValue.serverTimestamp(),
       })
     // Update user document's games collection with game data
     this.store
@@ -151,7 +150,29 @@ class Firebase {
       .doc(invite.data().gameId)
       .set({
         name: invite.data().gameName,
-        createdAt: this.FieldValue.serverTimestamp(),
+      })
+  }
+
+  createGame = async (game, authUser) => {
+    // Create the new game
+    const newGame = await this.store.collection('games').add(game)
+    // console.log('newGame', newGame)
+    // Create players collection for game
+    newGame
+      .collection('players')
+      .doc(authUser.uid)
+      .set({
+        username: authUser.username,
+        email: authUser.email,
+      })
+    // Add game to user's games collection
+    this.store
+      .collection('users')
+      .doc(authUser.uid)
+      .collection('games')
+      .doc(newGame.id)
+      .set({
+        name: game.name,
       })
   }
 
@@ -232,7 +253,6 @@ class Firebase {
       .set({
         username: invite.data().requesterUsername,
         email: invite.data().requesterEmail,
-        createdAt: this.FieldValue.serverTimestamp(),
       })
     // Update friends document of requester user with requested user data
     this.store
@@ -243,7 +263,6 @@ class Firebase {
       .set({
         username: invite.data().requestedUsername,
         email: invite.data().requestedEmail,
-        createdAt: this.FieldValue.serverTimestamp(),
       })
   }
 

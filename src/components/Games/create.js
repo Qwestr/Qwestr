@@ -26,8 +26,8 @@ const GameCreate = props => {
       name: name,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Add new game
-    firebase.games().add(newGame)
+    // Create game
+    firebase.createGame(newGame, authUser)
     // Clear the form
     clearForm()
   }
