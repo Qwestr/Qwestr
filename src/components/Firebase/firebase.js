@@ -100,6 +100,12 @@ class Firebase {
       .collection('friends')
       .where('email', '==', email)
 
+  userGames = id =>
+    this.store
+      .collection('users')
+      .doc(id)
+      .collection('games')
+
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
@@ -119,37 +125,28 @@ class Firebase {
   createdGames = authUser =>
     this.store.collection('games').where('userId', '==', authUser.uid)
 
-  joinedGames = authUser =>
-    this.store
-      .collection('games')
-      .where('players', 'array-contains', authUser.uid)
-
   acceptGameInvite = invite => {
-    // Update games document with requested user data
+    // Update games document's players collection with requested user data
     this.store
       .collection('games')
       .doc(invite.data().gameId)
-      .update({
-        players: [invite.data().requestedId],
+      .collection('players')
+      .doc(invite.data().requestedId)
+      .set({
+        username: invite.data().requestedUsername,
+        email: invite.data().requestedEmail,
+        createdAt: this.FieldValue.serverTimestamp(),
       })
-    // .collection('friends')
-    // .doc(invite.data().requesterId)
-    // .set({
-    //   username: invite.data().requesterUsername,
-    //   email: invite.data().requesterEmail,
-    //   createdAt: this.FieldValue.serverTimestamp(),
-    // })
-    // Update friends collection of requester user with requested user data
-    // this.store
-    //   .collection('users')
-    //   .doc(invite.data().requesterId)
-    //   .collection('friends')
-    //   .doc(invite.data().requestedId)
-    //   .set({
-    //     username: invite.data().requestedUsername,
-    //     email: invite.data().requestedEmail,
-    //     createdAt: this.FieldValue.serverTimestamp(),
-    //   })
+    // Update user document's games collection with game data
+    this.store
+      .collection('users')
+      .doc(invite.data().requestedId)
+      .collection('games')
+      .doc(invite.data().gameId)
+      .set({
+        name: invite.data().gameName,
+        createdAt: this.FieldValue.serverTimestamp(),
+      })
   }
 
   // *** Invite API ***

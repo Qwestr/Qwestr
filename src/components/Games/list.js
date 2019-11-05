@@ -125,10 +125,12 @@ const JoinedGameList = props => {
   }
   // Define effects handlers
   useEffect(() => {
-    // Setup listener to the joined games collection
-    const unsubscribe = firebase.joinedGames(authUser).onSnapshot(snapshot => {
-      setGames(snapshot.docs)
-    })
+    // Setup listener to the user games collection
+    const unsubscribe = firebase
+      .userGames(authUser.uid)
+      .onSnapshot(snapshot => {
+        setGames(snapshot.docs)
+      })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
