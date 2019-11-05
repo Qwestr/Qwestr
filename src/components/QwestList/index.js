@@ -10,7 +10,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-import ConfirmDialog from '../ConfimDialog'
+import ConfirmDialog from '../ConfirmDialog'
 
 const QwestList = props => {
   // Deconstruct properties

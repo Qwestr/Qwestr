@@ -22,12 +22,12 @@ const GameCreate = props => {
     event.preventDefault()
     // Create new game object
     const newGame = {
-      userId: authUser.uid,
       name: name,
+      userId: authUser.uid,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Add new game
-    firebase.games().add(newGame)
+    // Create game
+    firebase.createGame(newGame, authUser)
     // Clear the form
     clearForm()
   }

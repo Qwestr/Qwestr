@@ -9,9 +9,8 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import FriendAdd from './add'
 import FriendList from './list'
-import { ReceivedInviteList, SentInviteList } from './invites'
+import { FriendInviteForm, ReceivedInviteList, SentInviteList } from './invite'
 
 const FriendsPage = props => {
   // Deconstruct properties
@@ -26,16 +25,16 @@ const FriendsPage = props => {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <FriendAdd firebase={firebase} authUser={authUser} />
-            </Grid>
-            <Grid item xs={12}>
-              <FriendList firebase={firebase} authUser={authUser} />
+              <FriendInviteForm firebase={firebase} authUser={authUser} />
             </Grid>
             <Grid item xs={12}>
               <SentInviteList firebase={firebase} authUser={authUser} />
             </Grid>
             <Grid item xs={12}>
               <ReceivedInviteList firebase={firebase} authUser={authUser} />
+            </Grid>
+            <Grid item xs={12}>
+              <FriendList firebase={firebase} authUser={authUser} />
             </Grid>
           </Grid>
         </Aux>

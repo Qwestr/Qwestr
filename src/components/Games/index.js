@@ -11,6 +11,7 @@ import {
 } from '../Session'
 import GameCreate from './create'
 import GameList from './list'
+import { GameInviteList } from './invite'
 
 const GamesPage = props => {
   // Return component
@@ -24,6 +25,9 @@ const GamesPage = props => {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <GameCreate firebase={props.firebase} authUser={authUser} />
+            </Grid>
+            <Grid item xs={12}>
+              <GameInviteList firebase={props.firebase} authUser={authUser} />
             </Grid>
             <Grid item xs={12}>
               <GameList firebase={props.firebase} authUser={authUser} />
