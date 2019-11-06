@@ -62,7 +62,7 @@ const QwestList = props => {
         <CardContent>
           <List>
             {qwests.map(qwest => (
-              <ListItem key={qwest.id}>
+              <ListItem key={qwest.id} button>
                 <ListItemText primary={qwest.data().name} />
                 <ListItemSecondaryAction>
                   <IconButton
