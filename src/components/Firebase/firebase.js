@@ -89,7 +89,7 @@ class Firebase {
   findUserForEmail = email => this.users().where('email', '==', email)
 
   findUserFriendForEmail = (email, id) =>
-    this.store.userFriends(id).where('email', '==', email)
+    this.userFriends(id).where('email', '==', email)
 
   userGames = id => this.user(id).collection('games')
 
@@ -100,7 +100,7 @@ class Firebase {
 
   gameQwests = id => this.qwests().where('gameId', '==', id)
 
-  userQwests = id => this.store.qwests().where('userId', '==', id)
+  userQwests = id => this.qwests().where('userId', '==', id)
 
   // *** Game API ***
   games = () => this.store.collection('games')
