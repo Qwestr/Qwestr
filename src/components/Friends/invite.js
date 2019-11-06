@@ -51,7 +51,7 @@ const FriendInviteForm = props => {
     const user = snapshot.docs[0]
     // Make sure the user is not already a friend
     snapshot = await firebase
-      .findUserFriendForEmail(user.data().email, authUser)
+      .findUserFriendForEmail(user.data().email, authUser.uid)
       .get()
     // Check if the user exists
     if (!snapshot.empty) {
@@ -60,7 +60,9 @@ const FriendInviteForm = props => {
       return
     }
     // Find sent invites for user
-    snapshot = await firebase.findSentInvitesForUser(user, authUser).get()
+    snapshot = await firebase
+      .findSentInvitesForUser(user.id, authUser.uid)
+      .get()
     // Check if the sent invite exists
     if (!snapshot.empty) {
       // Set error and return
@@ -68,7 +70,9 @@ const FriendInviteForm = props => {
       return
     }
     // Find received invites for user
-    snapshot = await firebase.findReceivedInvitesForUser(user, authUser).get()
+    snapshot = await firebase
+      .findReceivedInvitesForUser(user.id, authUser.uid)
+      .get()
     // Check if the received invite exists
     if (!snapshot.empty) {
       // Set error and return
@@ -136,7 +140,7 @@ const SentInviteList = props => {
   useEffect(() => {
     // Setup listener to the invites collection
     const unsubscribe = firebase
-      .sentUserInvites(authUser)
+      .sentUserInvites(authUser.uid)
       .onSnapshot(snapshot => {
         setInvites(snapshot.docs)
       })
@@ -199,7 +203,7 @@ const ReceivedInviteList = props => {
   useEffect(() => {
     // Setup listener to the invites collection
     const unsubscribe = firebase
-      .receivedUserInvites(authUser)
+      .receivedUserInvites(authUser.uid)
       .onSnapshot(snapshot => {
         setInvites(snapshot.docs)
       })

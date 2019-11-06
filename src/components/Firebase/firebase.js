@@ -82,71 +82,43 @@ class Firebase {
   // *** User API ***
   users = () => this.store.collection('users')
 
-  user = id => this.store.collection('users').doc(id)
+  user = id => this.users().doc(id)
 
-  userFriends = id =>
-    this.store
-      .collection('users')
-      .doc(id)
-      .collection('friends')
+  userFriends = id => this.user(id).collection('friends')
 
-  findUserForEmail = email =>
-    this.store.collection('users').where('email', '==', email)
+  findUserForEmail = email => this.users().where('email', '==', email)
 
-  findUserFriendForEmail = (email, authUser) =>
-    this.store
-      .collection('users')
-      .doc(authUser.uid)
-      .collection('friends')
-      .where('email', '==', email)
+  findUserFriendForEmail = (email, id) =>
+    this.store.userFriends(id).where('email', '==', email)
 
-  userGames = id =>
-    this.store
-      .collection('users')
-      .doc(id)
-      .collection('games')
+  userGames = id => this.user(id).collection('games')
 
   // *** Qwest API ***
   qwests = () => this.store.collection('qwests')
 
-  gameQwests = game =>
-    this.store.collection('qwests').where('gameId', '==', game.id)
+  qwest = id => this.qwests().doc(id)
 
-  userQwests = authUser =>
-    this.store.collection('qwests').where('userId', '==', authUser.uid)
+  gameQwests = id => this.qwests().where('gameId', '==', id)
 
-  qwest = id => this.store.collection('qwests').doc(id)
+  userQwests = id => this.store.qwests().where('userId', '==', id)
 
   // *** Game API ***
   games = () => this.store.collection('games')
 
-  game = id => this.store.collection('games').doc(id)
+  game = id => this.games().doc(id)
 
-  gamePlayers = id =>
-    this.store
-      .collection('games')
-      .doc(id)
-      .collection('players')
-
-  createdGames = authUser =>
-    this.store.collection('games').where('userId', '==', authUser.uid)
+  gamePlayers = id => this.game(id).collection('players')
 
   acceptGameInvite = invite => {
     // Update games document's players collection with requested user data
-    this.store
-      .collection('games')
-      .doc(invite.data().gameId)
-      .collection('players')
+    this.gamePlayers(invite.data().gameId)
       .doc(invite.data().requestedId)
       .set({
         username: invite.data().requestedUsername,
         email: invite.data().requestedEmail,
       })
     // Update user document's games collection with game data
-    this.store
-      .collection('users')
-      .doc(invite.data().requestedId)
-      .collection('games')
+    this.userGames(invite.data().requestedId)
       .doc(invite.data().gameId)
       .set({
         name: invite.data().gameName,
@@ -155,7 +127,7 @@ class Firebase {
 
   createGame = async (game, authUser) => {
     // Create the new game
-    const newGame = await this.store.collection('games').add(game)
+    const newGame = await this.games().add(game)
     // Create players collection for game
     newGame
       .collection('players')
@@ -165,10 +137,7 @@ class Firebase {
         email: authUser.email,
       })
     // Add game to user's games collection
-    this.store
-      .collection('users')
-      .doc(authUser.uid)
-      .collection('games')
+    this.userGames(authUser.uid)
       .doc(newGame.id)
       .set({
         name: game.name,
@@ -177,87 +146,65 @@ class Firebase {
 
   deleteGame = async id => {
     // Get game's players collections
-    const players = await this.store
-      .collection('games')
-      .doc(id)
-      .collection('players')
-      .get()
+    const players = await this.gamePlayers(id).get()
     // Iterate through each player
     players.docs.forEach(player => {
       // Remove game from player's games collection
-      this.store
-        .collection('users')
-        .doc(player.id)
-        .collection('games')
+      this.userGames(player.id)
         .doc(id)
         .delete()
     })
     // Delete game
-    this.store
-      .collection('games')
-      .doc(id)
-      .delete()
+    this.game(id).delete()
   }
 
   // *** Invite API ***
   invites = () => this.store.collection('invites')
 
-  invite = id => this.store.collection('invites').doc(id)
+  invite = id => this.invites().doc(id)
 
-  findSentInvitesForUser = (user, authUser) =>
-    this.store
-      .collection('invites')
-      .where('requestedId', '==', user.id)
-      .where('requesterId', '==', authUser.uid)
+  findSentInvitesForUser = (userId, authUserId) =>
+    this.invites()
+      .where('requestedId', '==', userId)
+      .where('requesterId', '==', authUserId)
       .where('gameId', '==', null)
 
-  findReceivedInvitesForUser = (user, authUser) =>
-    this.store
-      .collection('invites')
-      .where('requesterId', '==', user.id)
-      .where('requestedId', '==', authUser.uid)
+  findReceivedInvitesForUser = (userId, authUserId) =>
+    this.invites()
+      .where('requesterId', '==', userId)
+      .where('requestedId', '==', authUserId)
       .where('gameId', '==', null)
 
-  findSentGameInvitesForUser = (user, game) =>
-    this.store
-      .collection('invites')
-      .where('requestedId', '==', user.id)
-      .where('gameId', '==', game.id)
+  findSentGameInvitesForUser = (userId, gameId) =>
+    this.invites()
+      .where('requestedId', '==', userId)
+      .where('gameId', '==', gameId)
 
-  sentUserInvites = authUser =>
-    this.store
-      .collection('invites')
-      .where('requesterId', '==', authUser.uid)
+  sentUserInvites = id =>
+    this.invites()
+      .where('requesterId', '==', id)
       .where('gameId', '==', null)
 
-  receivedUserInvites = authUser =>
-    this.store
-      .collection('invites')
-      .where('requestedId', '==', authUser.uid)
+  receivedUserInvites = id =>
+    this.invites()
+      .where('requestedId', '==', id)
       .where('gameId', '==', null)
 
-  gameInvitesForUser = authUser =>
-    this.store
-      .collection('invites')
-      .where('requestedId', '==', authUser.uid)
+  gameInvitesForUser = id =>
+    this.invites()
+      .where('requestedId', '==', id)
       .where('gameId', '>=', '')
 
   acceptFriendInvite = invite => {
     // Update friends document of requested user with requester user data
-    this.store
-      .collection('users')
-      .doc(invite.data().requestedId)
-      .collection('friends')
+    this.userFriends(invite.data().requestedId)
       .doc(invite.data().requesterId)
       .set({
         username: invite.data().requesterUsername,
         email: invite.data().requesterEmail,
       })
     // Update friends document of requester user with requested user data
-    this.store
-      .collection('users')
-      .doc(invite.data().requesterId)
-      .collection('friends')
+    this.userFriends(invite.data().requesterId)
       .doc(invite.data().requestedId)
       .set({
         username: invite.data().requestedUsername,
@@ -265,8 +212,7 @@ class Firebase {
       })
   }
 
-  sentGameInvites = id =>
-    this.store.collection('invites').where('gameId', '==', id)
+  sentGameInvites = id => this.invites().where('gameId', '==', id)
 }
 
 export default Firebase
