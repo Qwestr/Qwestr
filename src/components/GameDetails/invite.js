@@ -32,7 +32,9 @@ const GameInviteForm = props => {
     // DONT REMOVE!
     event.preventDefault()
     // Find sent invites for user
-    let snapshot = await firebase.findSentGameInvitesForUser(friend, game).get()
+    let snapshot = await firebase
+      .findSentGameInvitesForUser(friend.id, game.id)
+      .get()
     // Check if the sent invite exists
     if (!snapshot.empty) {
       // Set error and return

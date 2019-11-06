@@ -41,11 +41,11 @@ const QwestList = props => {
     let unsubscribe
     // Determine the context of the qwest list (game or user)
     if (game) {
-      unsubscribe = firebase.gameQwests(game).onSnapshot(snapshot => {
+      unsubscribe = firebase.gameQwests(game.id).onSnapshot(snapshot => {
         setQwests(snapshot.docs)
       })
     } else {
-      unsubscribe = firebase.userQwests(authUser).onSnapshot(snapshot => {
+      unsubscribe = firebase.userQwests(authUser.uid).onSnapshot(snapshot => {
         setQwests(snapshot.docs)
       })
     }

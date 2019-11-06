@@ -31,7 +31,7 @@ const GameInviteList = props => {
   useEffect(() => {
     // Setup listener to the invites collection
     const unsubscribe = firebase
-      .gameInvitesForUser(authUser)
+      .gameInvitesForUser(authUser.uid)
       .onSnapshot(snapshot => {
         setInvites(snapshot.docs)
       })
