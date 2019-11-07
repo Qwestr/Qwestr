@@ -24,7 +24,7 @@ import PlayerList from './list'
 
 const GameDetailsPage = props => {
   // Deconstruct properties
-  const { firebase } = props
+  const { firebase, history } = props
   // Load url params
   const { id } = useParams()
   // Load state
@@ -87,29 +87,30 @@ const GameDetailsPage = props => {
                 </Grid>
                 <Grid item xs={12}>
                   <GameInviteForm
-                    game={game}
-                    firebase={firebase}
                     authUser={authUser}
+                    firebase={firebase}
+                    game={game}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <GameInviteList game={game} firebase={firebase} />
+                  <GameInviteList firebase={firebase} game={game} />
                 </Grid>
                 <Grid item xs={12}>
-                  <PlayerList game={game} firebase={firebase} />
+                  <PlayerList firebase={firebase} game={game} />
                 </Grid>
                 <Grid item xs={12}>
                   <QwestCreate
-                    game={game}
-                    firebase={firebase}
                     authUser={authUser}
+                    firebase={firebase}
+                    game={game}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <QwestList
-                    game={game}
-                    firebase={firebase}
                     authUser={authUser}
+                    firebase={firebase}
+                    game={game}
+                    history={history}
                   />
                 </Grid>
               </Grid>
