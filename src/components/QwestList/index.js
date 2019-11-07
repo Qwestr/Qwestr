@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Aux from 'react-aux'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
@@ -8,33 +7,18 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import DeleteIcon from '@material-ui/icons/Delete'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
 import * as ROUTES from '../../constants/routes'
-import ConfirmDialog from '../ConfirmDialog'
 
 const QwestList = props => {
   // Deconstruct properties
   const { authUser, firebase, game, history } = props
   // Load state
   const [qwests, setQwests] = useState([])
-  const [qwest, setQwest] = useState(null)
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   // Define methods
-  const confirmQwestDelete = qwest => {
-    // Set qwest
-    setQwest(qwest)
-    // Open confirm dialog
-    setIsConfirmDialogOpen(true)
-  }
-
-  const handleQwestDelete = confirm => {
-    if (confirm) {
-      // Delete qwest
-      firebase.qwest(qwest.id).delete()
-    }
-    // Close confirm dialog
-    setIsConfirmDialogOpen(false)
+  const completeQwest = () => {
+    // TODO: complete the qwest
   }
   // Define effects handlers
   useEffect(() => {
@@ -57,40 +41,32 @@ const QwestList = props => {
   }, [authUser, firebase, game])
   // Return component
   return (
-    <Aux>
-      <Card>
-        <CardHeader title="Qwests" />
-        <CardContent>
-          <List>
-            {qwests.map(qwest => (
-              <ListItem
-                key={qwest.id}
-                button
-                onClick={() => history.push(`${ROUTES.QWESTS}/${qwest.id}`)}
-              >
-                <ListItemText primary={qwest.data().name} />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    color="secondary"
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => confirmQwestDelete(qwest)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
-        </CardContent>
-      </Card>
-      <ConfirmDialog
-        isOpen={isConfirmDialogOpen}
-        handleClose={handleQwestDelete}
-        title="Delete Qwest"
-        message="Are you sure you want to delete this qwest?  This cannot be undone."
-      />
-    </Aux>
+    <Card>
+      <CardHeader title="Qwests" />
+      <CardContent>
+        <List>
+          {qwests.map(qwest => (
+            <ListItem
+              key={qwest.id}
+              button
+              onClick={() => history.push(`${ROUTES.QWESTS}/${qwest.id}`)}
+            >
+              <ListItemText primary={qwest.data().name} />
+              <ListItemSecondaryAction>
+                <IconButton
+                  color="primary"
+                  edge="end"
+                  aria-label="complete"
+                  onClick={() => completeQwest(qwest)}
+                >
+                  <CheckCircleOutlineIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </CardContent>
+    </Card>
   )
 }
 
