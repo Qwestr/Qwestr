@@ -14,6 +14,8 @@ import GameList from './list'
 import { GameInviteList } from './invite'
 
 const GamesPage = props => {
+  // Deconstruct properties
+  const { firebase, history } = props
   // Return component
   return (
     <AuthUserContext.Consumer>
@@ -24,13 +26,17 @@ const GamesPage = props => {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <GameCreate firebase={props.firebase} authUser={authUser} />
+              <GameCreate authUser={authUser} firebase={firebase} />
             </Grid>
             <Grid item xs={12}>
-              <GameInviteList firebase={props.firebase} authUser={authUser} />
+              <GameInviteList authUser={authUser} firebase={firebase} />
             </Grid>
             <Grid item xs={12}>
-              <GameList firebase={props.firebase} authUser={authUser} />
+              <GameList
+                authUser={authUser}
+                firebase={firebase}
+                history={history}
+              />
             </Grid>
           </Grid>
         </Aux>
