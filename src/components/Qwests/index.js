@@ -13,6 +13,8 @@ import QwestCreate from '../QwestCreate'
 import QwestList from '../QwestList'
 
 const QwestsPage = props => {
+  // Deconstruct properties
+  const { firebase, history } = props
   // Return component
   return (
     <AuthUserContext.Consumer>
@@ -23,10 +25,14 @@ const QwestsPage = props => {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <QwestCreate firebase={props.firebase} authUser={authUser} />
+              <QwestCreate authUser={authUser} firebase={firebase} />
             </Grid>
             <Grid item xs={12}>
-              <QwestList firebase={props.firebase} authUser={authUser} />
+              <QwestList
+                authUser={authUser}
+                firebase={firebase}
+                history={history}
+              />
             </Grid>
           </Grid>
         </Aux>

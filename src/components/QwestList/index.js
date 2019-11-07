@@ -10,11 +10,12 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import DeleteIcon from '@material-ui/icons/Delete'
 
+import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
 
 const QwestList = props => {
   // Deconstruct properties
-  const { authUser, firebase, game } = props
+  const { authUser, firebase, game, history } = props
   // Load state
   const [qwests, setQwests] = useState([])
   const [qwest, setQwest] = useState(null)
@@ -62,7 +63,11 @@ const QwestList = props => {
         <CardContent>
           <List>
             {qwests.map(qwest => (
-              <ListItem key={qwest.id} button>
+              <ListItem
+                key={qwest.id}
+                button
+                onClick={() => history.push(`${ROUTES.QWESTS}/${qwest.id}`)}
+              >
                 <ListItemText primary={qwest.data().name} />
                 <ListItemSecondaryAction>
                   <IconButton

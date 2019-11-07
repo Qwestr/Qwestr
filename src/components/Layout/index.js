@@ -27,6 +27,7 @@ import PasswordForgetPage from '../PasswordForget'
 import GamesPage from '../Games'
 import GameDetailsPage from '../GameDetails'
 import QwestsPage from '../Qwests'
+import QwestDetailsPage from '../QwestDetails'
 import SignInPage from '../SignIn'
 import SignOutButton from '../SignOut'
 import SignUpPage from '../SignUp'
@@ -208,7 +209,8 @@ const Layout = props => {
               <Route path={ROUTES.ACCOUNT} component={AccountPage} />
               <Route path={ROUTES.ADMIN} component={AdminPage} />
               <Route path={ROUTES.HOME} component={HomePage} />
-              <Route path={ROUTES.QWESTS} component={QwestsPage} />
+              <Route exact path={ROUTES.QWESTS} component={QwestsPage} />
+              <Route path={ROUTES.QWEST_DETAILS} component={QwestDetailsPage} />
               <Route exact path={ROUTES.GAMES} component={GamesPage} />
               <Route path={ROUTES.GAME_DETAILS} component={GameDetailsPage} />
               <Route path={ROUTES.FRIENDS} component={FriendsPage} />
