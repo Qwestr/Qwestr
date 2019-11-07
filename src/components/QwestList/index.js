@@ -20,6 +20,14 @@ const QwestList = props => {
   const completeQwest = () => {
     // TODO: complete the qwest
   }
+
+  const viewQwestDetails = qwest => {
+    if (game) {
+      history.push(`${ROUTES.GAMES}/${game.id}${ROUTES.QWESTS}/${qwest.id}`)
+    } else {
+      history.push(`${ROUTES.QWESTS}/${qwest.id}`)
+    }
+  }
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the qwests collection
@@ -49,7 +57,7 @@ const QwestList = props => {
             <ListItem
               key={qwest.id}
               button
-              onClick={() => history.push(`${ROUTES.QWESTS}/${qwest.id}`)}
+              onClick={() => viewQwestDetails(qwest)}
             >
               <ListItemText primary={qwest.data().name} />
               <ListItemSecondaryAction>

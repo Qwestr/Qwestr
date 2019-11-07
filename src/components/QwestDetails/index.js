@@ -10,7 +10,7 @@ import CardHeader from '@material-ui/core/CardHeader'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-// import * as ROUTES from '../../constants/routes'
+import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
 import {
   AuthUserContext,
@@ -20,9 +20,9 @@ import {
 
 const QwestDetailsPage = props => {
   // Deconstruct properties
-  const { firebase } = props
+  const { firebase, history } = props
   // Load url params
-  const { id } = useParams()
+  const { gameId, id } = useParams()
   // Load state
   const [qwest, setQwest] = useState(null)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
@@ -35,9 +35,14 @@ const QwestDetailsPage = props => {
   const handleQwestDelete = confirm => {
     if (confirm) {
       // Delete qwest
-      // firebase.deleteQwest(qwest.id)
-      // Push to the qwests page
-      // props.history.push(ROUTES.QWESTS)
+      firebase.deleteQwest(qwest.id)
+      if (gameId) {
+        // Push to the game details page
+        history.push(`${ROUTES.GAMES}/${gameId}`)
+      } else {
+        // Push to the qwests page
+        history.push(ROUTES.QWESTS)
+      }
     }
     // Close confirm dialog
     setIsConfirmDialogOpen(false)

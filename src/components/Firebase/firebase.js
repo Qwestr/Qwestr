@@ -102,6 +102,11 @@ class Firebase {
 
   userQwests = id => this.qwests().where('userId', '==', id)
 
+  deleteQwest = id => {
+    // Delete qwest
+    this.qwest(id).delete()
+  }
+
   // *** Game API ***
   games = () => this.store.collection('games')
 
