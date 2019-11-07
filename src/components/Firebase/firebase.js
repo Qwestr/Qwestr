@@ -102,6 +102,13 @@ class Firebase {
 
   userQwests = id => this.qwests().where('userId', '==', id)
 
+  completeQwest = id => {
+    // Complete qwest
+    this.qwest(id).update({
+      isCompleted: true,
+    })
+  }
+
   deleteQwest = id => {
     // Delete qwest
     this.qwest(id).delete()

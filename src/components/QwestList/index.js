@@ -17,8 +17,9 @@ const QwestList = props => {
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
-  const completeQwest = () => {
-    // TODO: complete the qwest
+  const completeQwest = qwest => {
+    // Complete the qwest
+    firebase.completeQwest(qwest.id)
   }
 
   const viewQwestDetails = qwest => {
