@@ -10,7 +10,7 @@ import {
   withEmailVerification,
 } from '../Session'
 import QwestCreate from '../QwestCreate'
-import QwestList from '../QwestList'
+import { QwestList, CompletedQwestList } from '../QwestList'
 
 const QwestsPage = props => {
   // Deconstruct properties
@@ -29,6 +29,13 @@ const QwestsPage = props => {
             </Grid>
             <Grid item xs={12}>
               <QwestList
+                authUser={authUser}
+                firebase={firebase}
+                history={history}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CompletedQwestList
                 authUser={authUser}
                 firebase={firebase}
                 history={history}

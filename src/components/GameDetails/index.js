@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
 import QwestCreate from '../QwestCreate'
-import QwestList from '../QwestList'
+import { QwestList } from '../QwestList'
 import {
   AuthUserContext,
   withAuthorization,
