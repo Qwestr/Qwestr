@@ -117,6 +117,13 @@ class Firebase {
     })
   }
 
+  resetQwest = id => {
+    // Complete qwest
+    this.qwest(id).update({
+      isCompleted: false,
+    })
+  }
+
   deleteQwest = id => {
     // Delete qwest
     this.qwest(id).delete()

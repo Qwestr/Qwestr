@@ -7,6 +7,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
 import * as ROUTES from '../../constants/routes'
@@ -85,9 +86,9 @@ const CompletedQwestList = props => {
   // Load state
   const [qwests, setQwests] = useState([])
   // Define methods
-  const completeQwest = qwest => {
-    // Complete the qwest
-    firebase.completeQwest(qwest.id)
+  const resetQwest = qwest => {
+    // Reset the qwest
+    firebase.resetQwest(qwest.id)
   }
 
   const viewQwestDetails = qwest => {
@@ -133,12 +134,12 @@ const CompletedQwestList = props => {
               <ListItemText primary={qwest.data().name} />
               <ListItemSecondaryAction>
                 <IconButton
-                  color="primary"
+                  color="secondary"
                   edge="end"
-                  aria-label="complete"
-                  onClick={() => completeQwest(qwest)}
+                  aria-label="reset"
+                  onClick={() => resetQwest(qwest)}
                 >
-                  <CheckCircleOutlineIcon />
+                  <CheckCircleIcon />
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
