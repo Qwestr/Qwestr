@@ -12,45 +12,46 @@ import Typography from '@material-ui/core/Typography'
 
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
-import QwestCreate from '../QwestCreate'
-import { QwestList, CompletedQwestList } from '../QwestList'
 import {
   AuthUserContext,
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import { GameInviteForm, GameInviteList } from './invite'
-import PlayerList from './list'
 
-const GameDetailsPage = props => {
+const QwestDetailsPage = props => {
   // Deconstruct properties
   const { firebase, history } = props
   // Load url params
-  const { id } = useParams()
+  const { gameId, id } = useParams()
   // Load state
-  const [game, setGame] = useState(null)
+  const [qwest, setQwest] = useState(null)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   // Define methods
-  const confirmGameDelete = () => {
+  const confirmQwestDelete = () => {
     // Open confirm dialog
     setIsConfirmDialogOpen(true)
   }
 
-  const handleGameDelete = confirm => {
+  const handleQwestDelete = confirm => {
     if (confirm) {
-      // Delete game
-      firebase.deleteGame(game.id)
-      // Push to the games page
-      props.history.push(ROUTES.GAMES)
+      // Delete qwest
+      firebase.deleteQwest(qwest.id)
+      if (gameId) {
+        // Push to the game details page
+        history.push(`${ROUTES.GAMES}/${gameId}`)
+      } else {
+        // Push to the qwests page
+        history.push(ROUTES.QWESTS)
+      }
     }
     // Close confirm dialog
     setIsConfirmDialogOpen(false)
   }
   // Define effects handlers
   useEffect(() => {
-    // Setup listener to the game collection object
-    const unsubscribe = firebase.game(id).onSnapshot(snapshot => {
-      setGame(snapshot)
+    // Setup listener to the qwest collection object
+    const unsubscribe = firebase.qwest(id).onSnapshot(snapshot => {
+      setQwest(snapshot)
     })
     // Unsubscribe from listener when component is destroyed
     return () => {
@@ -62,7 +63,7 @@ const GameDetailsPage = props => {
     <AuthUserContext.Consumer>
       {authUser => (
         <Aux>
-          {game && (
+          {qwest && (
             <Aux>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
@@ -70,7 +71,7 @@ const GameDetailsPage = props => {
                     <CardHeader title="Details" />
                     <CardContent>
                       <Typography variant="body1">
-                        <b>Name: </b> {game.data().name}
+                        <b>Name: </b> {qwest.data().name}
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -78,7 +79,7 @@ const GameDetailsPage = props => {
                         variant="contained"
                         color="secondary"
                         aria-label="delete"
-                        onClick={confirmGameDelete}
+                        onClick={confirmQwestDelete}
                       >
                         Delete
                       </Button>
@@ -86,47 +87,14 @@ const GameDetailsPage = props => {
                   </Card>
                 </Grid>
                 <Grid item xs={12}>
-                  <GameInviteForm
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <GameInviteList firebase={firebase} game={game} />
-                </Grid>
-                <Grid item xs={12}>
-                  <PlayerList firebase={firebase} game={game} />
-                </Grid>
-                <Grid item xs={12}>
-                  <QwestCreate
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <QwestList
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                    history={history}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <CompletedQwestList
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                    history={history}
-                  />
+                  {/* TODO put new qwest functionality here... */}
                 </Grid>
               </Grid>
               <ConfirmDialog
                 isOpen={isConfirmDialogOpen}
-                handleClose={handleGameDelete}
-                title="Delete Game"
-                message="Are you sure you want to delete this game?  This cannot be undone."
+                handleClose={handleQwestDelete}
+                title="Delete Qwest"
+                message="Are you sure you want to delete this qwest?  This cannot be undone."
               />
             </Aux>
           )}
@@ -141,4 +109,4 @@ const condition = authUser => !!authUser
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
-)(GameDetailsPage)
+)(QwestDetailsPage)

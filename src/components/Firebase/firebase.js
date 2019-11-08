@@ -89,7 +89,7 @@ class Firebase {
   findUserForEmail = email => this.users().where('email', '==', email)
 
   findUserFriendForEmail = (email, id) =>
-    this.store.userFriends(id).where('email', '==', email)
+    this.userFriends(id).where('email', '==', email)
 
   userGames = id => this.user(id).collection('games')
 
@@ -98,9 +98,44 @@ class Firebase {
 
   qwest = id => this.qwests().doc(id)
 
-  gameQwests = id => this.qwests().where('gameId', '==', id)
+  gameQwests = id =>
+    this.qwests()
+      .where('gameId', '==', id)
+      .where('isCompleted', '==', false)
 
-  userQwests = id => this.store.qwests().where('userId', '==', id)
+  gameCompletedQwests = id =>
+    this.qwests()
+      .where('gameId', '==', id)
+      .where('isCompleted', '==', true)
+
+  userQwests = id =>
+    this.qwests()
+      .where('userId', '==', id)
+      .where('isCompleted', '==', false)
+
+  userCompletedQwests = id =>
+    this.qwests()
+      .where('userId', '==', id)
+      .where('isCompleted', '==', true)
+
+  completeQwest = id => {
+    // Complete qwest
+    this.qwest(id).update({
+      isCompleted: true,
+    })
+  }
+
+  resetQwest = id => {
+    // Complete qwest
+    this.qwest(id).update({
+      isCompleted: false,
+    })
+  }
+
+  deleteQwest = id => {
+    // Delete qwest
+    this.qwest(id).delete()
+  }
 
   // *** Game API ***
   games = () => this.store.collection('games')

@@ -27,6 +27,7 @@ import PasswordForgetPage from '../PasswordForget'
 import GamesPage from '../Games'
 import GameDetailsPage from '../GameDetails'
 import QwestsPage from '../Qwests'
+import QwestDetailsPage from '../QwestDetails'
 import SignInPage from '../SignIn'
 import SignOutButton from '../SignOut'
 import SignUpPage from '../SignUp'
@@ -199,19 +200,34 @@ const Layout = props => {
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
               <Route exact path={ROUTES.LANDING} component={LandingPage} />
-              <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-              <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+              <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+              <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
               <Route
+                exact
                 path={ROUTES.PASSWORD_FORGET}
                 component={PasswordForgetPage}
               />
-              <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-              <Route path={ROUTES.ADMIN} component={AdminPage} />
-              <Route path={ROUTES.HOME} component={HomePage} />
-              <Route path={ROUTES.QWESTS} component={QwestsPage} />
+              <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
+              <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+              <Route exact path={ROUTES.HOME} component={HomePage} />
+              <Route exact path={ROUTES.QWESTS} component={QwestsPage} />
+              <Route
+                exact
+                path={ROUTES.QWEST_DETAILS}
+                component={QwestDetailsPage}
+              />
               <Route exact path={ROUTES.GAMES} component={GamesPage} />
-              <Route path={ROUTES.GAME_DETAILS} component={GameDetailsPage} />
-              <Route path={ROUTES.FRIENDS} component={FriendsPage} />
+              <Route
+                exact
+                path={ROUTES.GAME_DETAILS}
+                component={GameDetailsPage}
+              />
+              <Route
+                exact
+                path={ROUTES.GAME_QWEST_DETAILS}
+                component={QwestDetailsPage}
+              />
+              <Route exact path={ROUTES.FRIENDS} component={FriendsPage} />
             </Container>
             <Copyright />
           </main>
