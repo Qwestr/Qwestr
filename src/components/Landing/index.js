@@ -75,4 +75,6 @@ const LandingPage = props => {
   )
 }
 
+export { LandingPage }
+
 export default withUnauthorization(LandingPage)

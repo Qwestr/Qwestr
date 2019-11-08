@@ -65,4 +65,6 @@ const PasswordChangeForm = props => {
   )
 }
 
+export { PasswordChangeForm }
+
 export default withFirebase(PasswordChangeForm)

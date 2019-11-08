@@ -125,7 +125,7 @@ const PasswordForgetPage = props => {
   )
 }
 
-export { PasswordForgetLink }
+export { PasswordForgetLink, PasswordForgetPage }
 
 export default compose(
   withRouter,

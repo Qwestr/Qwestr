@@ -47,6 +47,8 @@ const GamesPage = props => {
 
 const condition = authUser => !!authUser
 
+export { GamesPage }
+
 export default compose(
   withEmailVerification,
   withAuthorization(condition),

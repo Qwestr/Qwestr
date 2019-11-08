@@ -237,4 +237,6 @@ const Layout = props => {
   )
 }
 
+export { Layout }
+
 export default withRouter(Layout)

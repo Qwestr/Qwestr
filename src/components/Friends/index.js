@@ -45,6 +45,8 @@ const FriendsPage = props => {
 
 const condition = authUser => !!authUser
 
+export { FriendsPage }
+
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
