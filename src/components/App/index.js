@@ -1,28 +1,13 @@
-import React, { Component } from 'react'
-import classnames from 'classnames'
-import NavBar from '../NavBar'
-import './style.css'
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-class App extends Component {
-  render() {
-    // declare relevant properties as local variables
-    const {
-      children,
-      className,
-      location,
-      ..._props
-    } = this.props
+import Layout from '../Layout'
+import { withAuthentication } from '../Session'
 
-    // render the veiw
-    return (
-      <div className={classnames('App', className)}>
-        <NavBar activePath={location.pathname}/>
-        <div className="App-content">
-          {children}
-        </div>
-      </div>
-    )
-  }
-}
+const App = () => (
+  <Router>
+    <Layout />
+  </Router>
+)
 
-export default App
+export default withAuthentication(App)

@@ -1,22 +1,21 @@
-import React, { Component } from 'react'
-import classnames from 'classnames'
-import './style.css'
+import React from 'react'
+import Aux from 'react-aux'
+import { compose } from 'recompose'
+import Typography from '@material-ui/core/Typography'
 
-class Home extends Component {
-  render() {
-    // declare relevant properties as local variables
-    const { className, ..._props } = this.props
+import { withAuthorization, withEmailVerification } from '../Session'
 
-    // render the veiw
-    return (
-      <div className={classnames('Home', className)}>
-        <div className="jumbotron">
-          <h2>Welcome to Qwestr!</h2>
-          <p className="lead">Let the games begin.</p>
-        </div>
-      </div>
-    )
-  }
-}
+const HomePage = () => (
+  <Aux>
+    <Typography variant="h4" gutterBottom>
+      Home
+    </Typography>
+  </Aux>
+)
 
-export default Home
+const condition = authUser => !!authUser
+
+export default compose(
+  withEmailVerification,
+  withAuthorization(condition),
+)(HomePage)

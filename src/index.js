@@ -1,16 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { browserHistory } from 'react-router'
-import firebase from 'firebase'
-import firebaseConfig from '../firebase.json'
-import Routes from './routes'
 import './index.css'
+import App from './components/App'
+import Firebase, { FirebaseContext } from './components/Firebase'
+import * as serviceWorker from './serviceWorker'
 
-// initialize Firebase
-firebase.initializeApp(firebaseConfig.keys[process.env.NODE_ENV])
-
-// Render React DOM
 ReactDOM.render(
-  <Routes history={browserHistory} />,
-  document.getElementById('root')
+  <FirebaseContext.Provider value={new Firebase()}>
+    <App />
+  </FirebaseContext.Provider>,
+  document.getElementById('root'),
 )
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister()
