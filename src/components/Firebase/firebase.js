@@ -98,7 +98,15 @@ class Firebase {
 
   qwest = id => this.qwests().doc(id)
 
-  gameQwests = id => this.qwests().where('gameId', '==', id)
+  gameQwests = id =>
+    this.qwests()
+      .where('gameId', '==', id)
+      .where('isCompleted', '==', false)
+
+  gameCompletedQwests = id =>
+    this.qwests()
+      .where('gameId', '==', id)
+      .where('isCompleted', '==', true)
 
   userQwests = id =>
     this.qwests()

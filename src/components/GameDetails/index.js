@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
 import QwestCreate from '../QwestCreate'
-import { QwestList } from '../QwestList'
+import { QwestList, CompletedQwestList } from '../QwestList'
 import {
   AuthUserContext,
   withAuthorization,
@@ -107,6 +107,14 @@ const GameDetailsPage = props => {
                 </Grid>
                 <Grid item xs={12}>
                   <QwestList
+                    authUser={authUser}
+                    firebase={firebase}
+                    game={game}
+                    history={history}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <CompletedQwestList
                     authUser={authUser}
                     firebase={firebase}
                     game={game}
