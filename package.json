@@ -19,6 +19,7 @@
     "build:staging": "env-cmd -f ./.env.staging npm run-script build",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "format:check": "prettier --check \"src/**/*.+(js|jsx|json|css|md)\"",
     "format": "prettier --write \"src/**/*.+(js|jsx|json|css|md)\""
