@@ -21,4 +21,6 @@ const SignOutButton = ({ firebase }) => {
   )
 }
 
+export { SignOutButton }
+
 export default withFirebase(SignOutButton)

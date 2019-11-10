@@ -19,6 +19,7 @@
     "build:staging": "env-cmd -f ./.env.staging npm run-script build",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "format:check": "prettier --check \"src/**/*.+(js|jsx|json|css|md)\"",
     "format": "prettier --write \"src/**/*.+(js|jsx|json|css|md)\""
@@ -46,5 +47,12 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.1",
     "prettier": "1.18.2"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!src/serviceWorker.js"
+    ]
   }
 }
