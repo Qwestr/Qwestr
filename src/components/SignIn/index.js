@@ -232,7 +232,7 @@ const SignInPage = props => {
   )
 }
 
-export { SignInLink }
+export { SignInLink, SignInPage }
 
 export default compose(
   withRouter,
