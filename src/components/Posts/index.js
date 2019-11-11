@@ -9,8 +9,8 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import PostCreate from './create'
-import PostList from './list'
+// import PostCreate from './create'
+// import PostList from './list'
 
 const PostsPage = props => {
   // Deconstruct properties
@@ -24,7 +24,7 @@ const PostsPage = props => {
             Posts
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <PostCreate authUser={authUser} firebase={firebase} />
             </Grid>
             <Grid item xs={12}>
@@ -33,7 +33,7 @@ const PostsPage = props => {
                 firebase={firebase}
                 history={history}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Aux>
       )}

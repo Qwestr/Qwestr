@@ -24,6 +24,7 @@ import HomePage from '../Home'
 import LandingPage from '../Landing'
 import Navigation from '../Navigation'
 import PasswordForgetPage from '../PasswordForget'
+import PostsPage from '../Posts'
 import GamesPage from '../Games'
 import GameDetailsPage from '../GameDetails'
 import QwestsPage from '../Qwests'
@@ -216,6 +217,7 @@ const Layout = props => {
                 path={ROUTES.QWEST_DETAILS}
                 component={QwestDetailsPage}
               />
+              <Route exact path={ROUTES.QWEST_POSTS} component={PostsPage} />
               <Route exact path={ROUTES.GAMES} component={GamesPage} />
               <Route
                 exact
