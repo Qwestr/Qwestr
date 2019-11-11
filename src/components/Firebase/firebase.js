@@ -248,6 +248,9 @@ class Firebase {
   }
 
   sentGameInvites = id => this.invites().where('gameId', '==', id)
+
+  // *** Post API ***
+  qwestPosts = id => this.qwest(id).collection('posts')
 }
 
 export default Firebase

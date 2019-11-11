@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField'
 
 const PostCreate = props => {
   // Deconstruct properties
-  const { authUser, firebase, game } = props
+  const { authUser, firebase, qwestId } = props
   // Load state
   const [message, setMessage] = useState('')
   // Define methods
@@ -26,14 +26,8 @@ const PostCreate = props => {
       username: authUser.username,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Determine the context of the qwest list (game or user)
-    // if (game) {
-    //   newQwest.gameId = game.id
-    // } else {
-    //   newQwest.userId = authUser.uid
-    // }
-    // Add new qwest
-    // firebase.qwests().add(newQwest)
+    // Add new post
+    firebase.qwestPosts(qwestId).add(newPost)
     // Clear the form
     clearForm()
   }

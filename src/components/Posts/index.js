@@ -1,5 +1,6 @@
 import React from 'react'
 import Aux from 'react-aux'
+import { useParams } from 'react-router-dom'
 import { compose } from 'recompose'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -15,6 +16,8 @@ import PostList from './list'
 const PostsPage = props => {
   // Deconstruct properties
   const { firebase, history } = props
+  // Load url params
+  const { id } = useParams()
   // Return component
   return (
     <AuthUserContext.Consumer>
@@ -25,7 +28,11 @@ const PostsPage = props => {
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <PostCreate authUser={authUser} firebase={firebase} />
+              <PostCreate
+                authUser={authUser}
+                firebase={firebase}
+                qwestId={id}
+              />
             </Grid>
             <Grid item xs={12}>
               <PostList
