@@ -15,7 +15,7 @@ import PostList from './list'
 
 const PostsPage = props => {
   // Deconstruct properties
-  const { firebase, history } = props
+  const { firebase } = props
   // Load url params
   const { id } = useParams()
   // Return component
@@ -35,11 +35,7 @@ const PostsPage = props => {
               />
             </Grid>
             <Grid item xs={12}>
-              <PostList
-                authUser={authUser}
-                firebase={firebase}
-                history={history}
-              />
+              <PostList authUser={authUser} firebase={firebase} qwestId={id} />
             </Grid>
           </Grid>
         </Aux>
