@@ -8,22 +8,31 @@ import Typography from '@material-ui/core/Typography'
 
 const PostList = props => {
   // Deconstruct properties
-  const { authUser, firebase, qwestId } = props
+  const { authUser, firebase, qwestId, gameId } = props
   // Load state
   const [posts, setPosts] = useState([])
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the posts collection
-    let unsubscribe = firebase
-      .mostRecentQwestPosts(qwestId)
-      .onSnapshot(snapshot => {
-        setPosts(snapshot.docs)
-      })
+    let unsubscribe
+    if (gameId) {
+      unsubscribe = firebase
+        .mostRecentGamePosts(gameId)
+        .onSnapshot(snapshot => {
+          setPosts(snapshot.docs)
+        })
+    } else {
+      unsubscribe = firebase
+        .mostRecentQwestPosts(qwestId)
+        .onSnapshot(snapshot => {
+          setPosts(snapshot.docs)
+        })
+    }
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [authUser, firebase, qwestId])
+  }, [authUser, firebase, qwestId, gameId])
   // Return component
   return (
     <Card>

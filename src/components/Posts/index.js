@@ -17,7 +17,7 @@ const PostsPage = props => {
   // Deconstruct properties
   const { firebase } = props
   // Load url params
-  const { id } = useParams()
+  const { qwestId, gameId } = useParams()
   // Return component
   return (
     <AuthUserContext.Consumer>
@@ -31,11 +31,17 @@ const PostsPage = props => {
               <PostCreate
                 authUser={authUser}
                 firebase={firebase}
-                qwestId={id}
+                qwestId={qwestId}
+                gameId={gameId}
               />
             </Grid>
             <Grid item xs={12}>
-              <PostList authUser={authUser} firebase={firebase} qwestId={id} />
+              <PostList
+                authUser={authUser}
+                firebase={firebase}
+                qwestId={qwestId}
+                gameId={gameId}
+              />
             </Grid>
           </Grid>
         </Aux>
