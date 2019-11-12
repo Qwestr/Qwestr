@@ -118,7 +118,7 @@ class Firebase {
       .where('userId', '==', id)
       .where('isCompleted', '==', true)
 
-  addQwest = qwest => {
+  createQwest = qwest => {
     this.qwests().add(qwest)
   }
 

@@ -23,7 +23,7 @@ describe('QwestCreate', () => {
       FieldValue: {
         serverTimestamp: jest.fn(),
       },
-      addQwest: jest.fn(),
+      createQwest: jest.fn(),
     }
     wrapper = shallow(
       <QwestCreate authUser={authUser} firebase={firebase}></QwestCreate>,
@@ -42,6 +42,6 @@ describe('QwestCreate', () => {
       .props.onSubmit(mockEvent)
     // Test expectations
     expect(mockEvent.preventDefault).toHaveBeenCalled()
-    expect(firebase.addQwest).toHaveBeenCalled()
+    expect(firebase.createQwest).toHaveBeenCalled()
   })
 })

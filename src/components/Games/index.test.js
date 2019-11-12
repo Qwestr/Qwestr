@@ -4,20 +4,46 @@ import React from 'react'
 
 import { GameCreate, GameInviteList, GameList, GamesPage } from './index'
 
+const mockEvent = {
+  preventDefault: jest.fn(),
+}
+
 configure({
   adapter: new Adapter(),
 })
 
 describe('Games', () => {
   describe('GameCreate', () => {
-    let wrapper
+    let wrapper, authUser, firebase
 
     beforeEach(() => {
-      wrapper = shallow(<GameCreate></GameCreate>)
+      authUser = {
+        uid: 'user-id',
+      }
+      firebase = {
+        FieldValue: {
+          serverTimestamp: jest.fn(),
+        },
+        createGame: jest.fn(),
+      }
+      wrapper = shallow(
+        <GameCreate authUser={authUser} firebase={firebase}></GameCreate>,
+      )
     })
 
     it('should exist!', () => {
       expect(wrapper).toBeTruthy()
+    })
+
+    it('should successfully submit its form', () => {
+      // Submit the form
+      wrapper
+        .find('form')
+        .get(0)
+        .props.onSubmit(mockEvent)
+      // Test expectations
+      expect(mockEvent.preventDefault).toHaveBeenCalled()
+      expect(firebase.createGame).toHaveBeenCalled()
     })
   })
 
