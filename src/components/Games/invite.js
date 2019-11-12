@@ -81,4 +81,4 @@ const GameInviteList = props => {
   )
 }
 
-export { GameInviteList }
+export default GameInviteList

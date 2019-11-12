@@ -10,8 +10,8 @@ import {
   withEmailVerification,
 } from '../Session'
 import GameCreate from './create'
+import GameInviteList from './invite'
 import GameList from './list'
-import { GameInviteList } from './invite'
 
 const GamesPage = props => {
   // Deconstruct properties
@@ -47,7 +47,7 @@ const GamesPage = props => {
 
 const condition = authUser => !!authUser
 
-export { GamesPage }
+export { GameCreate, GameInviteList, GameList, GamesPage }
 
 export default compose(
   withEmailVerification,
