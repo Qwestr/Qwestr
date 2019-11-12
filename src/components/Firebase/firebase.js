@@ -250,10 +250,9 @@ class Firebase {
   sentGameInvites = id => this.invites().where('gameId', '==', id)
 
   // *** Post API ***
-  qwestPosts = id =>
-    this.qwest(id)
-      .collection('posts')
-      .orderBy('createdAt', 'asc')
+  qwestPosts = id => this.qwest(id).collection('posts')
+
+  mostRecentQwestPosts = id => this.qwestPosts(id).orderBy('createdAt', 'desc')
 }
 
 export default Firebase
