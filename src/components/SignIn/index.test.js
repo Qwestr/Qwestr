@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('SignInPage', () => {
+describe('SignIn', () => {
   let wrapper
 
   beforeEach(() => {
