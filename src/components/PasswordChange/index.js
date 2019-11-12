@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField'
 import { withFirebase } from '../Firebase'
 
 const PasswordChangeForm = props => {
+  // Deconstruct properties
+  const { firebase } = props
   // Load state
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -23,7 +25,7 @@ const PasswordChangeForm = props => {
     // DONT REMOVE!
     event.preventDefault()
     // Update password
-    props.firebase
+    firebase
       .doPasswordUpdate(password)
       .then(() => {
         // Clear form

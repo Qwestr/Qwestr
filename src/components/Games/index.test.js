@@ -4,7 +4,7 @@ import React from 'react'
 
 import { GameCreate, GameInviteList, GameList, GamesPage } from './index'
 
-// Mock react hooks
+// Setup mocks
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
   useEffect: jest.fn(f => f()),

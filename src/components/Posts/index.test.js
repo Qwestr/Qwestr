@@ -4,7 +4,7 @@ import React from 'react'
 
 import { PostCreate, PostList, PostsPage } from './index'
 
-// Mock react-router-dom hooks
+// Setup mocks
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
