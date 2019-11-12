@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('FriendsPage', () => {
+describe('Friends', () => {
   let wrapper
 
   beforeEach(() => {

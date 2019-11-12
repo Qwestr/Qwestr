@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('PasswordChangeForm', () => {
+describe('PasswordChange', () => {
   let wrapper
 
   beforeEach(() => {

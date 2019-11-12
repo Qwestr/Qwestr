@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('HomePage', () => {
+describe('Home', () => {
   let wrapper
 
   beforeEach(() => {

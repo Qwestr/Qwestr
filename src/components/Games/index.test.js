@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('GamesPage', () => {
+describe('Games', () => {
   let wrapper
 
   beforeEach(() => {

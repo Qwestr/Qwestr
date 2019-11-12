@@ -2,18 +2,17 @@ import { configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 
-// import { PasswordForgotPage } from './index'
-import PasswordForgotPage from './index'
+import { PasswordForgetPage } from './index'
 
 configure({
   adapter: new Adapter(),
 })
 
-describe('PasswordForgotPage', () => {
+describe('PasswordForget', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallow(<PasswordForgotPage></PasswordForgotPage>)
+    wrapper = shallow(<PasswordForgetPage></PasswordForgetPage>)
   })
 
   it('should exist!', () => {
