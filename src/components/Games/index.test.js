@@ -4,6 +4,12 @@ import React from 'react'
 
 import { GameCreate, GameInviteList, GameList, GamesPage } from './index'
 
+// Mock react hooks
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useEffect: jest.fn(f => f()),
+}))
+
 const mockEvent = {
   preventDefault: jest.fn(),
 }
@@ -48,10 +54,25 @@ describe('Games', () => {
   })
 
   describe('GameInviteList', () => {
-    let wrapper
+    let wrapper, authUser, firebase
 
     beforeEach(() => {
-      wrapper = shallow(<GameInviteList></GameInviteList>)
+      authUser = {
+        uid: 'user-id',
+      }
+      firebase = {
+        gameInvitesForUser: jest.fn(() => {
+          return {
+            onSnapshot: jest.fn(),
+          }
+        }),
+      }
+      wrapper = shallow(
+        <GameInviteList
+          authUser={authUser}
+          firebase={firebase}
+        ></GameInviteList>,
+      )
     })
 
     it('should exist!', () => {
@@ -60,10 +81,22 @@ describe('Games', () => {
   })
 
   describe('GameList', () => {
-    let wrapper
+    let wrapper, authUser, firebase
 
     beforeEach(() => {
-      wrapper = shallow(<GameList></GameList>)
+      authUser = {
+        uid: 'user-id',
+      }
+      firebase = {
+        userGames: jest.fn(() => {
+          return {
+            onSnapshot: jest.fn(),
+          }
+        }),
+      }
+      wrapper = shallow(
+        <GameList authUser={authUser} firebase={firebase}></GameList>,
+      )
     })
 
     it('should exist!', () => {
