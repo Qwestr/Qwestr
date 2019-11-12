@@ -118,6 +118,10 @@ class Firebase {
       .where('userId', '==', id)
       .where('isCompleted', '==', true)
 
+  addQwest = qwest => {
+    this.qwests().add(qwest)
+  }
+
   completeQwest = id => {
     // Complete qwest
     this.qwest(id).update({
