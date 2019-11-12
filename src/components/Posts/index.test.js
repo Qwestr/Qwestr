@@ -2,7 +2,7 @@ import { configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 
-import { PostsPage } from './index'
+import { PostCreate, PostList, PostsPage } from './index'
 
 // Mock react-router-dom hooks
 jest.mock('react-router-dom', () => ({
@@ -18,13 +18,39 @@ configure({
 })
 
 describe('Posts', () => {
-  let wrapper
+  describe('PostCreate', () => {
+    let wrapper
 
-  beforeEach(() => {
-    wrapper = shallow(<PostsPage></PostsPage>)
+    beforeEach(() => {
+      wrapper = shallow(<PostCreate></PostCreate>)
+    })
+
+    it('should exist!', () => {
+      expect(wrapper).toBeTruthy()
+    })
   })
 
-  it('should exist!', () => {
-    expect(wrapper).toBeTruthy()
+  describe('PostList', () => {
+    let wrapper
+
+    beforeEach(() => {
+      wrapper = shallow(<PostList></PostList>)
+    })
+
+    it('should exist!', () => {
+      expect(wrapper).toBeTruthy()
+    })
+  })
+
+  describe('PostsPage', () => {
+    let wrapper
+
+    beforeEach(() => {
+      wrapper = shallow(<PostsPage></PostsPage>)
+    })
+
+    it('should exist!', () => {
+      expect(wrapper).toBeTruthy()
+    })
   })
 })

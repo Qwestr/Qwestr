@@ -52,7 +52,7 @@ const PostsPage = props => {
 
 const condition = authUser => !!authUser
 
-export { PostsPage }
+export { PostCreate, PostList, PostsPage }
 
 export default compose(
   withEmailVerification,
