@@ -61,6 +61,8 @@ const SignInLink = () => (
 )
 
 const SignInPage = props => {
+  // Deconstruct properties
+  const { firebase, history } = props
   // Load styles
   const classes = useStyles()
   // Load state
@@ -70,16 +72,16 @@ const SignInPage = props => {
   // Define methods
   const isInvalid = email === '' || password === ''
 
-  const handleSignInEmail = event => {
+  const signInEmail = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
     // Sign in user
-    props.firebase
+    firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         // Push to the home route
-        props.history.push(ROUTES.HOME)
+        history.push(ROUTES.HOME)
       })
       .catch(error => {
         // Set custom error message (if applicable)
@@ -93,11 +95,11 @@ const SignInPage = props => {
 
   const signInGoogle = () => {
     // Sign in with Google
-    props.firebase
+    firebase
       .doSignInWithGoogle()
       .then(socialAuthUser => {
         // Create a user document
-        return props.firebase.user(socialAuthUser.user.uid).set(
+        return firebase.user(socialAuthUser.user.uid).set(
           {
             username: socialAuthUser.user.displayName,
             email: socialAuthUser.user.email,
@@ -107,7 +109,7 @@ const SignInPage = props => {
       })
       .then(() => {
         // Push to home page
-        props.history.push(ROUTES.HOME)
+        history.push(ROUTES.HOME)
       })
       .catch(error => {
         // Set custom error message (if applicable)
@@ -121,11 +123,11 @@ const SignInPage = props => {
 
   const signInFacebook = () => {
     // Sign in with Facebook
-    props.firebase
+    firebase
       .doSignInWithFacebook()
       .then(socialAuthUser => {
         // Create a user document
-        return props.firebase.user(socialAuthUser.user.uid).set(
+        return firebase.user(socialAuthUser.user.uid).set(
           {
             username: socialAuthUser.additionalUserInfo.profile.name,
             email: socialAuthUser.additionalUserInfo.profile.email,
@@ -135,7 +137,7 @@ const SignInPage = props => {
       })
       .then(() => {
         // Push to home page
-        props.history.push(ROUTES.HOME)
+        history.push(ROUTES.HOME)
       })
       .catch(error => {
         // Set custom error message (if applicable)
@@ -160,7 +162,7 @@ const SignInPage = props => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSignInEmail}>
+        <form className={classes.form} noValidate onSubmit={signInEmail}>
           <TextField
             variant="outlined"
             margin="normal"

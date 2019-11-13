@@ -4,6 +4,7 @@ import React from 'react'
 
 import QwestCreate from './index'
 
+// Setup mocks
 const mockEvent = {
   preventDefault: jest.fn(),
 }
