@@ -234,6 +234,10 @@ class Firebase {
       .where('requestedId', '==', id)
       .where('gameId', '>=', '')
 
+  createInvite = invite => {
+    this.invites().add(invite)
+  }
+
   acceptFriendInvite = invite => {
     // Update friends document of requested user with requester user data
     this.userFriends(invite.data().requestedId)
