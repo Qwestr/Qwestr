@@ -5,6 +5,11 @@ import React from 'react'
 import { PostCreate, PostList, PostsPage } from './index'
 
 // Setup mocks
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useEffect: jest.fn(f => f()),
+}))
+
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => ({
@@ -13,28 +18,62 @@ jest.mock('react-router-dom', () => ({
   }),
 }))
 
+const mockEvent = {
+  preventDefault: jest.fn(),
+}
+
 configure({
   adapter: new Adapter(),
 })
 
 describe('Posts', () => {
   describe('PostCreate', () => {
-    let wrapper
+    let wrapper, authUser, firebase
 
     beforeEach(() => {
-      wrapper = shallow(<PostCreate></PostCreate>)
+      authUser = {
+        username: 'Test User',
+      }
+      firebase = {
+        FieldValue: {
+          serverTimestamp: jest.fn(),
+        },
+        createGamePost: jest.fn(),
+        createQwestPost: jest.fn(),
+      }
+      wrapper = shallow(
+        <PostCreate authUser={authUser} firebase={firebase}></PostCreate>,
+      )
     })
 
     it('should exist!', () => {
       expect(wrapper).toBeTruthy()
     })
+
+    it('should successfully submit its form', () => {
+      // Submit the form
+      wrapper
+        .find('form')
+        .get(0)
+        .props.onSubmit(mockEvent)
+      // Test expectations
+      expect(mockEvent.preventDefault).toHaveBeenCalled()
+      expect(firebase.createQwestPost).toHaveBeenCalled()
+    })
   })
 
   describe('PostList', () => {
-    let wrapper
+    let wrapper, firebase
 
     beforeEach(() => {
-      wrapper = shallow(<PostList></PostList>)
+      firebase = {
+        mostRecentQwestPosts: jest.fn(() => {
+          return {
+            onSnapshot: jest.fn(),
+          }
+        }),
+      }
+      wrapper = shallow(<PostList firebase={firebase}></PostList>)
     })
 
     it('should exist!', () => {

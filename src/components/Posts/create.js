@@ -26,11 +26,11 @@ const PostCreate = props => {
       username: authUser.username,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Add new post
+    // Create new post
     if (gameId) {
-      firebase.gamePosts(gameId).add(newPost)
+      firebase.createGamePost(gameId, newPost)
     } else {
-      firebase.qwestPosts(qwestId).add(newPost)
+      firebase.createQwestPost(qwestId, newPost)
     }
     // Clear the form
     clearForm()

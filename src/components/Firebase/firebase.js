@@ -262,6 +262,10 @@ class Firebase {
 
   gamePosts = id => this.game(id).collection('posts')
 
+  createQwestPost = (id, post) => this.qwestPosts(id).add(post)
+
+  createGamePost = (id, post) => this.gamePosts(id).add(post)
+
   mostRecentQwestPosts = id => this.qwestPosts(id).orderBy('createdAt', 'desc')
 
   mostRecentGamePosts = id => this.gamePosts(id).orderBy('createdAt', 'desc')
