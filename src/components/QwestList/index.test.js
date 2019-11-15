@@ -52,17 +52,36 @@ describe('QwestList', () => {
             onSnapshot: jest.fn(),
           }
         }),
+        gameCompletedQwests: jest.fn(() => {
+          return {
+            onSnapshot: jest.fn(),
+          }
+        }),
       }
+    })
+
+    it('should successfully load user qwests', () => {
       wrapper = shallow(
         <CompletedQwestList
           authUser={authUser}
           firebase={firebase}
         ></CompletedQwestList>,
       )
+      expect(wrapper).toBeTruthy()
+      expect(firebase.userCompletedQwests).toHaveBeenCalled()
     })
 
-    it('should exist!', () => {
+    it('should successfully load game qwests', () => {
+      const game = {}
+      wrapper = shallow(
+        <CompletedQwestList
+          authUser={authUser}
+          firebase={firebase}
+          game={game}
+        ></CompletedQwestList>,
+      )
       expect(wrapper).toBeTruthy()
+      expect(firebase.gameCompletedQwests).toHaveBeenCalled()
     })
   })
 })
