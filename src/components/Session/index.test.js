@@ -10,6 +10,18 @@ import {
 } from './index'
 
 // Setup mocks
+jest.mock('recompose', () => ({
+  ...jest.requireActual('recompose'),
+  compose: jest.fn(() => {
+    return jest.fn(Component => props => {
+      const firebase = {
+        onAuthUserListener: jest.fn(),
+      }
+      return <Component {...props} firebase={firebase}></Component>
+    })
+  }),
+}))
+
 jest.mock('../Firebase', () => ({
   ...jest.requireActual('../Firebase'),
   withFirebase: jest.fn(Component => props => {
@@ -47,20 +59,42 @@ describe('Session', () => {
   })
 
   describe('withAuthorization', () => {
+    let wrapper
+
+    beforeEach(() => {
+      const condition = () => true
+      const Component = withAuthorization(condition)(MockComponent)
+      wrapper = mount(<Component></Component>)
+    })
+
     it('should exist!', () => {
-      expect(withAuthorization).toBeTruthy()
+      expect(wrapper).toBeTruthy()
     })
   })
 
   describe('withEmailVerification', () => {
+    let wrapper
+
+    beforeEach(() => {
+      const Component = withEmailVerification(MockComponent)
+      wrapper = mount(<Component></Component>)
+    })
+
     it('should exist!', () => {
-      expect(withEmailVerification).toBeTruthy()
+      expect(wrapper).toBeTruthy()
     })
   })
 
   describe('withUnauthorization', () => {
+    let wrapper
+
+    beforeEach(() => {
+      const Component = withUnauthorization(MockComponent)
+      wrapper = mount(<Component></Component>)
+    })
+
     it('should exist!', () => {
-      expect(withUnauthorization).toBeTruthy()
+      expect(wrapper).toBeTruthy()
     })
   })
 })
