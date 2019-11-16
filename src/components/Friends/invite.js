@@ -91,8 +91,8 @@ const FriendInviteForm = props => {
       gameName: null,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Add new invite
-    props.firebase.invites().add(newInvite)
+    // Create new invite
+    firebase.createInvite(newInvite)
     // Clear the form
     clearForm()
   }

@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('SignUpPage', () => {
+describe('SignUp', () => {
   let wrapper
 
   beforeEach(() => {

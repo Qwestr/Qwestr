@@ -32,8 +32,8 @@ const QwestCreate = props => {
     } else {
       newQwest.userId = authUser.uid
     }
-    // Add new qwest
-    firebase.qwests().add(newQwest)
+    // Create new qwest
+    firebase.createQwest(newQwest)
     // Clear the form
     clearForm()
   }

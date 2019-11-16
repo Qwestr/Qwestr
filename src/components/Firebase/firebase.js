@@ -118,6 +118,10 @@ class Firebase {
       .where('userId', '==', id)
       .where('isCompleted', '==', true)
 
+  createQwest = qwest => {
+    this.qwests().add(qwest)
+  }
+
   completeQwest = id => {
     // Complete qwest
     this.qwest(id).update({
@@ -230,6 +234,10 @@ class Firebase {
       .where('requestedId', '==', id)
       .where('gameId', '>=', '')
 
+  createInvite = invite => {
+    this.invites().add(invite)
+  }
+
   acceptFriendInvite = invite => {
     // Update friends document of requested user with requester user data
     this.userFriends(invite.data().requestedId)
@@ -253,6 +261,10 @@ class Firebase {
   qwestPosts = id => this.qwest(id).collection('posts')
 
   gamePosts = id => this.game(id).collection('posts')
+
+  createQwestPost = (id, post) => this.qwestPosts(id).add(post)
+
+  createGamePost = (id, post) => this.gamePosts(id).add(post)
 
   mostRecentQwestPosts = id => this.qwestPosts(id).orderBy('createdAt', 'desc')
 

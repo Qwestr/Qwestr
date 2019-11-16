@@ -150,7 +150,7 @@ const GameDetailsPage = props => {
 
 const condition = authUser => !!authUser
 
-export { GameDetailsPage }
+export { GameInviteForm, GameInviteList, PlayerList, GameDetailsPage }
 
 export default compose(
   withEmailVerification,

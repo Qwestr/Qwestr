@@ -4,18 +4,45 @@ import React from 'react'
 
 import QwestCreate from './index'
 
+// Setup mocks
+const mockEvent = {
+  preventDefault: jest.fn(),
+}
+
 configure({
   adapter: new Adapter(),
 })
 
 describe('QwestCreate', () => {
-  let wrapper
+  let wrapper, authUser, firebase
 
   beforeEach(() => {
-    wrapper = shallow(<QwestCreate></QwestCreate>)
+    authUser = {
+      uid: 'user-id',
+    }
+    firebase = {
+      FieldValue: {
+        serverTimestamp: jest.fn(),
+      },
+      createQwest: jest.fn(),
+    }
+    wrapper = shallow(
+      <QwestCreate authUser={authUser} firebase={firebase}></QwestCreate>,
+    )
   })
 
   it('should exist!', () => {
     expect(wrapper).toBeTruthy()
+  })
+
+  it('should successfully submit its form', () => {
+    // Submit the form
+    wrapper
+      .find('form')
+      .get(0)
+      .props.onSubmit(mockEvent)
+    // Test expectations
+    expect(mockEvent.preventDefault).toHaveBeenCalled()
+    expect(firebase.createQwest).toHaveBeenCalled()
   })
 })

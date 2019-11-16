@@ -12,6 +12,31 @@ import * as ROLES from '../../constants/roles'
 import { withAuthorization, withEmailVerification } from '../Session'
 import { Typography } from '@material-ui/core'
 
+const UserList = ({ users }) => (
+  <Paper>
+    <Table aria-label="user list">
+      <TableHead>
+        <TableRow>
+          <TableCell>ID</TableCell>
+          <TableCell align="right">Email</TableCell>
+          <TableCell align="right">Username</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {users.map(user => (
+          <TableRow key={user.id}>
+            <TableCell component="th" scope="row">
+              {user.id}
+            </TableCell>
+            <TableCell align="right">{user.data().email}</TableCell>
+            <TableCell align="right">{user.data().username}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </Paper>
+)
+
 class AdminPage extends Component {
   constructor(props) {
     super(props)
@@ -52,32 +77,9 @@ class AdminPage extends Component {
   }
 }
 
-const UserList = ({ users }) => (
-  <Paper>
-    <Table aria-label="user list">
-      <TableHead>
-        <TableRow>
-          <TableCell>ID</TableCell>
-          <TableCell align="right">Email</TableCell>
-          <TableCell align="right">Username</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {users.map(user => (
-          <TableRow key={user.id}>
-            <TableCell component="th" scope="row">
-              {user.id}
-            </TableCell>
-            <TableCell align="right">{user.data().email}</TableCell>
-            <TableCell align="right">{user.data().username}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </Paper>
-)
-
 const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN]
+
+export { UserList, AdminPage }
 
 export default compose(
   withEmailVerification,

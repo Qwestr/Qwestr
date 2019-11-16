@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('LandingPage', () => {
+describe('Landing', () => {
   let wrapper
 
   beforeEach(() => {

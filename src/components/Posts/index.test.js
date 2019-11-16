@@ -2,12 +2,20 @@ import { configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 
-import { GameCreate, GameInviteList, GameList, GamesPage } from './index'
+import { PostCreate, PostList, PostsPage } from './index'
 
 // Setup mocks
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
   useEffect: jest.fn(f => f()),
+}))
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({
+    qwestId: 'qwest-id',
+    gameId: 'game-id',
+  }),
 }))
 
 const mockEvent = {
@@ -18,22 +26,23 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('Games', () => {
-  describe('GameCreate', () => {
+describe('Posts', () => {
+  describe('PostCreate', () => {
     let wrapper, authUser, firebase
 
     beforeEach(() => {
       authUser = {
-        uid: 'user-id',
+        username: 'Test User',
       }
       firebase = {
         FieldValue: {
           serverTimestamp: jest.fn(),
         },
-        createGame: jest.fn(),
+        createGamePost: jest.fn(),
+        createQwestPost: jest.fn(),
       }
       wrapper = shallow(
-        <GameCreate authUser={authUser} firebase={firebase}></GameCreate>,
+        <PostCreate authUser={authUser} firebase={firebase}></PostCreate>,
       )
     })
 
@@ -49,30 +58,22 @@ describe('Games', () => {
         .props.onSubmit(mockEvent)
       // Test expectations
       expect(mockEvent.preventDefault).toHaveBeenCalled()
-      expect(firebase.createGame).toHaveBeenCalled()
+      expect(firebase.createQwestPost).toHaveBeenCalled()
     })
   })
 
-  describe('GameInviteList', () => {
-    let wrapper, authUser, firebase
+  describe('PostList', () => {
+    let wrapper, firebase
 
     beforeEach(() => {
-      authUser = {
-        uid: 'user-id',
-      }
       firebase = {
-        gameInvitesForUser: jest.fn(() => {
+        mostRecentQwestPosts: jest.fn(() => {
           return {
             onSnapshot: jest.fn(),
           }
         }),
       }
-      wrapper = shallow(
-        <GameInviteList
-          authUser={authUser}
-          firebase={firebase}
-        ></GameInviteList>,
-      )
+      wrapper = shallow(<PostList firebase={firebase}></PostList>)
     })
 
     it('should exist!', () => {
@@ -80,35 +81,11 @@ describe('Games', () => {
     })
   })
 
-  describe('GameList', () => {
-    let wrapper, authUser, firebase
-
-    beforeEach(() => {
-      authUser = {
-        uid: 'user-id',
-      }
-      firebase = {
-        userGames: jest.fn(() => {
-          return {
-            onSnapshot: jest.fn(),
-          }
-        }),
-      }
-      wrapper = shallow(
-        <GameList authUser={authUser} firebase={firebase}></GameList>,
-      )
-    })
-
-    it('should exist!', () => {
-      expect(wrapper).toBeTruthy()
-    })
-  })
-
-  describe('GamesPage', () => {
+  describe('PostsPage', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallow(<GamesPage></GamesPage>)
+      wrapper = shallow(<PostsPage></PostsPage>)
     })
 
     it('should exist!', () => {

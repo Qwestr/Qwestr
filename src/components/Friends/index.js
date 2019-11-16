@@ -9,8 +9,8 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import FriendList from './list'
 import { FriendInviteForm, ReceivedInviteList, SentInviteList } from './invite'
+import FriendList from './list'
 
 const FriendsPage = props => {
   // Deconstruct properties
@@ -45,7 +45,13 @@ const FriendsPage = props => {
 
 const condition = authUser => !!authUser
 
-export { FriendsPage }
+export {
+  FriendInviteForm,
+  ReceivedInviteList,
+  SentInviteList,
+  FriendList,
+  FriendsPage,
+}
 
 export default compose(
   withEmailVerification,

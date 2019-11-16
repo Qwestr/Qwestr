@@ -8,7 +8,7 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('QwestsPage', () => {
+describe('Qwests', () => {
   let wrapper
 
   beforeEach(() => {
