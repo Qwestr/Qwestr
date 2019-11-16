@@ -17,19 +17,15 @@ const UserList = ({ users }) => (
     <Table aria-label="user list">
       <TableHead>
         <TableRow>
-          <TableCell>ID</TableCell>
-          <TableCell align="right">Email</TableCell>
-          <TableCell align="right">Username</TableCell>
+          <TableCell align="left">Username</TableCell>
+          <TableCell align="left">Email</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {users.map(user => (
           <TableRow key={user.id}>
-            <TableCell component="th" scope="row">
-              {user.id}
-            </TableCell>
-            <TableCell align="right">{user.data().email}</TableCell>
-            <TableCell align="right">{user.data().username}</TableCell>
+            <TableCell align="left">{user.data().username}</TableCell>
+            <TableCell align="left">{user.data().email}</TableCell>
           </TableRow>
         ))}
       </TableBody>
