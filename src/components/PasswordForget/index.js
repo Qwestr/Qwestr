@@ -47,6 +47,8 @@ const PasswordForgetLink = () => (
 )
 
 const PasswordForgetPage = props => {
+  // Deconstruct properties
+  const { firebase, history } = props
   // Load styles
   const classes = useStyles()
   // Load state
@@ -58,11 +60,11 @@ const PasswordForgetPage = props => {
     // DONT REMOVE!
     event.preventDefault()
     // Reset password
-    props.firebase
+    firebase
       .doPasswordReset(email)
       .then(() => {
         // Push to the sign in route
-        props.history.push(ROUTES.SIGN_IN)
+        history.push(ROUTES.SIGN_IN)
       })
       .catch(error => {
         // Set error
@@ -125,7 +127,7 @@ const PasswordForgetPage = props => {
   )
 }
 
-export { PasswordForgetLink }
+export { PasswordForgetLink, PasswordForgetPage }
 
 export default compose(
   withRouter,

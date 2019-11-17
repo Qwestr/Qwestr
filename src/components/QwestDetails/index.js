@@ -27,6 +27,10 @@ const QwestDetailsPage = props => {
   const [qwest, setQwest] = useState(null)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   // Define methods
+  const viewPosts = () => {
+    history.push(`${ROUTES.QWESTS}/${id}/posts`)
+  }
+
   const confirmQwestDelete = () => {
     // Open confirm dialog
     setIsConfirmDialogOpen(true)
@@ -77,6 +81,14 @@ const QwestDetailsPage = props => {
                     <CardActions>
                       <Button
                         variant="contained"
+                        color="primary"
+                        aria-label="view"
+                        onClick={viewPosts}
+                      >
+                        Posts
+                      </Button>
+                      <Button
+                        variant="contained"
                         color="secondary"
                         aria-label="delete"
                         onClick={confirmQwestDelete}
@@ -105,6 +117,8 @@ const QwestDetailsPage = props => {
 }
 
 const condition = authUser => !!authUser
+
+export { QwestDetailsPage }
 
 export default compose(
   withEmailVerification,

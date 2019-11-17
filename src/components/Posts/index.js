@@ -1,5 +1,6 @@
 import React from 'react'
 import Aux from 'react-aux'
+import { useParams } from 'react-router-dom'
 import { compose } from 'recompose'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -9,32 +10,38 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import { FriendInviteForm, ReceivedInviteList, SentInviteList } from './invite'
-import FriendList from './list'
+import PostCreate from './create'
+import PostList from './list'
 
-const FriendsPage = props => {
+const PostsPage = props => {
   // Deconstruct properties
   const { firebase } = props
+  // Load url params
+  const { qwestId, gameId } = useParams()
   // Return component
   return (
     <AuthUserContext.Consumer>
       {authUser => (
         <Aux>
           <Typography variant="h4" gutterBottom>
-            Friends
+            Posts
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <FriendInviteForm firebase={firebase} authUser={authUser} />
+              <PostCreate
+                authUser={authUser}
+                firebase={firebase}
+                qwestId={qwestId}
+                gameId={gameId}
+              />
             </Grid>
             <Grid item xs={12}>
-              <SentInviteList firebase={firebase} authUser={authUser} />
-            </Grid>
-            <Grid item xs={12}>
-              <ReceivedInviteList firebase={firebase} authUser={authUser} />
-            </Grid>
-            <Grid item xs={12}>
-              <FriendList firebase={firebase} authUser={authUser} />
+              <PostList
+                authUser={authUser}
+                firebase={firebase}
+                qwestId={qwestId}
+                gameId={gameId}
+              />
             </Grid>
           </Grid>
         </Aux>
@@ -45,15 +52,9 @@ const FriendsPage = props => {
 
 const condition = authUser => !!authUser
 
-export {
-  FriendInviteForm,
-  ReceivedInviteList,
-  SentInviteList,
-  FriendList,
-  FriendsPage,
-}
+export { PostCreate, PostList, PostsPage }
 
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
-)(FriendsPage)
+)(PostsPage)

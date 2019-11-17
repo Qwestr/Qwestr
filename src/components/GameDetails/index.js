@@ -31,6 +31,10 @@ const GameDetailsPage = props => {
   const [game, setGame] = useState(null)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   // Define methods
+  const viewPosts = () => {
+    history.push(`${ROUTES.GAMES}/${id}/posts`)
+  }
+
   const confirmGameDelete = () => {
     // Open confirm dialog
     setIsConfirmDialogOpen(true)
@@ -74,6 +78,14 @@ const GameDetailsPage = props => {
                       </Typography>
                     </CardContent>
                     <CardActions>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        aria-label="view"
+                        onClick={viewPosts}
+                      >
+                        Posts
+                      </Button>
                       <Button
                         variant="contained"
                         color="secondary"
@@ -137,6 +149,8 @@ const GameDetailsPage = props => {
 }
 
 const condition = authUser => !!authUser
+
+export { GameInviteForm, GameInviteList, PlayerList, GameDetailsPage }
 
 export default compose(
   withEmailVerification,

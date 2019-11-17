@@ -38,20 +38,20 @@ const SIGN_IN_METHODS = [
 
 const DefaultLoginToggle = props => {
   // Deconstruct properties
-  const { onlyOneLeft, isEnabled, signInMethod, onUnlink } = props
+  const { onlyOneLeft, isEnabled, signInMethod, onLink, onUnlink } = props
   // Load state
   const [password, setPassword] = useState('')
-
+  // Define methods
   const onSubmit = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
     // Link email/ password login
-    props.onLink(password)
+    onLink(password)
     // Clear state
     setPassword('')
   }
-
+  // Return component
   return isEnabled ? (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -237,6 +237,13 @@ const AccountPage = () => (
 )
 
 const condition = authUser => !!authUser
+
+export {
+  DefaultLoginToggle,
+  SocialLoginToggle,
+  LoginManagementBase,
+  AccountPage,
+}
 
 export default compose(
   withEmailVerification,

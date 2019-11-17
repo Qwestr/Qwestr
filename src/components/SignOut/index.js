@@ -14,11 +14,17 @@ const useStyles = makeStyles({
 const SignOutButton = ({ firebase }) => {
   // Load styles
   const classes = useStyles()
+  // Define methods
+  const signOut = () => {
+    firebase.doSignOut()
+  }
   return (
-    <IconButton className={classes.button} onClick={firebase.doSignOut}>
+    <IconButton className={classes.button} onClick={signOut}>
       <PowerSettingsNewIcon />
     </IconButton>
   )
 }
+
+export { SignOutButton }
 
 export default withFirebase(SignOutButton)

@@ -6,49 +6,47 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import TextField from '@material-ui/core/TextField'
 
-const QwestCreate = props => {
+const PostCreate = props => {
   // Deconstruct properties
-  const { authUser, firebase, game } = props
+  const { authUser, firebase, qwestId, gameId } = props
   // Load state
-  const [name, setName] = useState('')
+  const [message, setMessage] = useState('')
   // Define methods
   const clearForm = () => {
-    setName('')
+    setMessage('')
   }
 
   const onSubmit = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
-    // Create new qwest object
-    const newQwest = {
-      name: name,
-      isCompleted: false,
+    // Create new post object
+    const newPost = {
+      message: message,
+      username: authUser.username,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Determine the context of the qwest list (game or user)
-    if (game) {
-      newQwest.gameId = game.id
+    // Create new post
+    if (gameId) {
+      firebase.createGamePost(gameId, newPost)
     } else {
-      newQwest.userId = authUser.uid
+      firebase.createQwestPost(qwestId, newPost)
     }
-    // Create new qwest
-    firebase.createQwest(newQwest)
     // Clear the form
     clearForm()
   }
   // Return component
   return (
     <Card>
-      <CardHeader title="Create Qwest" />
+      <CardHeader title="Create Post" />
       <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
-            id="name"
-            label="Name"
+            id="message"
+            label="Message"
             fullWidth
-            value={name}
-            onChange={event => setName(event.target.value)}
+            value={message}
+            onChange={event => setMessage(event.target.value)}
           />
         </CardContent>
         <CardActions>
@@ -56,7 +54,7 @@ const QwestCreate = props => {
             variant="contained"
             color="primary"
             type="submit"
-            disabled={!name}
+            disabled={!message}
           >
             Submit
           </Button>
@@ -66,4 +64,4 @@ const QwestCreate = props => {
   )
 }
 
-export default QwestCreate
+export default PostCreate

@@ -203,7 +203,7 @@ const SignUpPage = props => {
   )
 }
 
-export { SignUpLink }
+export { SignUpLink, SignUpPage }
 
 export default compose(
   withRouter,

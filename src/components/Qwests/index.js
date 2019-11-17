@@ -50,6 +50,8 @@ const QwestsPage = props => {
 
 const condition = authUser => !!authUser
 
+export { QwestsPage }
+
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
