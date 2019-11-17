@@ -126,7 +126,7 @@ const Layout = props => {
   // Load styles
   const classes = useStyles()
   // Load state
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   // Define methods
   const handleDrawerOpen = () => {
     setOpen(true)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Aux from 'react-aux'
 import { compose } from 'recompose'
+import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -12,30 +13,38 @@ import * as ROLES from '../../constants/roles'
 import { withAuthorization, withEmailVerification } from '../Session'
 import { Typography } from '@material-ui/core'
 
-const UserList = ({ users }) => (
-  <Paper>
-    <Table aria-label="user list">
-      <TableHead>
-        <TableRow>
-          <TableCell>ID</TableCell>
-          <TableCell align="right">Email</TableCell>
-          <TableCell align="right">Username</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {users.map(user => (
-          <TableRow key={user.id}>
-            <TableCell component="th" scope="row">
-              {user.id}
-            </TableCell>
-            <TableCell align="right">{user.data().email}</TableCell>
-            <TableCell align="right">{user.data().username}</TableCell>
+const useStyles = makeStyles({
+  container: {
+    width: '100%',
+    overflowX: 'auto',
+  },
+})
+
+const UserList = ({ users }) => {
+  // Setup styles
+  const classes = useStyles()
+  // Return component
+  return (
+    <Paper className={classes.container}>
+      <Table aria-label="user list">
+        <TableHead>
+          <TableRow>
+            <TableCell align="left">Username</TableCell>
+            <TableCell align="left">Email</TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </Paper>
-)
+        </TableHead>
+        <TableBody>
+          {users.map(user => (
+            <TableRow key={user.id}>
+              <TableCell align="left">{user.data().username}</TableCell>
+              <TableCell align="left">{user.data().email}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+  )
+}
 
 class AdminPage extends Component {
   constructor(props) {
