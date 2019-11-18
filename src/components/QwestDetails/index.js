@@ -17,6 +17,7 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
+import QwestEdit from '../QwestEdit'
 
 const QwestDetailsPage = props => {
   // Deconstruct properties
@@ -26,9 +27,18 @@ const QwestDetailsPage = props => {
   // Load state
   const [qwest, setQwest] = useState(null)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
   // Define methods
   const viewPosts = () => {
     history.push(`${ROUTES.QWESTS}/${id}/posts`)
+  }
+
+  const editQwest = () => {
+    setIsEditMode(true)
+  }
+
+  const handleQwestEditClose = () => {
+    setIsEditMode(false)
   }
 
   const confirmQwestDelete = () => {
@@ -71,35 +81,51 @@ const QwestDetailsPage = props => {
             <Aux>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  <Card>
-                    <CardHeader title="Details" />
-                    <CardContent>
-                      <Typography variant="body1">
-                        <b>Name: </b> {qwest.data().name}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        aria-label="view"
-                        onClick={viewPosts}
-                      >
-                        Posts
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        aria-label="delete"
-                        onClick={confirmQwestDelete}
-                      >
-                        Delete
-                      </Button>
-                    </CardActions>
-                  </Card>
+                  {!isEditMode ? (
+                    <Card>
+                      <CardHeader title="Details" />
+                      <CardContent>
+                        <Typography variant="body1">
+                          <b>Name: </b> {qwest.data().name}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          aria-label="view"
+                          onClick={viewPosts}
+                        >
+                          Posts
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="default"
+                          aria-label="view"
+                          onClick={editQwest}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          aria-label="delete"
+                          onClick={confirmQwestDelete}
+                        >
+                          Delete
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  ) : (
+                    <QwestEdit
+                      firebase={firebase}
+                      qwest={qwest}
+                      close={handleQwestEditClose}
+                    ></QwestEdit>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
-                  {/* TODO put new qwest functionality here... */}
+                  {/* TODO put qwest posts here... */}
                 </Grid>
               </Grid>
               <ConfirmDialog
