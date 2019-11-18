@@ -14,20 +14,23 @@ configure({
 })
 
 describe('QwestEdit', () => {
-  let wrapper, authUser, firebase
+  let wrapper, firebase, qwest, close
 
   beforeEach(() => {
-    authUser = {
-      uid: 'user-id',
-    }
     firebase = {
       FieldValue: {
         serverTimestamp: jest.fn(),
       },
-      // createQwest: jest.fn(),
+      updateQwest: jest.fn(),
     }
+    qwest = {
+      data: jest.fn(() => {
+        return {}
+      }),
+    }
+    close = jest.fn()
     wrapper = shallow(
-      <QwestEdit authUser={authUser} firebase={firebase}></QwestEdit>,
+      <QwestEdit firebase={firebase} qwest={qwest} close={close}></QwestEdit>,
     )
   })
 
@@ -43,6 +46,6 @@ describe('QwestEdit', () => {
       .props.onSubmit(mockEvent)
     // Test expectations
     expect(mockEvent.preventDefault).toHaveBeenCalled()
-    // expect(firebase.createQwest).toHaveBeenCalled()
+    expect(firebase.updateQwest).toHaveBeenCalled()
   })
 })
