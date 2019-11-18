@@ -19,6 +19,7 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
+import GameEdit from '../GameEdit'
 import { GameInviteForm, GameInviteList } from './invite'
 import PlayerList from './list'
 
@@ -30,9 +31,18 @@ const GameDetailsPage = props => {
   // Load state
   const [game, setGame] = useState(null)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
   // Define methods
   const viewPosts = () => {
     history.push(`${ROUTES.GAMES}/${id}/posts`)
+  }
+
+  const editGame = () => {
+    setIsEditMode(true)
+  }
+
+  const handleGameEditClose = () => {
+    setIsEditMode(false)
   }
 
   const confirmGameDelete = () => {
@@ -69,70 +79,90 @@ const GameDetailsPage = props => {
           {game && (
             <Aux>
               <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Card>
-                    <CardHeader title="Details" />
-                    <CardContent>
-                      <Typography variant="body1">
-                        <b>Name: </b> {game.data().name}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        aria-label="view"
-                        onClick={viewPosts}
-                      >
-                        Posts
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        aria-label="delete"
-                        onClick={confirmGameDelete}
-                      >
-                        Delete
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-                <Grid item xs={12}>
-                  <GameInviteForm
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <GameInviteList firebase={firebase} game={game} />
-                </Grid>
-                <Grid item xs={12}>
-                  <PlayerList firebase={firebase} game={game} />
-                </Grid>
-                <Grid item xs={12}>
-                  <QwestCreate
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <QwestList
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                    history={history}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <CompletedQwestList
-                    authUser={authUser}
-                    firebase={firebase}
-                    game={game}
-                    history={history}
-                  />
-                </Grid>
+                {!isEditMode ? (
+                  <Aux>
+                    <Grid item xs={12}>
+                      <Card>
+                        <CardHeader title="Details" />
+                        <CardContent>
+                          <Typography variant="body1">
+                            <b>Name: </b> {game.data().name}
+                          </Typography>
+                        </CardContent>
+                        <CardActions>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            aria-label="view"
+                            onClick={viewPosts}
+                          >
+                            Posts
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="default"
+                            aria-label="view"
+                            onClick={editGame}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            aria-label="delete"
+                            onClick={confirmGameDelete}
+                          >
+                            Delete
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <GameInviteForm
+                        authUser={authUser}
+                        firebase={firebase}
+                        game={game}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <GameInviteList firebase={firebase} game={game} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <PlayerList firebase={firebase} game={game} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <QwestCreate
+                        authUser={authUser}
+                        firebase={firebase}
+                        game={game}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <QwestList
+                        authUser={authUser}
+                        firebase={firebase}
+                        game={game}
+                        history={history}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CompletedQwestList
+                        authUser={authUser}
+                        firebase={firebase}
+                        game={game}
+                        history={history}
+                      />
+                    </Grid>
+                  </Aux>
+                ) : (
+                  <Grid item xs={12}>
+                    <GameEdit
+                      firebase={firebase}
+                      game={game}
+                      close={handleGameEditClose}
+                    ></GameEdit>
+                  </Grid>
+                )}
               </Grid>
               <ConfirmDialog
                 isOpen={isConfirmDialogOpen}
