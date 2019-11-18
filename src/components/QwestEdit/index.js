@@ -8,34 +8,23 @@ import TextField from '@material-ui/core/TextField'
 
 const QwestEdit = props => {
   // Deconstruct properties
-  const { firebase, qwest, cancel } = props
+  const { firebase, qwest, close } = props
   // Load state
-  const [name, setName] = useState('')
+  const [name, setName] = useState(qwest.data().name)
   // Define methods
-  const clearForm = () => {
-    setName('')
-  }
-
   const onSubmit = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
-    // Create new qwest object
-    // const newQwest = {
-    //   name: name,
-    //   isCompleted: false,
-    //   createdAt: firebase.FieldValue.serverTimestamp(),
-    // }
-    // // Determine the context of the qwest list (game or user)
-    // if (game) {
-    //   newQwest.gameId = game.id
-    // } else {
-    //   newQwest.userId = authUser.uid
-    // }
-    // // Create new qwest
-    // firebase.createQwest(newQwest)
-    // // Clear the form
-    // clearForm()
+    // Create updated qwest object
+    const updatedQwest = {
+      name: name,
+      updatedAt: firebase.FieldValue.serverTimestamp(),
+    }
+    // Update the qwest
+    firebase.updateQwest(qwest, updatedQwest)
+    // Call the close callback
+    close()
   }
   // Return component
   return (
@@ -60,7 +49,7 @@ const QwestEdit = props => {
           >
             Submit
           </Button>
-          <Button variant="contained" color="secondary" onClick={cancel}>
+          <Button variant="contained" color="secondary" onClick={close}>
             Cancel
           </Button>
         </CardActions>

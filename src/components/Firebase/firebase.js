@@ -122,6 +122,10 @@ class Firebase {
     this.qwests().add(qwest)
   }
 
+  updateQwest = (qwest, updatedQwest) => {
+    this.qwest(qwest.id).update(updatedQwest)
+  }
+
   completeQwest = id => {
     // Complete qwest
     this.qwest(id).update({

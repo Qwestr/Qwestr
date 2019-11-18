@@ -37,7 +37,7 @@ const QwestDetailsPage = props => {
     setIsEditMode(true)
   }
 
-  const handleQwestEditCancel = () => {
+  const handleQwestEditClose = () => {
     setIsEditMode(false)
   }
 
@@ -117,7 +117,11 @@ const QwestDetailsPage = props => {
                       </CardActions>
                     </Card>
                   ) : (
-                    <QwestEdit cancel={handleQwestEditCancel}></QwestEdit>
+                    <QwestEdit
+                      firebase={firebase}
+                      qwest={qwest}
+                      close={handleQwestEditClose}
+                    ></QwestEdit>
                   )}
                 </Grid>
                 <Grid item xs={12}>
