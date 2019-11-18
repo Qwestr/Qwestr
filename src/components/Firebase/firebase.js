@@ -187,6 +187,10 @@ class Firebase {
       })
   }
 
+  updateGame = (game, updatedGame) => {
+    this.game(game.id).update(updatedGame)
+  }
+
   deleteGame = async id => {
     // Get game's players collections
     const players = await this.gamePlayers(id).get()
