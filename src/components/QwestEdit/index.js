@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField'
 
 const QwestEdit = props => {
   // Deconstruct properties
-  const { authUser, firebase, game } = props
+  const { firebase, qwest, cancel } = props
   // Load state
   const [name, setName] = useState('')
   // Define methods
@@ -59,6 +59,9 @@ const QwestEdit = props => {
             disabled={!name}
           >
             Submit
+          </Button>
+          <Button variant="contained" color="secondary" onClick={cancel}>
+            Cancel
           </Button>
         </CardActions>
       </form>

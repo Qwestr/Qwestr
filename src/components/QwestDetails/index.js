@@ -37,6 +37,10 @@ const QwestDetailsPage = props => {
     setIsEditMode(true)
   }
 
+  const handleQwestEditCancel = () => {
+    setIsEditMode(false)
+  }
+
   const confirmQwestDelete = () => {
     // Open confirm dialog
     setIsConfirmDialogOpen(true)
@@ -113,7 +117,7 @@ const QwestDetailsPage = props => {
                       </CardActions>
                     </Card>
                   ) : (
-                    <QwestEdit></QwestEdit>
+                    <QwestEdit cancel={handleQwestEditCancel}></QwestEdit>
                   )}
                 </Grid>
                 <Grid item xs={12}>
