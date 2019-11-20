@@ -152,6 +152,9 @@ class Firebase {
 
   gamePlayers = id => this.game(id).collection('players')
 
+  gameSubCollections = id =>
+    this.store.collectionGroup('games').where('gameId', '==', id)
+
   createGame = async (game, authUser) => {
     // Create the new game
     const newGame = await this.games().add(game)
