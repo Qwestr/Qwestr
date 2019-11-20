@@ -2,7 +2,7 @@ import { configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 
-import QwestEdit from './index'
+import GameEdit from './index'
 
 // Setup mocks
 const mockEvent = {
@@ -13,24 +13,24 @@ configure({
   adapter: new Adapter(),
 })
 
-describe('QwestEdit', () => {
-  let wrapper, firebase, qwest, close
+describe('GameEdit', () => {
+  let wrapper, firebase, game, close
 
   beforeEach(() => {
     firebase = {
       FieldValue: {
         serverTimestamp: jest.fn(),
       },
-      updateQwest: jest.fn(),
+      updateGame: jest.fn(),
     }
-    qwest = {
+    game = {
       data: jest.fn(() => {
         return {}
       }),
     }
     close = jest.fn()
     wrapper = shallow(
-      <QwestEdit firebase={firebase} qwest={qwest} close={close}></QwestEdit>,
+      <GameEdit firebase={firebase} game={game} close={close}></GameEdit>,
     )
   })
 
@@ -46,7 +46,7 @@ describe('QwestEdit', () => {
       .props.onSubmit(mockEvent)
     // Test expectations
     expect(mockEvent.preventDefault).toHaveBeenCalled()
-    expect(firebase.updateQwest).toHaveBeenCalled()
+    expect(firebase.updateGame).toHaveBeenCalled()
     expect(close).toHaveBeenCalled()
   })
 })

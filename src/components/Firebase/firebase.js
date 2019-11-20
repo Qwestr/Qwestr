@@ -152,21 +152,8 @@ class Firebase {
 
   gamePlayers = id => this.game(id).collection('players')
 
-  acceptGameInvite = invite => {
-    // Update games document's players collection with requested user data
-    this.gamePlayers(invite.data().gameId)
-      .doc(invite.data().requestedId)
-      .set({
-        username: invite.data().requestedUsername,
-        email: invite.data().requestedEmail,
-      })
-    // Update user document's games collection with game data
-    this.userGames(invite.data().requestedId)
-      .doc(invite.data().gameId)
-      .set({
-        name: invite.data().gameName,
-      })
-  }
+  gameSubCollections = id =>
+    this.store.collectionGroup('games').where('gameId', '==', id)
 
   createGame = async (game, authUser) => {
     // Create the new game
@@ -183,7 +170,21 @@ class Firebase {
     this.userGames(authUser.uid)
       .doc(newGame.id)
       .set({
+        gameId: newGame.id,
         name: game.name,
+      })
+  }
+
+  updateGame = (game, updatedGame) => {
+    // Update the game
+    this.game(game.id).update(updatedGame)
+    // Update game sub-collections
+    this.gameSubCollections(game.id)
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          doc.ref.update(updatedGame)
+        })
       })
   }
 
@@ -228,6 +229,8 @@ class Firebase {
       .where('requesterId', '==', id)
       .where('gameId', '==', null)
 
+  sentGameInvites = id => this.invites().where('gameId', '==', id)
+
   receivedUserInvites = id =>
     this.invites()
       .where('requestedId', '==', id)
@@ -259,7 +262,22 @@ class Firebase {
       })
   }
 
-  sentGameInvites = id => this.invites().where('gameId', '==', id)
+  acceptGameInvite = invite => {
+    // Update games document's players collection with requested user data
+    this.gamePlayers(invite.data().gameId)
+      .doc(invite.data().requestedId)
+      .set({
+        username: invite.data().requestedUsername,
+        email: invite.data().requestedEmail,
+      })
+    // Update user document's games collection with game data
+    this.userGames(invite.data().requestedId)
+      .doc(invite.data().gameId)
+      .set({
+        gameId: invite.data().gameId,
+        name: invite.data().gameName,
+      })
+  }
 
   // *** Post API ***
   qwestPosts = id => this.qwest(id).collection('posts')
