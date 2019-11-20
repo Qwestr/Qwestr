@@ -176,7 +176,16 @@ class Firebase {
   }
 
   updateGame = (game, updatedGame) => {
+    // Update the game
     this.game(game.id).update(updatedGame)
+    // Update game sub-collections
+    this.gameSubCollections(game.id)
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          doc.ref.update(updatedGame)
+        })
+      })
   }
 
   deleteGame = async id => {
