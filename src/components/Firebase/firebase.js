@@ -163,6 +163,7 @@ class Firebase {
       .collection('players')
       .doc(authUser.uid)
       .set({
+        userId: authUser.uid,
         username: authUser.username,
         email: authUser.email,
       })
@@ -250,6 +251,7 @@ class Firebase {
     this.userFriends(invite.data().requestedId)
       .doc(invite.data().requesterId)
       .set({
+        userId: invite.data().requesterId,
         username: invite.data().requesterUsername,
         email: invite.data().requesterEmail,
       })
@@ -257,6 +259,7 @@ class Firebase {
     this.userFriends(invite.data().requesterId)
       .doc(invite.data().requestedId)
       .set({
+        userId: invite.data().requestedId,
         username: invite.data().requestedUsername,
         email: invite.data().requestedEmail,
       })
@@ -267,6 +270,7 @@ class Firebase {
     this.gamePlayers(invite.data().gameId)
       .doc(invite.data().requestedId)
       .set({
+        userId: invite.data().requestedId,
         username: invite.data().requestedUsername,
         email: invite.data().requestedEmail,
       })
