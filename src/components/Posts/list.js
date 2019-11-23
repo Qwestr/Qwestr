@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Linkify from 'react-linkify'
 import Moment from 'react-moment'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -11,6 +12,12 @@ const PostList = props => {
   const { authUser, firebase, qwestId, gameId } = props
   // Load state
   const [posts, setPosts] = useState([])
+  // Define methods
+  const linkComponentDecorator = (href, text, key) => (
+    <a href={href} key={key} target="_blank">
+      {text}
+    </a>
+  )
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the posts collection
@@ -43,7 +50,11 @@ const PostList = props => {
             <Grid item key={post.id} xs={12}>
               <Card>
                 <CardContent>
-                  <Typography gutterBottom>{post.data().message}</Typography>
+                  {/* Note: componentDecorator not part of declared component API for Linkify */}
+                  {/* Solution found here: https://github.com/tasti/react-linkify/issues/78#issuecomment-514754050 */}
+                  <Linkify componentDecorator={linkComponentDecorator}>
+                    <Typography gutterBottom>{post.data().message}</Typography>
+                  </Linkify>
                   <Typography color="textSecondary" variant="body2">
                     <b>{post.data().username}</b> @{' '}
                     {post.data().createdAt && (
