@@ -14,7 +14,7 @@ const PostList = props => {
   const [posts, setPosts] = useState([])
   // Define methods
   const linkComponentDecorator = (href, text, key) => (
-    <a href={href} key={key} target="_blank">
+    <a href={href} key={key} target="_blank" rel="noopener noreferrer">
       {text}
     </a>
   )
