@@ -14,7 +14,7 @@ import * as ROUTES from '../../constants/routes'
 
 const TaskList = props => {
   // Deconstruct properties
-  const { authUser, firebase, game, qwest, history } = props
+  const { authUser, firebase, qwestId, gameId, history } = props
   // Load state
   const [tasks, setTasks] = useState([])
   // Define methods
@@ -24,12 +24,12 @@ const TaskList = props => {
   }
 
   const viewTaskDetails = task => {
-    if (game) {
+    if (gameId) {
       history.push(
-        `${ROUTES.GAMES}/${game.id}${ROUTES.QWESTS}/${qwest.id}${ROUTES.TASKS}/${task.id}`,
+        `${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${qwestId}${ROUTES.TASKS}/${task.id}`,
       )
     } else {
-      history.push(`${ROUTES.QWESTS}/${qwest.id}${ROUTES.TASKS}/${task.id}`)
+      history.push(`${ROUTES.QWESTS}/${qwestId}${ROUTES.TASKS}/${task.id}`)
     }
   }
   // Define effects handlers
@@ -48,9 +48,9 @@ const TaskList = props => {
     // }
     // Unsubscribe from listener when component is destroyed
     return () => {
-      unsubscribe()
+      // unsubscribe()
     }
-  }, [authUser, firebase, game])
+  }, [authUser, firebase])
   // Return component
   return (
     <Card>
@@ -59,7 +59,7 @@ const TaskList = props => {
         <List>
           {tasks.map(task => (
             <ListItem
-              key={qwest.id}
+              key={task.id}
               button
               onClick={() => viewTaskDetails(task)}
             >
@@ -122,9 +122,9 @@ const CompletedTaskList = props => {
     // }
     // Unsubscribe from listener when component is destroyed
     return () => {
-      unsubscribe()
+      // unsubscribe()
     }
-  }, [authUser, firebase, game])
+  }, [authUser, firebase])
   // Return component
   return (
     <Card>

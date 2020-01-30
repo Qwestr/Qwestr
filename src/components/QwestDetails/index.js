@@ -12,12 +12,13 @@ import Typography from '@material-ui/core/Typography'
 
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
+import QwestEdit from '../QwestEdit'
+import { TaskList, CompletedTaskList } from '../TaskList'
 import {
   AuthUserContext,
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import QwestEdit from '../QwestEdit'
 
 const QwestDetailsPage = props => {
   // Deconstruct properties
@@ -117,6 +118,24 @@ const QwestDetailsPage = props => {
                           </Button>
                         </CardActions>
                       </Card>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TaskList
+                        authUser={authUser}
+                        firebase={firebase}
+                        qwestId={id}
+                        gameId={gameId}
+                        history={history}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CompletedTaskList
+                        authUser={authUser}
+                        firebase={firebase}
+                        qwestId={id}
+                        gameId={gameId}
+                        history={history}
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       {/* TODO put qwest posts here... */}
