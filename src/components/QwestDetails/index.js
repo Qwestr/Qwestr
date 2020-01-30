@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
 import QwestEdit from '../QwestEdit'
+import TaskCreate from '../TaskCreate'
 import { TaskList, CompletedTaskList } from '../TaskList'
 import {
   AuthUserContext,
@@ -118,6 +119,13 @@ const QwestDetailsPage = props => {
                           </Button>
                         </CardActions>
                       </Card>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TaskCreate
+                        authUser={authUser}
+                        firebase={firebase}
+                        qwest={qwest}
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       <TaskList
