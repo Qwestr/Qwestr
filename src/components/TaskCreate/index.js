@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField'
 
 const TaskCreate = props => {
   // Deconstruct properties
-  const { authUser, firebase, qwestId } = props
+  const { firebase, qwest } = props
   // Load state
   const [name, setName] = useState('')
   // Define methods
@@ -26,14 +26,8 @@ const TaskCreate = props => {
       isCompleted: false,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Determine the context of the qwest list (game or user)
-    // if (game) {
-    //   newQwest.gameId = game.id
-    // } else {
-    //   newQwest.userId = authUser.uid
-    // }
     // Create new task
-    // firebase.createTask(newTask)
+    firebase.createQwestTask(qwest.id, newTask)
     // Clear the form
     clearForm()
   }

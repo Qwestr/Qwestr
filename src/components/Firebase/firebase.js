@@ -295,6 +295,11 @@ class Firebase {
   mostRecentQwestPosts = id => this.qwestPosts(id).orderBy('createdAt', 'desc')
 
   mostRecentGamePosts = id => this.gamePosts(id).orderBy('createdAt', 'desc')
+
+  // *** Task API ***
+  qwestTasks = id => this.qwest(id).collection('tasks')
+
+  createQwestTask = (id, task) => this.qwestTasks(id).add(task)
 }
 
 export default Firebase

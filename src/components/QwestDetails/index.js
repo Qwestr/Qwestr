@@ -121,11 +121,7 @@ const QwestDetailsPage = props => {
                       </Card>
                     </Grid>
                     <Grid item xs={12}>
-                      <TaskCreate
-                        authUser={authUser}
-                        firebase={firebase}
-                        qwest={qwest}
-                      />
+                      <TaskCreate firebase={firebase} qwest={qwest} />
                     </Grid>
                     <Grid item xs={12}>
                       <TaskList
