@@ -134,7 +134,7 @@ class Firebase {
   }
 
   resetQwest = id => {
-    // Complete qwest
+    // Reset qwest
     this.qwest(id).update({
       isCompleted: false,
     })
@@ -299,12 +299,32 @@ class Firebase {
   // *** Task API ***
   qwestTasks = id => this.qwest(id).collection('tasks')
 
-  createQwestTask = (id, task) => this.qwestTasks(id).add(task)
+  qwestTask = (qwestId, taskId) => this.qwestTasks(qwestId).doc(taskId)
 
   activeQwestTasks = id => this.qwestTasks(id).where('isCompleted', '==', false)
 
   completedQwestTasks = id =>
     this.qwestTasks(id).where('isCompleted', '==', true)
+
+  createQwestTask = (id, task) => this.qwestTasks(id).add(task)
+
+  updateQwestTask = (qwestId, taskId, updatedTask) => {
+    this.qwestTask(qwestId, taskId).update(updatedTask)
+  }
+
+  completeQwestTask = (qwestId, taskId) => {
+    // Complete task
+    this.qwestTask(qwestId, taskId).update({
+      isCompleted: true,
+    })
+  }
+
+  resetQwestTask = (qwestId, taskId) => {
+    // Reset task
+    this.qwestTask(qwestId, taskId).update({
+      isCompleted: false,
+    })
+  }
 }
 
 export default Firebase
