@@ -125,20 +125,18 @@ const QwestDetailsPage = props => {
                     </Grid>
                     <Grid item xs={12}>
                       <TaskList
-                        authUser={authUser}
                         firebase={firebase}
-                        qwestId={id}
-                        gameId={gameId}
                         history={history}
+                        qwest={qwest}
+                        gameId={gameId}
                       />
                     </Grid>
                     <Grid item xs={12}>
                       <CompletedTaskList
-                        authUser={authUser}
                         firebase={firebase}
-                        qwestId={id}
-                        gameId={gameId}
                         history={history}
+                        qwest={qwest}
+                        gameId={gameId}
                       />
                     </Grid>
                     <Grid item xs={12}>

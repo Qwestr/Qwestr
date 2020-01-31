@@ -300,6 +300,11 @@ class Firebase {
   qwestTasks = id => this.qwest(id).collection('tasks')
 
   createQwestTask = (id, task) => this.qwestTasks(id).add(task)
+
+  activeQwestTasks = id => this.qwestTasks(id).where('isCompleted', '==', false)
+
+  completedQwestTasks = id =>
+    this.qwestTasks(id).where('isCompleted', '==', true)
 }
 
 export default Firebase
