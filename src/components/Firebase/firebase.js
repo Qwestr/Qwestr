@@ -325,6 +325,11 @@ class Firebase {
       isCompleted: false,
     })
   }
+
+  deleteQwestTask = (qwestId, taskId) => {
+    // Delete task
+    this.qwestTask(qwestId, taskId).delete()
+  }
 }
 
 export default Firebase

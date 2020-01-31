@@ -49,13 +49,13 @@ const TaskDetailsPage = props => {
   const handleTaskDelete = confirm => {
     if (confirm) {
       // Delete task
-      // firebase.deleteTask(task.id)
+      firebase.deleteQwestTask(qwestId, task.id)
       if (gameId) {
         // Push to the game qwest details page
-        // history.push(`${ROUTES.GAMES}/${gameId}`)
+        history.push(`${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${qwestId}`)
       } else {
         // Push to the qwest details page
-        // history.push(ROUTES.QWESTS)
+        history.push(`${ROUTES.QWESTS}/${qwestId}`)
       }
     }
     // Close confirm dialog
@@ -71,7 +71,7 @@ const TaskDetailsPage = props => {
     return () => {
       unsubscribe()
     }
-  }, [id, firebase])
+  }, [qwestId, id, firebase])
   // Return component
   return (
     <AuthUserContext.Consumer>
