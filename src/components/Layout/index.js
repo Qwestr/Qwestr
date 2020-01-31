@@ -29,6 +29,7 @@ import GamesPage from '../Games'
 import GameDetailsPage from '../GameDetails'
 import QwestsPage from '../Qwests'
 import QwestDetailsPage from '../QwestDetails'
+import TaskDetailsPage from '../TaskDetails'
 import SignInPage from '../SignIn'
 import SignOutButton from '../SignOut'
 import SignUpPage from '../SignUp'
@@ -231,6 +232,16 @@ const Layout = props => {
               />
               <Route exact path={ROUTES.GAME_POSTS} component={PostsPage} />
               <Route exact path={ROUTES.FRIENDS} component={FriendsPage} />
+              <Route
+                exact
+                path={ROUTES.QWEST_TASK_DETAILS}
+                component={TaskDetailsPage}
+              />
+              <Route
+                exact
+                path={ROUTES.GAME_QWEST_TASK_DETAILS}
+                component={TaskDetailsPage}
+              />
             </Container>
             <Copyright />
           </main>

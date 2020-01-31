@@ -13,4 +13,7 @@ export const GAME_DETAILS = '/games/:id'
 export const GAME_POSTS = '/games/:gameId/posts'
 export const GAME_QWEST_DETAILS = '/games/:gameId/qwests/:id'
 export const FRIENDS = '/friends'
-export const TASKS = '/task'
+export const TASKS = '/tasks'
+export const QWEST_TASK_DETAILS = '/qwests/:qwestId/tasks/:id'
+export const GAME_QWEST_TASK_DETAILS =
+  '/games/:gameId/qwests/:qwestId/tasks/:id'
