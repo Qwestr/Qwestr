@@ -23,7 +23,7 @@ describe('TaskEdit', () => {
       },
       updateTask: jest.fn(),
     }
-    qwest = {
+    task = {
       data: jest.fn(() => {
         return {}
       }),
