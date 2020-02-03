@@ -199,6 +199,13 @@ class Firebase {
         .doc(id)
         .delete()
     })
+    // Get game's qwests collections
+    const qwests = await this.gameQwests(id).get()
+    // Iterate through each qwest
+    qwests.docs.forEach(qwest => {
+      // Delete qwest
+      qwest.ref.delete()
+    })
     // Delete game
     this.game(id).delete()
   }
@@ -297,14 +304,19 @@ class Firebase {
   mostRecentGamePosts = id => this.gamePosts(id).orderBy('createdAt', 'desc')
 
   // *** Task API ***
-  qwestTasks = id => this.qwest(id).collection('tasks')
+  tasks = id => this.store.collection('tasks')
+
+  qwestTasks = id =>
+    this.tasks()
+      .where('qwestId', '==', id)
+      .where('isCompleted', '==', false)
+
+  qwestCompletedTasks = id =>
+    this.tasks()
+      .where('qwestId', '==', id)
+      .where('isCompleted', '==', true)
 
   qwestTask = (qwestId, taskId) => this.qwestTasks(qwestId).doc(taskId)
-
-  activeQwestTasks = id => this.qwestTasks(id).where('isCompleted', '==', false)
-
-  completedQwestTasks = id =>
-    this.qwestTasks(id).where('isCompleted', '==', true)
 
   createQwestTask = (id, task) => this.qwestTasks(id).add(task)
 

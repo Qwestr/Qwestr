@@ -22,6 +22,7 @@ const TaskCreate = props => {
     event.preventDefault()
     // Create new task object
     const newTask = {
+      qwestId: qwest.id,
       name: name,
       isCompleted: false,
       createdAt: firebase.FieldValue.serverTimestamp(),
