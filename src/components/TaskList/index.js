@@ -20,7 +20,7 @@ const TaskList = props => {
   // Define methods
   const completeTask = task => {
     // Complete the task
-    firebase.completeQwestTask(qwest.id, task.id)
+    firebase.completeTask(task.id)
   }
 
   const viewTaskDetails = task => {
@@ -82,7 +82,7 @@ const CompletedTaskList = props => {
   // Define methods
   const resetTask = task => {
     // Reset the task
-    firebase.resetQwestTask(qwest.id, task.id)
+    firebase.resetTask(task.id)
   }
 
   const viewTaskDetails = task => {
