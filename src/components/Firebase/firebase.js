@@ -204,7 +204,7 @@ class Firebase {
     // Iterate through each qwest
     qwests.docs.forEach(qwest => {
       // Delete qwest
-      qwest.ref.delete()
+      this.deleteQwest(qwest.id)
     })
     // Delete game
     this.game(id).delete()
