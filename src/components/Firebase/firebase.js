@@ -212,6 +212,8 @@ class Firebase {
       this.userGames(player.id)
         .doc(id)
         .delete()
+      // Delete player
+      player.ref.delete()
     })
     // Get game's qwests collections
     const qwests = await this.gameQwests(id).get()
@@ -219,6 +221,13 @@ class Firebase {
     qwests.docs.forEach(qwest => {
       // Delete qwest
       this.deleteQwest(qwest.id)
+    })
+    // Get game's posts collections
+    const posts = await this.gamePosts(id).get()
+    // Iterate through each post
+    posts.docs.forEach(post => {
+      // Delete post
+      post.ref.delete()
     })
     // Delete game
     this.game(id).delete()
