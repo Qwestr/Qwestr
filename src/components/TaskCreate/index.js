@@ -28,7 +28,7 @@ const TaskCreate = props => {
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
     // Create new task
-    firebase.createQwestTask(qwest.id, newTask)
+    firebase.createTask(newTask)
     // Clear the form
     clearForm()
   }
