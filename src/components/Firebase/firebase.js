@@ -304,7 +304,9 @@ class Firebase {
   mostRecentGamePosts = id => this.gamePosts(id).orderBy('createdAt', 'desc')
 
   // *** Task API ***
-  tasks = id => this.store.collection('tasks')
+  tasks = () => this.store.collection('tasks')
+
+  task = id => this.tasks().doc(id)
 
   qwestTasks = id =>
     this.tasks()
@@ -316,31 +318,29 @@ class Firebase {
       .where('qwestId', '==', id)
       .where('isCompleted', '==', true)
 
-  qwestTask = (qwestId, taskId) => this.qwestTasks(qwestId).doc(taskId)
+  createTask = task => this.tasks().add(task)
 
-  createQwestTask = (id, task) => this.qwestTasks(id).add(task)
-
-  updateQwestTask = (qwestId, taskId, updatedTask) => {
-    this.qwestTask(qwestId, taskId).update(updatedTask)
+  updateTask = (task, updatedTask) => {
+    this.task(task.id).update(updatedTask)
   }
 
-  completeQwestTask = (qwestId, taskId) => {
+  completeTask = id => {
     // Complete task
-    this.qwestTask(qwestId, taskId).update({
+    this.task(id).update({
       isCompleted: true,
     })
   }
 
-  resetQwestTask = (qwestId, taskId) => {
+  resetTask = id => {
     // Reset task
-    this.qwestTask(qwestId, taskId).update({
+    this.task(id).update({
       isCompleted: false,
     })
   }
 
-  deleteQwestTask = (qwestId, taskId) => {
+  deleteTask = id => {
     // Delete task
-    this.qwestTask(qwestId, taskId).delete()
+    this.task(id).delete()
   }
 }
 
