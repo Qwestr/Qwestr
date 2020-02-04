@@ -140,7 +140,14 @@ class Firebase {
     })
   }
 
-  deleteQwest = id => {
+  deleteQwest = async id => {
+    // Get qwests's tasks collections
+    const tasks = await this.qwestTasks(id).get()
+    // Iterate through each task
+    tasks.docs.forEach(task => {
+      // Delete task
+      task.ref.delete()
+    })
     // Delete qwest
     this.qwest(id).delete()
   }
@@ -308,7 +315,9 @@ class Firebase {
 
   task = id => this.tasks().doc(id)
 
-  qwestTasks = id =>
+  qwestTasks = id => this.tasks().where('qwestId', '==', id)
+
+  qwestActiveTasks = id =>
     this.tasks()
       .where('qwestId', '==', id)
       .where('isCompleted', '==', false)

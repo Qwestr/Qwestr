@@ -35,9 +35,11 @@ const TaskList = props => {
   // Define effects handlers
   useEffect(() => {
     // Setup listener to the tasks collection
-    let unsubscribe = firebase.qwestTasks(qwest.id).onSnapshot(snapshot => {
-      setTasks(snapshot.docs)
-    })
+    let unsubscribe = firebase
+      .qwestActiveTasks(qwest.id)
+      .onSnapshot(snapshot => {
+        setTasks(snapshot.docs)
+      })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
