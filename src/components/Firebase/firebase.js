@@ -148,6 +148,13 @@ class Firebase {
       // Delete task
       task.ref.delete()
     })
+    // Get qwests's posts collections
+    const posts = await this.qwestPosts(id).get()
+    // Iterate through each post
+    posts.docs.forEach(post => {
+      // Delete post
+      post.ref.delete()
+    })
     // Delete qwest
     this.qwest(id).delete()
   }
