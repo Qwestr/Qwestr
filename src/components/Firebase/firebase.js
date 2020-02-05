@@ -146,7 +146,7 @@ class Firebase {
     // Iterate through each task
     tasks.docs.forEach(task => {
       // Delete task
-      task.ref.delete()
+      this.deleteTask(task.id)
     })
     // Get qwests's posts collections
     const posts = await this.qwestPosts(id).get()
@@ -369,7 +369,14 @@ class Firebase {
     })
   }
 
-  deleteTask = id => {
+  deleteTask = async id => {
+    // Get task's posts collections
+    const posts = await this.taskPosts(id).get()
+    // Iterate through each post
+    posts.docs.forEach(post => {
+      // Delete post
+      post.ref.delete()
+    })
     // Delete task
     this.task(id).delete()
   }
