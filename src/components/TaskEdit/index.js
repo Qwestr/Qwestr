@@ -22,7 +22,7 @@ const TaskEdit = props => {
       updatedAt: firebase.FieldValue.serverTimestamp(),
     }
     // Update the task
-    // firebase.updateTask(task, updatedTask)
+    firebase.updateTask(task, updatedTask)
     // Call the close callback
     close()
   }
