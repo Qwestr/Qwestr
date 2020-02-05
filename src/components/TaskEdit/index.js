@@ -6,49 +6,38 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import TextField from '@material-ui/core/TextField'
 
-const PostCreate = props => {
+const TaskEdit = props => {
   // Deconstruct properties
-  const { authUser, firebase, taskId, qwestId, gameId } = props
+  const { firebase, task, close } = props
   // Load state
-  const [message, setMessage] = useState('')
+  const [name, setName] = useState(task.data().name)
   // Define methods
-  const clearForm = () => {
-    setMessage('')
-  }
-
   const onSubmit = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
-    // Create new post object
-    const newPost = {
-      message: message,
-      username: authUser.username,
-      createdAt: firebase.FieldValue.serverTimestamp(),
+    // Create updated task object
+    const updatedTask = {
+      name: name,
+      updatedAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Create new post
-    if (taskId) {
-      firebase.createTaskPost(taskId, newPost)
-    } else if (qwestId) {
-      firebase.createQwestPost(qwestId, newPost)
-    } else {
-      firebase.createGamePost(gameId, newPost)
-    }
-    // Clear the form
-    clearForm()
+    // Update the task
+    firebase.updateTask(task, updatedTask)
+    // Call the close callback
+    close()
   }
   // Return component
   return (
     <Card>
-      <CardHeader title="Create Post" />
+      <CardHeader title="Edit Task" />
       <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
-            id="message"
-            label="Message"
+            id="name"
+            label="Name"
             fullWidth
-            value={message}
-            onChange={event => setMessage(event.target.value)}
+            value={name}
+            onChange={event => setName(event.target.value)}
           />
         </CardContent>
         <CardActions>
@@ -56,9 +45,12 @@ const PostCreate = props => {
             variant="contained"
             color="primary"
             type="submit"
-            disabled={!message}
+            disabled={!name}
           >
             Submit
+          </Button>
+          <Button variant="contained" color="secondary" onClick={close}>
+            Cancel
           </Button>
         </CardActions>
       </form>
@@ -66,4 +58,4 @@ const PostCreate = props => {
   )
 }
 
-export default PostCreate
+export default TaskEdit

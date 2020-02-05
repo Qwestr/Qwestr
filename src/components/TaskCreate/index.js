@@ -6,49 +6,44 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import TextField from '@material-ui/core/TextField'
 
-const PostCreate = props => {
+const TaskCreate = props => {
   // Deconstruct properties
-  const { authUser, firebase, taskId, qwestId, gameId } = props
+  const { firebase, qwest } = props
   // Load state
-  const [message, setMessage] = useState('')
+  const [name, setName] = useState('')
   // Define methods
   const clearForm = () => {
-    setMessage('')
+    setName('')
   }
 
   const onSubmit = event => {
     // Prevent default form submission
     // DONT REMOVE!
     event.preventDefault()
-    // Create new post object
-    const newPost = {
-      message: message,
-      username: authUser.username,
+    // Create new task object
+    const newTask = {
+      qwestId: qwest.id,
+      name: name,
+      isCompleted: false,
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
-    // Create new post
-    if (taskId) {
-      firebase.createTaskPost(taskId, newPost)
-    } else if (qwestId) {
-      firebase.createQwestPost(qwestId, newPost)
-    } else {
-      firebase.createGamePost(gameId, newPost)
-    }
+    // Create new task
+    firebase.createTask(newTask)
     // Clear the form
     clearForm()
   }
   // Return component
   return (
     <Card>
-      <CardHeader title="Create Post" />
+      <CardHeader title="Create Task" />
       <form onSubmit={onSubmit}>
         <CardContent>
           <TextField
-            id="message"
-            label="Message"
+            id="name"
+            label="Name"
             fullWidth
-            value={message}
-            onChange={event => setMessage(event.target.value)}
+            value={name}
+            onChange={event => setName(event.target.value)}
           />
         </CardContent>
         <CardActions>
@@ -56,7 +51,7 @@ const PostCreate = props => {
             variant="contained"
             color="primary"
             type="submit"
-            disabled={!message}
+            disabled={!name}
           >
             Submit
           </Button>
@@ -66,4 +61,4 @@ const PostCreate = props => {
   )
 }
 
-export default PostCreate
+export default TaskCreate

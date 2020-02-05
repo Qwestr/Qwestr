@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography'
 
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
+import GameEdit from '../GameEdit'
 import QwestCreate from '../QwestCreate'
 import { QwestList, CompletedQwestList } from '../QwestList'
 import {
@@ -19,7 +20,6 @@ import {
   withAuthorization,
   withEmailVerification,
 } from '../Session'
-import GameEdit from '../GameEdit'
 import { GameInviteForm, GameInviteList } from './invite'
 import PlayerList from './list'
 
@@ -34,6 +34,7 @@ const GameDetailsPage = props => {
   const [isEditMode, setIsEditMode] = useState(false)
   // Define methods
   const viewPosts = () => {
+    // Push to the game posts page
     history.push(`${ROUTES.GAMES}/${id}/posts`)
   }
 

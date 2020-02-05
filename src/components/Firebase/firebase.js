@@ -134,13 +134,27 @@ class Firebase {
   }
 
   resetQwest = id => {
-    // Complete qwest
+    // Reset qwest
     this.qwest(id).update({
       isCompleted: false,
     })
   }
 
-  deleteQwest = id => {
+  deleteQwest = async id => {
+    // Get qwests's tasks collections
+    const tasks = await this.qwestTasks(id).get()
+    // Iterate through each task
+    tasks.docs.forEach(task => {
+      // Delete task
+      this.deleteTask(task.id)
+    })
+    // Get qwests's posts collections
+    const posts = await this.qwestPosts(id).get()
+    // Iterate through each post
+    posts.docs.forEach(post => {
+      // Delete post
+      post.ref.delete()
+    })
     // Delete qwest
     this.qwest(id).delete()
   }
@@ -198,6 +212,22 @@ class Firebase {
       this.userGames(player.id)
         .doc(id)
         .delete()
+      // Delete player
+      player.ref.delete()
+    })
+    // Get game's qwests collections
+    const qwests = await this.gameQwests(id).get()
+    // Iterate through each qwest
+    qwests.docs.forEach(qwest => {
+      // Delete qwest
+      this.deleteQwest(qwest.id)
+    })
+    // Get game's posts collections
+    const posts = await this.gamePosts(id).get()
+    // Iterate through each post
+    posts.docs.forEach(post => {
+      // Delete post
+      post.ref.delete()
     })
     // Delete game
     this.game(id).delete()
@@ -284,17 +314,72 @@ class Firebase {
   }
 
   // *** Post API ***
+  taskPosts = id => this.task(id).collection('posts')
+
   qwestPosts = id => this.qwest(id).collection('posts')
 
   gamePosts = id => this.game(id).collection('posts')
+
+  createTaskPost = (id, post) => this.taskPosts(id).add(post)
 
   createQwestPost = (id, post) => this.qwestPosts(id).add(post)
 
   createGamePost = (id, post) => this.gamePosts(id).add(post)
 
+  mostRecentTaskPosts = id => this.taskPosts(id).orderBy('createdAt', 'desc')
+
   mostRecentQwestPosts = id => this.qwestPosts(id).orderBy('createdAt', 'desc')
 
   mostRecentGamePosts = id => this.gamePosts(id).orderBy('createdAt', 'desc')
+
+  // *** Task API ***
+  tasks = () => this.store.collection('tasks')
+
+  task = id => this.tasks().doc(id)
+
+  qwestTasks = id => this.tasks().where('qwestId', '==', id)
+
+  qwestActiveTasks = id =>
+    this.tasks()
+      .where('qwestId', '==', id)
+      .where('isCompleted', '==', false)
+
+  qwestCompletedTasks = id =>
+    this.tasks()
+      .where('qwestId', '==', id)
+      .where('isCompleted', '==', true)
+
+  createTask = task => this.tasks().add(task)
+
+  updateTask = (task, updatedTask) => {
+    this.task(task.id).update(updatedTask)
+  }
+
+  completeTask = id => {
+    // Complete task
+    this.task(id).update({
+      isCompleted: true,
+    })
+  }
+
+  resetTask = id => {
+    // Reset task
+    this.task(id).update({
+      isCompleted: false,
+    })
+  }
+
+  deleteTask = async id => {
+    // Get task's posts collections
+    const posts = await this.taskPosts(id).get()
+    // Iterate through each post
+    posts.docs.forEach(post => {
+      // Delete post
+      post.ref.delete()
+    })
+    // Delete task
+    this.task(id).delete()
+  }
 }
 
 export default Firebase

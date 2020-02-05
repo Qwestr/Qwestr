@@ -12,53 +12,53 @@ import Typography from '@material-ui/core/Typography'
 
 import * as ROUTES from '../../constants/routes'
 import ConfirmDialog from '../ConfirmDialog'
-import QwestEdit from '../QwestEdit'
-import TaskCreate from '../TaskCreate'
-import { TaskList, CompletedTaskList } from '../TaskList'
+import TaskEdit from '../TaskEdit'
 import { withAuthorization, withEmailVerification } from '../Session'
 
-const QwestDetailsPage = props => {
+const TaskDetailsPage = props => {
   // Deconstruct properties
   const { firebase, history } = props
   // Load url params
-  const { gameId, id } = useParams()
+  const { gameId, qwestId, id } = useParams()
   // Load state
-  const [qwest, setQwest] = useState(null)
+  const [task, setTask] = useState(null)
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
   // Define methods
   const viewPosts = () => {
-    // Push to the qwest posts page
+    // Push to the task posts page
     if (gameId) {
-      history.push(`${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${id}/posts`)
+      history.push(
+        `${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${qwestId}${ROUTES.TASKS}/${id}/posts`,
+      )
     } else {
-      history.push(`${ROUTES.QWESTS}/${id}/posts`)
+      history.push(`${ROUTES.QWESTS}/${qwestId}${ROUTES.TASKS}/${id}/posts`)
     }
   }
 
-  const editQwest = () => {
+  const editTask = () => {
     setIsEditMode(true)
   }
 
-  const handleQwestEditClose = () => {
+  const handleTaskEditClose = () => {
     setIsEditMode(false)
   }
 
-  const confirmQwestDelete = () => {
+  const confirmTaskDelete = () => {
     // Open confirm dialog
     setIsConfirmDialogOpen(true)
   }
 
-  const handleQwestDelete = confirm => {
+  const handleTaskDelete = confirm => {
     if (confirm) {
-      // Delete qwest
-      firebase.deleteQwest(qwest.id)
+      // Delete task
+      firebase.deleteTask(task.id)
       if (gameId) {
-        // Push to the game details page
-        history.push(`${ROUTES.GAMES}/${gameId}`)
+        // Push to the game qwest details page
+        history.push(`${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${qwestId}`)
       } else {
-        // Push to the qwests page
-        history.push(ROUTES.QWESTS)
+        // Push to the qwest details page
+        history.push(`${ROUTES.QWESTS}/${qwestId}`)
       }
     }
     // Close confirm dialog
@@ -66,19 +66,19 @@ const QwestDetailsPage = props => {
   }
   // Define effects handlers
   useEffect(() => {
-    // Setup listener to the qwest collection object
-    const unsubscribe = firebase.qwest(id).onSnapshot(snapshot => {
-      setQwest(snapshot)
+    // Setup listener to the task collection object
+    const unsubscribe = firebase.task(id).onSnapshot(snapshot => {
+      setTask(snapshot)
     })
     // Unsubscribe from listener when component is destroyed
     return () => {
       unsubscribe()
     }
-  }, [id, firebase])
+  }, [qwestId, id, firebase])
   // Return component
   return (
     <Aux>
-      {qwest && (
+      {task && (
         <Aux>
           <Grid container spacing={3}>
             {!isEditMode ? (
@@ -88,7 +88,7 @@ const QwestDetailsPage = props => {
                     <CardHeader title="Details" />
                     <CardContent>
                       <Typography variant="body1">
-                        <b>Name: </b> {qwest.data().name}
+                        <b>Name: </b> {task.data().name}
                       </Typography>
                     </CardContent>
                     <CardActions>
@@ -104,7 +104,7 @@ const QwestDetailsPage = props => {
                         variant="contained"
                         color="default"
                         aria-label="view"
-                        onClick={editQwest}
+                        onClick={editTask}
                       >
                         Edit
                       </Button>
@@ -112,51 +112,29 @@ const QwestDetailsPage = props => {
                         variant="contained"
                         color="secondary"
                         aria-label="delete"
-                        onClick={confirmQwestDelete}
+                        onClick={confirmTaskDelete}
                       >
                         Delete
                       </Button>
                     </CardActions>
                   </Card>
                 </Grid>
-                <Grid item xs={12}>
-                  <TaskCreate firebase={firebase} qwest={qwest} />
-                </Grid>
-                <Grid item xs={12}>
-                  <TaskList
-                    firebase={firebase}
-                    history={history}
-                    qwest={qwest}
-                    gameId={gameId}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <CompletedTaskList
-                    firebase={firebase}
-                    history={history}
-                    qwest={qwest}
-                    gameId={gameId}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  {/* TODO put qwest posts here... */}
-                </Grid>
               </Aux>
             ) : (
               <Grid item xs={12}>
-                <QwestEdit
+                <TaskEdit
                   firebase={firebase}
-                  qwest={qwest}
-                  close={handleQwestEditClose}
-                ></QwestEdit>
+                  task={task}
+                  close={handleTaskEditClose}
+                ></TaskEdit>
               </Grid>
             )}
           </Grid>
           <ConfirmDialog
             isOpen={isConfirmDialogOpen}
-            handleClose={handleQwestDelete}
-            title="Delete Qwest"
-            message="Are you sure you want to delete this qwest?  This cannot be undone."
+            handleClose={handleTaskDelete}
+            title="Delete Task"
+            message="Are you sure you want to delete this task?  This cannot be undone."
           />
         </Aux>
       )}
@@ -166,9 +144,9 @@ const QwestDetailsPage = props => {
 
 const condition = authUser => !!authUser
 
-export { QwestDetailsPage }
+export { TaskDetailsPage }
 
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
-)(QwestDetailsPage)
+)(TaskDetailsPage)

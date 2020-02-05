@@ -24,6 +24,7 @@ const QwestList = props => {
   }
 
   const viewQwestDetails = qwest => {
+    // Push to qwest details page
     if (game) {
       history.push(`${ROUTES.GAMES}/${game.id}${ROUTES.QWESTS}/${qwest.id}`)
     } else {
