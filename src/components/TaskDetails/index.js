@@ -45,7 +45,7 @@ const TaskDetailsPage = props => {
   const handleTaskDelete = confirm => {
     if (confirm) {
       // Delete task
-      firebase.deleteQwestTask(qwestId, task.id)
+      firebase.deleteTask(task.id)
       if (gameId) {
         // Push to the game qwest details page
         history.push(`${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${qwestId}`)
