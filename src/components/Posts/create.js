@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField'
 
 const PostCreate = props => {
   // Deconstruct properties
-  const { authUser, firebase, qwestId, gameId } = props
+  const { authUser, firebase, taskId, qwestId, gameId } = props
   // Load state
   const [message, setMessage] = useState('')
   // Define methods
@@ -27,10 +27,12 @@ const PostCreate = props => {
       createdAt: firebase.FieldValue.serverTimestamp(),
     }
     // Create new post
-    if (gameId) {
-      firebase.createGamePost(gameId, newPost)
-    } else {
+    if (taskId) {
+      firebase.createTaskPost(taskId, newPost)
+    } else if (qwestId) {
       firebase.createQwestPost(qwestId, newPost)
+    } else {
+      firebase.createGamePost(gameId, newPost)
     }
     // Clear the form
     clearForm()

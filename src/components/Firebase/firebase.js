@@ -314,13 +314,19 @@ class Firebase {
   }
 
   // *** Post API ***
+  taskPosts = id => this.task(id).collection('posts')
+
   qwestPosts = id => this.qwest(id).collection('posts')
 
   gamePosts = id => this.game(id).collection('posts')
 
+  createTaskPost = (id, post) => this.taskPosts(id).add(post)
+
   createQwestPost = (id, post) => this.qwestPosts(id).add(post)
 
   createGamePost = (id, post) => this.gamePosts(id).add(post)
+
+  mostRecentTaskPosts = id => this.taskPosts(id).orderBy('createdAt', 'desc')
 
   mostRecentQwestPosts = id => this.qwestPosts(id).orderBy('createdAt', 'desc')
 

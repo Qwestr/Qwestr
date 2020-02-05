@@ -17,7 +17,7 @@ const PostsPage = props => {
   // Deconstruct properties
   const { firebase } = props
   // Load url params
-  const { qwestId, gameId } = useParams()
+  const { taskId, qwestId, gameId } = useParams()
   // Return component
   return (
     <AuthUserContext.Consumer>
@@ -31,6 +31,7 @@ const PostsPage = props => {
               <PostCreate
                 authUser={authUser}
                 firebase={firebase}
+                taskId={taskId}
                 qwestId={qwestId}
                 gameId={gameId}
               />
@@ -39,6 +40,7 @@ const PostsPage = props => {
               <PostList
                 authUser={authUser}
                 firebase={firebase}
+                taskId={taskId}
                 qwestId={qwestId}
                 gameId={gameId}
               />

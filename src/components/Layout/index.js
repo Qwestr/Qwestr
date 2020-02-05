@@ -244,6 +244,11 @@ const Layout = props => {
               />
               <Route
                 exact
+                path={ROUTES.QWEST_TASK_POSTS}
+                component={PostsPage}
+              />
+              <Route
+                exact
                 path={ROUTES.GAME_QWEST_TASK_DETAILS}
                 component={TaskDetailsPage}
               />
