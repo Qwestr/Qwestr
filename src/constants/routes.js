@@ -19,3 +19,5 @@ export const QWEST_TASK_DETAILS = '/qwests/:qwestId/tasks/:id'
 export const QWEST_TASK_POSTS = '/qwests/:qwestId/tasks/:taskId/posts'
 export const GAME_QWEST_TASK_DETAILS =
   '/games/:gameId/qwests/:qwestId/tasks/:id'
+export const GAME_QWEST_TASK_POSTS =
+  '/games/:gameId/qwests/:qwestId/tasks/:taskId/posts'
