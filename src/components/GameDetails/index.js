@@ -34,6 +34,7 @@ const GameDetailsPage = props => {
   const [isEditMode, setIsEditMode] = useState(false)
   // Define methods
   const viewPosts = () => {
+    // Push to the game posts page
     history.push(`${ROUTES.GAMES}/${id}/posts`)
   }
 

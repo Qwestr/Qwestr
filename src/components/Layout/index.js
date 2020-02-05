@@ -230,6 +230,11 @@ const Layout = props => {
                 path={ROUTES.GAME_QWEST_DETAILS}
                 component={QwestDetailsPage}
               />
+              <Route
+                exact
+                path={ROUTES.GAME_QWEST_POSTS}
+                component={PostsPage}
+              />
               <Route exact path={ROUTES.GAME_POSTS} component={PostsPage} />
               <Route exact path={ROUTES.FRIENDS} component={FriendsPage} />
               <Route

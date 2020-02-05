@@ -28,7 +28,12 @@ const QwestDetailsPage = props => {
   const [isEditMode, setIsEditMode] = useState(false)
   // Define methods
   const viewPosts = () => {
-    history.push(`${ROUTES.QWESTS}/${id}/posts`)
+    // Push to the qwest posts page
+    if (gameId) {
+      history.push(`${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${id}/posts`)
+    } else {
+      history.push(`${ROUTES.QWESTS}/${id}/posts`)
+    }
   }
 
   const editQwest = () => {

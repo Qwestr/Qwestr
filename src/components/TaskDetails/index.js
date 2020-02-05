@@ -26,7 +26,14 @@ const TaskDetailsPage = props => {
   const [isEditMode, setIsEditMode] = useState(false)
   // Define methods
   const viewPosts = () => {
-    // history.push(`${ROUTES.QWESTS}/${id}/posts`)
+    // Push to the task posts page
+    if (gameId) {
+      history.push(
+        `${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${qwestId}${ROUTES.TASKS}/${id}/posts`,
+      )
+    } else {
+      history.push(`${ROUTES.QWESTS}/${qwestId}${ROUTES.TASKS}/${id}/posts`)
+    }
   }
 
   const editTask = () => {

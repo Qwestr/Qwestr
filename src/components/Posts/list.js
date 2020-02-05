@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 
 const PostList = props => {
   // Deconstruct properties
-  const { authUser, firebase, qwestId, gameId } = props
+  const { authUser, firebase, taskId, qwestId, gameId } = props
   // Load state
   const [posts, setPosts] = useState([])
   // Define methods
@@ -22,15 +22,21 @@ const PostList = props => {
   useEffect(() => {
     // Setup listener to the posts collection
     let unsubscribe
-    if (gameId) {
+    if (taskId) {
       unsubscribe = firebase
-        .mostRecentGamePosts(gameId)
+        .mostRecentTaskPosts(taskId)
+        .onSnapshot(snapshot => {
+          setPosts(snapshot.docs)
+        })
+    } else if (qwestId) {
+      unsubscribe = firebase
+        .mostRecentQwestPosts(qwestId)
         .onSnapshot(snapshot => {
           setPosts(snapshot.docs)
         })
     } else {
       unsubscribe = firebase
-        .mostRecentQwestPosts(qwestId)
+        .mostRecentGamePosts(gameId)
         .onSnapshot(snapshot => {
           setPosts(snapshot.docs)
         })
@@ -39,7 +45,7 @@ const PostList = props => {
     return () => {
       unsubscribe()
     }
-  }, [authUser, firebase, qwestId, gameId])
+  }, [authUser, firebase, taskId, qwestId, gameId])
   // Return component
   return (
     <Card>

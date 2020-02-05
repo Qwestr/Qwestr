@@ -24,6 +24,7 @@ const TaskList = props => {
   }
 
   const viewTaskDetails = task => {
+    // Push to task details page
     if (gameId) {
       history.push(
         `${ROUTES.GAMES}/${gameId}${ROUTES.QWESTS}/${qwest.id}${ROUTES.TASKS}/${task.id}`,
