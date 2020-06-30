@@ -1,16 +1,12 @@
 # Qwestr-React
 
-A gameified task management application (created w/ React)
+A gameified task management application, built with [React-Admin](https://marmelab.com/react-admin/)
 
 ## Deployment
 
 1.  Install all required packages using `npm install`
 
-3.  Run `npm run build` to build the code
-
-4.  Install and initialize the [Firebase CLI](https://firebase.google.com/docs/cli)
-
-5.  Run `firebase deploy` to deploy the code to Firebase (NOTE: use can also use the Firebase CLI command `firebase use <project-name>` to deploy to different Firebase projects)
+2.  Run `npm run start` to start the API
 
 ## Available Scripts
 
@@ -18,11 +14,7 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Runs the API @ [http://localhost:3001](http://localhost:3001).
 
 ## License
 
@@ -32,4 +24,4 @@ file. The documentation to the project is licensed under the
 [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/) license.
 
 ---
-Made with ♥ by Shawn Daichendt ([@shawndaichendt](https://twitter.com/shawndaichendt)) and [contributors](https://github.com/Qwestr/Qwestr-React/graphs/contributors)
+Made with ♥ by the [QwestrDevs](https://github.com/Qwestr/Qwestr-React/graphs/contributors)
