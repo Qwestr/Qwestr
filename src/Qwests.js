@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Create,
   Datagrid,
+  DateTimeInput,
   Edit,
   Filter,
   List,
@@ -33,6 +34,7 @@ export const QwestCreate = (props) => (
         <SelectInput optionText="name" />
       </ReferenceInput>
       <TextInput source="title" />
+      <DateTimeInput source="completeBy" />
     </SimpleForm>
   </Create>
 );
@@ -45,6 +47,7 @@ export const QwestEdit = (props) => (
         <SelectInput optionText="name" />
       </ReferenceInput>
       <TextInput source="title" />
+      <DateTimeInput source="completeBy" />
     </SimpleForm>
   </Edit>
 );
