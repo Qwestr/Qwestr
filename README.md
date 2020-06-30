@@ -4,17 +4,33 @@ A gameified task management application, built with [React-Admin](https://marmel
 
 ## Deployment
 
-1.  Install all required packages using `npm install`
+1.  Install all required packages using `yarn install`
 
-2.  Run `npm run start` to start the API
+2.  Run `yarn start` to start the application
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `yarn start`
 
-Runs the API @ [http://localhost:3001](http://localhost:3001).
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits to the code.
+
+### `yarn build`
+
+Builds the code to prepare it for deployment
+
+### `yarn test`
+
+Runs unit tests
+
+### `yarn eject`
+
+Ejects React and associated libraries from the application.<b>
+NOTE: This command should not normally be run, but is available if need be.
 
 ## License
 
