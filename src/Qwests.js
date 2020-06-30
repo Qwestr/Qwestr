@@ -16,7 +16,7 @@ import {
 } from "react-admin";
 
 const QwestTitle = ({ record }) => {
-  return <span>Post {record ? `"${record.title}"` : ""}</span>;
+  return <span>Qwest {record.title}</span>;
 };
 
 const QwestFilter = (props) => (
