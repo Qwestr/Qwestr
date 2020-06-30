@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Admin, Resource } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
-import PostIcon from '@material-ui/icons/Book';
+import UserIcon from '@material-ui/icons/Group';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import authProvider from './authProvider';
