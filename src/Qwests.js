@@ -2,6 +2,8 @@ import * as React from "react";
 import {
   Create,
   Datagrid,
+  DateField,
+  DateTimeInput,
   Edit,
   Filter,
   List,
@@ -12,9 +14,23 @@ import {
   TextField,
   TextInput,
 } from "react-admin";
+import { makeStyles, Chip } from "@material-ui/core";
+
+// Setup QuickFilter styles
+const useQuickFilterStyles = makeStyles((theme) => ({
+  chip: {
+    marginBottom: theme.spacing(1),
+  },
+}));
+
+// Define QuickFilter component
+const QuickFilter = ({ label }) => {
+  const classes = useQuickFilterStyles();
+  return <Chip className={classes.chip} label={label} />;
+};
 
 const QwestTitle = ({ record }) => {
-  return <span>Post {record ? `"${record.title}"` : ""}</span>;
+  return <span>Qwest {record.title}</span>;
 };
 
 const QwestFilter = (props) => (
@@ -23,6 +39,8 @@ const QwestFilter = (props) => (
     <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
       <SelectInput optionText="name" />
     </ReferenceInput>
+    <QuickFilter source="completeByYes" label="Has Complete By Date" defaultValue={true} />
+    <QuickFilter source="completeByNo" label="No Complete By Date" defaultValue={true} />
   </Filter>
 );
 
@@ -33,6 +51,7 @@ export const QwestCreate = (props) => (
         <SelectInput optionText="name" />
       </ReferenceInput>
       <TextInput source="title" />
+      <DateTimeInput source="completeBy" />
     </SimpleForm>
   </Create>
 );
@@ -45,6 +64,7 @@ export const QwestEdit = (props) => (
         <SelectInput optionText="name" />
       </ReferenceInput>
       <TextInput source="title" />
+      <DateTimeInput source="completeBy" />
     </SimpleForm>
   </Edit>
 );
@@ -56,6 +76,7 @@ export const QwestList = (props) => (
         <TextField source="name" />
       </ReferenceField>
       <TextField source="title" />
+      <DateField source="completeBy" showTime />
     </Datagrid>
   </List>
 );

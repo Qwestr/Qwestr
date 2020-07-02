@@ -11,7 +11,7 @@ import {
 } from "react-admin";
 
 const UserTitle = ({ record }) => {
-  return <span>User {record ? `"${record.name}"` : ""}</span>;
+  return <span>User {record.name}</span>;
 };
 
 export const UserCreate = (props) => (
