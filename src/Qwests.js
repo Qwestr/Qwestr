@@ -39,8 +39,8 @@ const QwestFilter = (props) => (
     <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
       <SelectInput optionText="name" />
     </ReferenceInput>
-    <QuickFilter source="complete_by_yes" label="Has Complete By Date" defaultValue={true} />
-    <QuickFilter source="complete_by_no" label="No Complete By Date" defaultValue={true} />
+    <QuickFilter source="completeByYes" label="Has Complete By Date" defaultValue={true} />
+    <QuickFilter source="completeByNo" label="No Complete By Date" defaultValue={true} />
   </Filter>
 );
 
