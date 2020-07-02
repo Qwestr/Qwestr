@@ -14,6 +14,20 @@ import {
   TextField,
   TextInput,
 } from "react-admin";
+import { makeStyles, Chip } from "@material-ui/core";
+
+// Setup QuickFilter styles
+const useQuickFilterStyles = makeStyles((theme) => ({
+  chip: {
+    marginBottom: theme.spacing(1),
+  },
+}));
+
+// Define QuickFilter component
+const QuickFilter = ({ label }) => {
+  const classes = useQuickFilterStyles();
+  return <Chip className={classes.chip} label={label} />;
+};
 
 const QwestTitle = ({ record }) => {
   return <span>Qwest {record.title}</span>;
@@ -25,6 +39,7 @@ const QwestFilter = (props) => (
     <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
       <SelectInput optionText="name" />
     </ReferenceInput>
+    <QuickFilter source="complete_by" label="Has Due Date" defaultValue={1} />
   </Filter>
 );
 
