@@ -10,7 +10,7 @@ import { QwestCreate, QwestEdit, QwestList } from "./Qwests";
 import { UserCreate, UserEdit, UserList } from "./Users";
 
 // Setup data provider
-const dataProvider = jsonServerProvider("http://localhost:3001");
+const dataProvider = jsonServerProvider(process.env.REACT_APP_API_URL);
 
 // Create app
 const App = () => (
