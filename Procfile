@@ -1,1 +1,2 @@
-web: bin/boot
+release: yarn build
+web: yarn serve
