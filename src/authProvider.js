@@ -1,16 +1,27 @@
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+});
+
 export default {
-  // called when the user attempts to log in
-  login: ({ username }) => {
-    localStorage.setItem("username", username);
-    // accept all username/password combinations
-    return Promise.resolve();
+  // Login: Called when the user attempts to log in
+  login: ({ username, password }) => {
+    return api
+      .post("/login", {
+        username,
+        password,
+      })
+      .then(() => {
+        localStorage.setItem("username", username);
+      })
   },
-  // called when the user clicks on the logout button
+  // Logout: Called when the user clicks on the logout button
   logout: () => {
     localStorage.removeItem("username");
     return Promise.resolve();
   },
-  // called when the API returns an error
+  // checkError: Called when the API returns an error
   checkError: ({ status }) => {
     if (status === 401 || status === 403) {
       localStorage.removeItem("username");
@@ -18,12 +29,12 @@ export default {
     }
     return Promise.resolve();
   },
-  // called when the user navigates to a new location, to check for authentication
+  // checkAuth: Called when the user navigates to a new location, to check for authentication
   checkAuth: () => {
     return localStorage.getItem("username")
       ? Promise.resolve()
       : Promise.reject();
   },
-  // called when the user navigates to a new location, to check for permissions / roles
+  // getPermissions: Called when the user navigates to a new location, to check for permissions / roles
   getPermissions: () => Promise.resolve(),
 };
